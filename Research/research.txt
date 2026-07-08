@@ -1,0 +1,26 @@
+Criar uma pasta
+Research/
+
+Ela vai guardar tudo que ainda não sabemos.
+
+Exemplo.
+
+Research/
+
+Hero.md
+
+ThreeJS.md
+
+Blender.md
+
+Shaders.md
+
+GSAP.md
+
+Mongo.md
+
+Quando surgir uma dúvida.
+
+Ela vai para Research.
+
+Nunca para Docs.

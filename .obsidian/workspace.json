@@ -1,0 +1,234 @@
+{
+  "main": {
+    "id": "b10e0f85c88b016b",
+    "type": "split",
+    "children": [
+      {
+        "id": "e862b05d38640ae8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7011535e86e17c78",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Readme.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Readme"
+            }
+          },
+          {
+            "id": "13ddb2a51d90b442",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "IMPLEMENTATION_PLAN.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "IMPLEMENTATION_PLAN"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e86aa047f9d9f44c",
+    "type": "split",
+    "children": [
+      {
+        "id": "8d2aa8dd8a1826af",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e56ab7a7013611d8",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "30a973913a0074f5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "48f72882b6bcf59a",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "38c54d72af893fc4",
+    "type": "split",
+    "children": [
+      {
+        "id": "652b7a726d59ea3f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cc29fc477f357a97",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos"
+            }
+          },
+          {
+            "id": "7dd1c96c84112c38",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída"
+            }
+          },
+          {
+            "id": "f1817d93aaf2842a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "a0ab76f46df95430",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "afac3bd2b11076ef",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Brain/06_AI.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário de 06_AI"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "13ddb2a51d90b442",
+  "lastOpenFiles": [
+    "PROJECT_STATUS.md",
+    "IMPLEMENTATION_PLAN.md",
+    "Claude.md",
+    "Readme.md",
+    "Adr/ADR.md",
+    "Docs/00_PROJECT_VISION.md",
+    "SamiStudio/Docs/23_TASKS.md",
+    "SamiStudio/Adr/ADR.md",
+    "SamiStudio/Adr",
+    "SamiStudio/Docs/00_PROJECT_VISION.md",
+    "SamiStudio/Docs/14_BLUEPRINT_ENGINE.md",
+    "Brain 1/06_AI.md",
+    "Brain 1/04_UI_UX.md",
+    "Brain 1/05_PROJECTS.md",
+    "Brain 1/02_ARCHITECTURE.md",
+    "Brain 1/03_CODING.md",
+    "Brain 1/01_PHILOSOPHY.md",
+    "Brain 1/00_ME.md",
+    "Brain 1",
+    "Brain/05_PROJECTS.md",
+    "Brain/06_AI.md",
+    "Brain/04_UI_UX.md",
+    "Brain/05_PROJECTS",
+    "Brain/03_CODING.md",
+    "Brain/02_ARCHITECTURE.md",
+    "Brain/01_PHILOSOPHY.md",
+    "Brain/00_ME.md",
+    "SamiStudio",
+    "Brain",
+    "SamiStudio/Docs/22_AI_MASTER_PLAN.md",
+    "SamiStudio/Docs/21_PROJECT_RULES.md",
+    "SamiStudio/Docs"
+  ]
+}
