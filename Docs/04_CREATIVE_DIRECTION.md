@@ -1,5 +1,7 @@
 # 04_CREATIVE_DIRECTION.md
 
+> **Nota (2026-07-09):** a narrativa do Hero foi atualizada para *interior reveal* com projeto real de interiores da Sami. As etapas de construção descritas neste documento ficam substituídas pela **ADR-013**.
+
 # Creative Direction
 
 Versão: 1.0

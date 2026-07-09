@@ -6,4 +6,17 @@
  * Ícones de marca (Instagram, LinkedIn, ...) não existem mais no Lucide;
  * quando necessários, criar SVGs próprios neste diretório.
  */
-export { ArrowRight, ChevronDown, Globe, Menu, MessageCircle, X } from "lucide-react";
+export {
+  ArrowLeft,
+  ArrowRight,
+  Box,
+  Building2,
+  Camera,
+  ChevronDown,
+  Globe,
+  Menu,
+  MessageCircle,
+  PencilRuler,
+  Sparkles,
+  X,
+} from "lucide-react";

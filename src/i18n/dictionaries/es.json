@@ -46,6 +46,144 @@
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú"
   },
+  "sections": {
+    "about": {
+      "eyebrow": "El estudio",
+      "title": "Quienes dan vida a tus proyectos",
+      "text": "Sami da Silva Studio transforma proyectos de arquitectura e interiores en imágenes hiperrealistas. Cada render se trata como una pieza única: composición, luz y materiales pensados para valorizar el proyecto y convencer a quien decide.",
+      "cta": "Conoce el Studio"
+    },
+    "services": {
+      "eyebrow": "Servicios",
+      "title": "Del modelo 3D al render final",
+      "subtitle": "Soluciones completas de visualización para arquitectos, diseñadores de interiores y constructoras.",
+      "items": [
+        {
+          "title": "Modelado 3D",
+          "description": "Modelado preciso de tu proyecto a partir de planos, bocetos o archivos CAD."
+        },
+        {
+          "title": "Render Realista",
+          "description": "Imágenes hiperrealistas de interiores y exteriores, con iluminación y materiales fieles al proyecto."
+        },
+        {
+          "title": "Maqueta Electrónica",
+          "description": "Presentación completa del desarrollo para ventas, aprobación y difusión."
+        },
+        {
+          "title": "Detallado",
+          "description": "Láminas y vistas detalladas para llevar el proyecto a ejecución con precisión."
+        },
+        {
+          "title": "IA aplicada",
+          "description": "Flujos con inteligencia artificial para explorar variaciones del proyecto con rapidez."
+        }
+      ]
+    },
+    "process": {
+      "eyebrow": "Proceso",
+      "title": "Cómo funciona",
+      "steps": [
+        {
+          "title": "Briefing",
+          "description": "Envías el proyecto, referencias y objetivos. Alineamos alcance y plazo."
+        },
+        {
+          "title": "Modelado",
+          "description": "Construimos el modelo 3D fiel al proyecto, con materiales e iluminación."
+        },
+        {
+          "title": "Vista previa",
+          "description": "Recibes vistas previas para ajustar cámara, luz y acabados."
+        },
+        {
+          "title": "Entrega",
+          "description": "Render final en alta resolución, listo para presentar y difundir."
+        }
+      ]
+    },
+    "portfolio": {
+      "eyebrow": "Portafolio",
+      "title": "Proyectos destacados",
+      "subtitle": "Una selección de lo que pasó del blueprint a la realidad.",
+      "viewAll": "Ver todos los proyectos",
+      "comingSoon": "Proyecto próximamente"
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Preguntas frecuentes",
+      "items": [
+        {
+          "question": "¿Cuál es el plazo promedio de un render?",
+          "answer": "Depende de la complejidad del ambiente y la cantidad de imágenes. Tras el briefing, recibes un cronograma con fechas de vista previa y entrega final."
+        },
+        {
+          "question": "¿Qué archivos necesito enviar?",
+          "answer": "Planos, modelos 3D (SKP, FBX, OBJ, BLEND) o incluso bocetos y referencias. Evaluamos el material en el briefing y sugerimos el mejor camino."
+        },
+        {
+          "question": "¿Cómo funciona el pago?",
+          "answer": "Las condiciones se definen en la propuesta, normalmente con un adelanto para iniciar y el saldo en la entrega final."
+        },
+        {
+          "question": "¿Puedo pedir cambios?",
+          "answer": "Sí. La etapa de vista previa existe exactamente para eso: ajustes de cámara, iluminación y acabados antes del render final."
+        },
+        {
+          "question": "¿En qué formatos recibo las imágenes?",
+          "answer": "Imágenes en alta resolución (JPG/PNG) listas para presentaciones, redes sociales e impresión. Otros formatos pueden acordarse."
+        }
+      ]
+    },
+    "cta": {
+      "title": "¿Llevamos tu proyecto a la realidad?",
+      "subtitle": "Envía tu proyecto y recibe una propuesta a medida.",
+      "button": "Solicitar cotización"
+    }
+  },
+  "aboutPage": {
+    "historyTitle": "Historia",
+    "historyText": "El estudio nació de la pasión por la arquitectura y la imagen. Hoy atiende a arquitectos, diseñadores de interiores y constructoras que necesitan presentar sus proyectos con el máximo realismo e impacto.",
+    "valuesTitle": "Valores",
+    "values": [
+      {
+        "title": "Precisión",
+        "description": "Cada detalle del proyecto se respeta, del mobiliario a la temperatura de la luz."
+      },
+      {
+        "title": "Estética",
+        "description": "Composición y atmósfera pensadas como fotografía de arquitectura."
+      },
+      {
+        "title": "Plazos",
+        "description": "Cronogramas claros y entregas según lo acordado."
+      },
+      {
+        "title": "Cercanía",
+        "description": "Comunicación cercana de principio a fin."
+      }
+    ]
+  },
+  "portfolioPage": {
+    "all": "Todos",
+    "empty": "Aún no hay proyectos en esta categoría."
+  },
+  "projectPage": {
+    "back": "Volver al portafolio",
+    "client": "Cliente",
+    "city": "Ciudad",
+    "year": "Año",
+    "category": "Categoría",
+    "galleryComingSoon": "Galería próximamente — este proyecto recibirá las imágenes del portafolio de Sami.",
+    "next": "Siguiente proyecto"
+  },
+  "categories": {
+    "residential": "Residencial",
+    "commercial": "Comercial",
+    "interior": "Interiores",
+    "exterior": "Exteriores",
+    "concept": "Concepto"
+  },
   "footer": {
     "tagline": "From Blueprint to Reality — visualización arquitectónica premium.",
     "navigation": "Navegación",

@@ -506,3 +506,67 @@ Código consistente.
 
 Maior previsibilidade.
 ```
+
+---
+
+# ADR-013 — Narrativa do Hero: interior reveal com projeto real
+
+```
+# ADR-013
+
+## Título
+
+O Hero contará a narrativa de um interior real sendo revelado, não a construção de uma casa.
+
+---
+
+## Contexto
+
+O plano original (Docs 04, 14, 16 e 18) descrevia a narrativa do Hero como a
+construção completa de uma casa: fundação → pilares → paredes → cobertura →
+esquadrias → materiais → render final.
+
+A Sami trabalha primariamente com renderização de INTERIORES.
+
+Em 2026-07-09, cliente e desenvolvedor decidiram que o Hero deverá refletir
+o trabalho real do estúdio.
+
+---
+
+## Decisão
+
+A narrativa do Hero passa a ser um INTERIOR REVEAL baseado em um projeto real
+de interiores da Sami:
+
+1. O ambiente começa vazio, apenas em linhas técnicas (wireframe/blueprint).
+2. Conforme o usuário rola, os elementos do render aparecem gradualmente
+   (casca do ambiente → mobiliário → detalhes de decoração).
+3. O estado final é o render hiper-realista com qualidade máxima
+   (iluminação golden hour, materiais completos).
+
+A timeline da Blueprint Engine fica re-mapeada para:
+
+blueprint → shell → furniture → details → render
+
+A arquitetura da Blueprint Engine NÃO muda: tudo continua controlado por um
+único parâmetro progress (0.0 → 1.0), conforme ADR-003, ADR-004 e ADR-010.
+
+---
+
+## Consequências
+
+Positivas
+
+- Hero fiel ao serviço real do estúdio (reforça ADR-011)
+- Modelo 3D final virá de um projeto de interiores da cliente
+- Pipeline Blender (Docs/15) permanece válido sem alterações
+
+Negativas
+
+- As timelines de construção descritas nos Docs 04, 14, 16 e 18 ficam
+  substituídas por esta ADR no que diz respeito às etapas da narrativa
+
+## Status
+
+Aprovada (2026-07-09)
+```

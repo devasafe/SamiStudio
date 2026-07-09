@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-🟨 Em andamento (FASES 1 a 4 concluídas)
+🟨 Em andamento (FASES 1 a 5 concluídas)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-███████░░░░░░░░░░░░░ 36%
+█████████░░░░░░░░░░░ 45%
 
 Projeto Geral
 
-██████████░░░░░░░░░░ 52%
+███████████░░░░░░░░░ 58%
 
 ---
 
@@ -98,13 +98,21 @@ Website
 
 Status
 
+✅ Concluída (2026-07-09) — conteúdo provisório via dicionários; Clientes/Diferenciais/Depoimentos aguardam materiais da Sami; formulário de contato entra com o backend (FASE 6).
+
+Milestone 6
+
+Backend
+
+Status
+
 ⬜ Não iniciada
 
 ---
 
 # Próxima Tarefa
 
-FASE 5 — Website: seções da home (Clientes, Sobre, Serviços, Processo, Portfólio, Diferenciais, Depoimentos, FAQ, CTA) e páginas internas.
+FASE 6 — Backend: MongoDB, Models, API, Auth, Upload/Cloudinary, SEO, Traduções.
 
 ---
 
@@ -220,37 +228,37 @@ Pode-se desenvolver toda a estrutura do projeto.
 
 ## Sobre
 
-⬜
+✅ (conteúdo provisório via dicionários)
 
 ---
 
 ## Serviços
 
-⬜
+✅ (conteúdo provisório via dicionários)
 
 ---
 
 ## Processo
 
-⬜
+✅
 
 ---
 
 ## Portfólio
 
-⬜
+✅ (projetos placeholder; reais entram via CMS)
 
 ---
 
 ## Projeto
 
-⬜
+✅ (estrutura; galeria aguarda imagens)
 
 ---
 
 ## FAQ
 
-⬜
+✅ (perguntas provisórias; aguardando FAQ da Sami)
 
 ---
 

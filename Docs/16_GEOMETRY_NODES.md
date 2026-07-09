@@ -2,6 +2,8 @@
 
 # Geometry Nodes
 
+> **Nota (2026-07-09):** os sistemas/faixas de progress descritos aqui seguem a narrativa antiga de construção. A narrativa vigente é *interior reveal* — ver **ADR-013**. O princípio (um único parâmetro Progress controla tudo) permanece.
+
 Versão: 1.0
 
 Projeto:

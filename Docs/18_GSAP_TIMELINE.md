@@ -2,6 +2,8 @@
 
 # GSAP Timeline
 
+> **Nota (2026-07-09):** as etapas percentuais descritas aqui seguem a narrativa antiga de construção. A narrativa vigente é *interior reveal* (blueprint → shell → furniture → details → render) — ver **ADR-013**. O mecanismo (ScrollTrigger + pin + scrub + progress) permanece.
+
 Versão: 1.0
 
 Projeto:

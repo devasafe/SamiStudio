@@ -2,6 +2,8 @@
 
 # Blueprint Engine
 
+> **Nota (2026-07-09):** a timeline de construção (Foundation → ... → Vegetation) foi substituída pela narrativa de *interior reveal* (blueprint → shell → furniture → details → render). Ver **ADR-013**. A arquitetura da engine (progress 0→1) permanece inalterada.
+
 Versão: 1.0
 
 Projeto:
