@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-🟨 Em andamento (FASES 1 a 6 concluídas)
+🟨 Em andamento (FASES 1 a 7 concluídas)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-███████████░░░░░░░░░ 55%
+█████████████░░░░░░░ 64%
 
 Projeto Geral
 
-█████████████░░░░░░░ 64%
+██████████████░░░░░░ 70%
 
 ---
 
@@ -114,13 +114,21 @@ Painel Administrativo
 
 Status
 
+✅ Concluída (2026-07-09) — login, dashboard, CRUDs (Projetos, Categorias, Serviços, Depoimentos, FAQ), Traduções e Configurações. Teste end-to-end com dados reais pende das credenciais (MONGODB_URI + seed).
+
+Milestone 8
+
+Integrações
+
+Status
+
 ⬜ Não iniciada
 
 ---
 
 # Próxima Tarefa
 
-FASE 7 — Painel Administrativo: Login, Dashboard, CRUDs (Projetos, Serviços, FAQ, Depoimentos), Traduções e Configurações.
+FASE 8 — Integrações: WhatsApp, Instagram, Google Analytics, Search Console, Sitemap, Robots.
 
 ---
 
@@ -286,7 +294,7 @@ Pode-se desenvolver toda a estrutura do projeto.
 
 ## Admin
 
-⬜
+✅ (aguardando credenciais p/ teste end-to-end com dados reais)
 
 ---
 
