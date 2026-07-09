@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-🟨 Em andamento (FASE 1 concluída)
+🟨 Em andamento (FASES 1 e 2 concluídas)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-██░░░░░░░░░░░░░░░░░░ 9%
+████░░░░░░░░░░░░░░░░ 18%
 
 Projeto Geral
 
-███████░░░░░░░░░░░░░ 32%
+████████░░░░░░░░░░░░ 39%
 
 ---
 
@@ -74,13 +74,21 @@ Core Architecture
 
 Status
 
+✅ Concluída (2026-07-09)
+
+Milestone 3
+
+Design System
+
+Status
+
 ⬜ Não iniciada
 
 ---
 
 # Próxima Tarefa
 
-FASE 2 — Core Architecture: criar Layout, Providers, sistema de rotas, Theme, sistema de idiomas, Design Tokens e componentes base.
+FASE 3 — Design System: Button, Input, Card, Modal, Navbar, Footer, Typography, Grid, Container, Icons.
 
 ---
 
@@ -238,7 +246,7 @@ Pode-se desenvolver toda a estrutura do projeto.
 
 ## Multi-idioma
 
-⬜
+🟨 Base pronta (rotas + dicionários; conteúdo via CMS pendente)
 
 ---
 

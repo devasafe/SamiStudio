@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "siteName": "Sami da Silva Studio",
+    "home": {
+      "title": "Premium Architectural Visualization and 3D Rendering",
+      "description": "Studio specialized in architectural visualization, 3D modeling and hyper-realistic rendering. From Blueprint to Reality."
+    },
+    "about": {
+      "title": "About the Studio",
+      "description": "Meet Sami da Silva Studio, specialists in turning architectural projects into hyper-realistic visual experiences."
+    },
+    "services": {
+      "title": "Services",
+      "description": "3D modeling, realistic rendering, digital mockups, detailing and AI applied to architecture."
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "description": "Architectural visualization and 3D rendering projects by Sami da Silva Studio."
+    },
+    "project": {
+      "title": "Project",
+      "description": "Architectural visualization case study by Sami da Silva Studio."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Request a quote for your architectural visualization project."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "contact": "Contact"
+  },
+  "common": {
+    "requestQuote": "Request a quote",
+    "viewPortfolio": "View portfolio",
+    "underConstruction": "Page under construction.",
+    "language": "Language"
+  }
+}

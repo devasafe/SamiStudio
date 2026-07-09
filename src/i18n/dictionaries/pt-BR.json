@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "siteName": "Sami da Silva Studio",
+    "home": {
+      "title": "Visualização Arquitetônica e Render 3D Premium",
+      "description": "Estúdio especializado em visualização arquitetônica, modelagem 3D e renderização hiper-realista. From Blueprint to Reality."
+    },
+    "about": {
+      "title": "Sobre o Studio",
+      "description": "Conheça o Sami da Silva Studio, especialista em transformar projetos arquitetônicos em experiências visuais hiper-realistas."
+    },
+    "services": {
+      "title": "Serviços",
+      "description": "Modelagem 3D, render realista, maquete eletrônica, detalhamento e IA aplicada à arquitetura."
+    },
+    "portfolio": {
+      "title": "Portfólio",
+      "description": "Projetos de visualização arquitetônica e renderização 3D desenvolvidos pelo Sami da Silva Studio."
+    },
+    "project": {
+      "title": "Projeto",
+      "description": "Estudo de caso de visualização arquitetônica do Sami da Silva Studio."
+    },
+    "contact": {
+      "title": "Contato",
+      "description": "Solicite um orçamento para o seu projeto de visualização arquitetônica."
+    }
+  },
+  "nav": {
+    "home": "Início",
+    "about": "Sobre",
+    "services": "Serviços",
+    "portfolio": "Portfólio",
+    "contact": "Contato"
+  },
+  "common": {
+    "requestQuote": "Solicitar orçamento",
+    "viewPortfolio": "Ver portfólio",
+    "underConstruction": "Página em construção.",
+    "language": "Idioma"
+  }
+}
