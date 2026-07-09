@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { Providers } from "@/components/providers/providers";
+import { Analytics } from "@/components/shared/analytics";
+import { FloatingWhatsApp } from "@/components/shared/floating-whatsapp";
 import { isLocale, localePath, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getSiteSettings } from "@/lib/settings";
 import "../globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+// Conteúdo do CMS (settings) atualizado a cada 10 minutos.
+export const revalidate = 600;
+
+// Heading serif elegante — Manual da Marca (2026-07-09).
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -56,6 +63,10 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
       locale: locale.replace("-", "_"),
       type: "website",
     },
+    // Search Console (Docs/13) — só emitida quando configurada.
+    ...(process.env.GOOGLE_SITE_VERIFICATION
+      ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+      : {}),
   };
 }
 
@@ -69,19 +80,25 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
   if (!isLocale(locale)) {
     notFound();
   }
-  const dictionary = await getDictionary(locale);
+  const [dictionary, settings] = await Promise.all([getDictionary(locale), getSiteSettings()]);
+
+  const whatsappNumber = settings?.whatsapp ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+  const gaMeasurementId =
+    settings?.analytics?.gaMeasurementId ?? process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
 
   return (
     <html
       lang={locale}
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <Providers locale={locale} dictionary={dictionary}>
           <Navbar />
           {children}
-          <Footer locale={locale} dictionary={dictionary} />
+          <Footer locale={locale} dictionary={dictionary} settings={settings} />
+          {whatsappNumber ? <FloatingWhatsApp number={whatsappNumber} /> : null}
         </Providers>
+        <Analytics measurementId={gaMeasurementId} />
       </body>
     </html>
   );

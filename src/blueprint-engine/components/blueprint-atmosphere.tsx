@@ -7,9 +7,9 @@ import { blueprintProgress } from "../core/progress-store";
 import { phases } from "../timeline/phases";
 import { phaseProgress } from "../utils/math";
 
-// Fundo papel técnico → tom quente do render final.
-const paper = new Color("#fafafa");
-const warm = new Color("#f4ede3");
+// Fundo papel técnico → tom quente do render final (paleta do manual da marca).
+const paper = new Color("#f7f5f2");
+const warm = new Color("#f3e9dc");
 
 /** Atualiza o fundo da cena conforme a narrativa avança. */
 export function BlueprintAtmosphere() {

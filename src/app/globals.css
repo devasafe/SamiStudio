@@ -11,9 +11,14 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+  /* Tons da identidade visual (manual da marca, 2026-07-09) */
+  --color-highlight: var(--highlight);
+  --color-wood: var(--wood);
+  --color-beige: var(--beige);
+  --color-ivory: var(--ivory);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
-  --font-heading: var(--font-space-grotesk);
+  --font-heading: var(--font-playfair);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -73,29 +78,33 @@
 }
 
 :root {
-  /* Paleta provisória — Design System (Docs/08). Atualizar ao receber a identidade visual. */
-  --background: #ffffff;
-  --foreground: #111111;
-  --surface: #f7f7f7;
+  /* Paleta oficial — Manual da Marca Sami Studio (2026-07-09). */
+  --background: #f7f5f2;
+  --foreground: #262626;
+  --surface: #ffffff;
   --success: #16a34a;
   --warning: #f59e0b;
   --error: #dc2626;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #111111;
-  --primary-foreground: #ffffff;
-  --secondary: #f7f7f7;
-  --secondary-foreground: #111111;
-  --muted: #f7f7f7;
-  --muted-foreground: #666666;
-  --accent: #f7f7f7;
-  --accent-foreground: #111111;
+  --highlight: #b62b7a;
+  --wood: #b67d4b;
+  --beige: #ead9c6;
+  --ivory: #fff8f2;
+  --card: #ffffff;
+  --card-foreground: #262626;
+  --popover: #ffffff;
+  --popover-foreground: #262626;
+  --primary: #cf5a18;
+  --primary-foreground: #fff8f2;
+  --secondary: #f1ebe3;
+  --secondary-foreground: #262626;
+  --muted: #f1ebe3;
+  --muted-foreground: #6e6e6e;
+  --accent: #f1ebe3;
+  --accent-foreground: #262626;
   --destructive: #dc2626;
-  --border: #e5e5e5;
-  --input: #e5e5e5;
-  --ring: oklch(0.708 0 0);
+  --border: #e7dfd4;
+  --input: #e7dfd4;
+  --ring: #cf5a18;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

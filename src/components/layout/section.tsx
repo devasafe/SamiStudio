@@ -8,12 +8,12 @@ interface SectionProps {
 }
 
 /**
- * Seção com o ritmo vertical do Design System (Docs/08):
- * 64px mobile, 80px tablet, 120px desktop.
+ * Seção com ritmo editorial generoso (Manual da Marca, 2026-07-09):
+ * 80px mobile, 120px tablet, 160px desktop.
  */
 export function Section({ children, className, id }: SectionProps) {
   return (
-    <section id={id} className={cn("py-16 md:py-20 lg:py-30", className)}>
+    <section id={id} className={cn("py-20 md:py-30 lg:py-40", className)}>
       {children}
     </section>
   );

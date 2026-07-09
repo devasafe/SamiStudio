@@ -196,33 +196,43 @@ Utilizar apenas como referência.
 
 Status:
 
-Aguardando cliente.
+✅ Oficial (Manual da Marca recebido em 2026-07-09).
 
-Até a definição utilizar:
+Primária (Terracota)
 
-Background Principal
+#CF5A18
+
+Secundária (Magenta — destaques)
+
+#B62B7A
+
+Background Principal (branco quente)
+
+#F7F5F2
+
+Surface
 
 #FFFFFF
 
-Background Secundário
-
-#F8F8F8
-
 Texto
 
-#111111
+#262626
 
 Texto Secundário
 
-#555555
+#6E6E6E
 
-Divisórias
+Tons Naturais
 
-#E5E5E5
+Madeira #B67D4B
+
+Bege #EAD9C6
+
+Marfim #FFF8F2
 
 Botões
 
-Utilizar posteriormente a cor institucional.
+Cor institucional (Terracota #CF5A18).
 
 ---
 
@@ -230,11 +240,11 @@ Utilizar posteriormente a cor institucional.
 
 Status:
 
-Provisória.
+✅ Oficial (Manual da Marca recebido em 2026-07-09).
 
 Heading
 
-Space Grotesk
+Playfair Display (serif elegante, alto contraste — direção do manual)
 
 Body
 
@@ -243,8 +253,6 @@ Inter
 Código
 
 JetBrains Mono
-
-Após recebimento da identidade visual atualizar.
 
 ---
 

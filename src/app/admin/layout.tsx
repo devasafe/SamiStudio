@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "../globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}>
+    <html lang="pt-BR" className={`${playfair.variable} ${inter.variable} h-full antialiased`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

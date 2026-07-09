@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { localePath, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import type { SiteSettingsDoc } from "@/models/site-settings";
 
 const localeNames: Record<Locale, string> = {
   "pt-BR": "Português",
@@ -12,14 +13,31 @@ const localeNames: Record<Locale, string> = {
 interface FooterProps {
   locale: Locale;
   dictionary: Dictionary;
+  settings: SiteSettingsDoc | null;
 }
 
 /**
- * Footer escuro (Docs/08) com navegação, contato e idiomas.
- * Redes sociais entram quando as URLs vierem das configurações (CMS).
+ * Footer escuro (Docs/08) com navegação, contato (CMS), redes e idiomas.
  */
-export function Footer({ locale, dictionary }: FooterProps) {
+export function Footer({ locale, dictionary, settings }: FooterProps) {
   const year = new Date().getFullYear();
+
+  const whatsappDigits = (settings?.whatsapp ?? "").replace(/\D/g, "");
+  const contactLinks = [
+    settings?.email ? { href: `mailto:${settings.email}`, label: settings.email } : null,
+    settings?.phone
+      ? { href: `tel:${settings.phone.replace(/\s/g, "")}`, label: settings.phone }
+      : null,
+    whatsappDigits ? { href: `https://wa.me/${whatsappDigits}`, label: "WhatsApp" } : null,
+  ].filter((link): link is { href: string; label: string } => link !== null);
+
+  const socialLinks = [
+    settings?.instagram ? { href: settings.instagram, label: "Instagram" } : null,
+    settings?.linkedin ? { href: settings.linkedin, label: "LinkedIn" } : null,
+    settings?.facebook ? { href: settings.facebook, label: "Facebook" } : null,
+    settings?.behance ? { href: settings.behance, label: "Behance" } : null,
+    settings?.youtube ? { href: settings.youtube, label: "YouTube" } : null,
+  ].filter((link): link is { href: string; label: string } => link !== null);
 
   const navLinks = [
     { href: localePath(locale, "/"), label: dictionary.nav.home },
@@ -60,24 +78,58 @@ export function Footer({ locale, dictionary }: FooterProps) {
             </ul>
           </nav>
 
-          <nav aria-label={dictionary.footer.languages}>
-            <p className="text-caption text-background/50 font-medium tracking-widest uppercase">
-              {dictionary.footer.languages}
-            </p>
-            <ul className="mt-4 space-y-3">
-              {locales.map((l) => (
-                <li key={l}>
-                  <Link
-                    href={localePath(l, "/")}
-                    className="text-small text-background/80 hover:text-background transition-colors"
-                    aria-current={l === locale ? "true" : undefined}
-                  >
-                    {localeNames[l]}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="space-y-10">
+            {contactLinks.length > 0 || socialLinks.length > 0 ? (
+              <nav aria-label={dictionary.footer.contact}>
+                <p className="text-caption text-background/50 font-medium tracking-widest uppercase">
+                  {dictionary.footer.contact}
+                </p>
+                <ul className="mt-4 space-y-3">
+                  {contactLinks.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        className="text-small text-background/80 hover:text-background transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                  {socialLinks.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-small text-background/80 hover:text-background transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ) : null}
+
+            <nav aria-label={dictionary.footer.languages}>
+              <p className="text-caption text-background/50 font-medium tracking-widest uppercase">
+                {dictionary.footer.languages}
+              </p>
+              <ul className="mt-4 space-y-3">
+                {locales.map((l) => (
+                  <li key={l}>
+                    <Link
+                      href={localePath(l, "/")}
+                      className="text-small text-background/80 hover:text-background transition-colors"
+                      aria-current={l === locale ? "true" : undefined}
+                    >
+                      {localeNames[l]}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
 
         <div className="border-background/10 mt-16 border-t pt-8">

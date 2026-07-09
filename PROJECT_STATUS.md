@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-🟨 Em andamento (FASES 1 a 7 concluídas)
+🟨 Em andamento (FASES 1 a 8 concluídas)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-█████████████░░░░░░░ 64%
+███████████████░░░░░ 73%
 
 Projeto Geral
 
-██████████████░░░░░░ 70%
+███████████████░░░░░ 76%
 
 ---
 
@@ -122,13 +122,39 @@ Integrações
 
 Status
 
-⬜ Não iniciada
+✅ Concluída (2026-07-09) — WhatsApp flutuante + contatos/redes via CMS, GA4 e Search Console condicionais (aguardando IDs da conta Google), sitemap e robots automáticos.
+
+Milestone 9
+
+Projeto Hero Final
+
+Status
+
+⬜ Não iniciada (aguardando modelo 3D da Sami)
 
 ---
 
 # Próxima Tarefa
 
-FASE 8 — Integrações: WhatsApp, Instagram, Google Analytics, Search Console, Sitemap, Robots.
+FASE 9 — Projeto Hero Final: importar modelo real da Sami via Blender MCP, Collections, Geometry Nodes, exportar GLB e integrar ao Hero. Enquanto o modelo não chega: FASE 10 (Qualidade).
+
+---
+
+# Identidade Visual
+
+✅ Aplicada (2026-07-09): paleta terracota/magenta/tons naturais, Playfair Display nos headings, ritmo editorial 160px. Docs 05 e 08 atualizados.
+
+---
+
+# Infraestrutura
+
+✅ MongoDB Atlas conectado (URI corrigida — senha percent-encoded)
+
+✅ Cloudinary configurado
+
+☐ Seed do admin (definir ADMIN_EMAIL/ADMIN_PASSWORD e rodar npm run db:seed)
+
+☐ Contas em nome do dev — transferir para a cliente na entrega (ver AOS/Lessons)
 
 ---
 

@@ -187,7 +187,7 @@ Nunca utilizar sombras fortes.
 
 Heading
 
-Space Grotesk
+Playfair Display (serif — Manual da Marca, 2026-07-09)
 
 Body
 
@@ -267,29 +267,47 @@ Bold
 
 Status:
 
-Temporária.
+✅ Oficial (Manual da Marca, 2026-07-09).
 
-Será atualizada após recebimento da identidade visual.
+Primary (Terracota)
 
-Background
+#CF5A18
 
-#FFFFFF
+Highlight (Magenta)
+
+#B62B7A
+
+Background (branco quente)
+
+#F7F5F2
 
 Surface
 
-#F7F7F7
+#FFFFFF
 
 Border
 
-#E5E5E5
+#E7DFD4
 
 Text Primary
 
-#111111
+#262626
 
 Text Secondary
 
-#666666
+#6E6E6E
+
+Wood
+
+#B67D4B
+
+Beige
+
+#EAD9C6
+
+Ivory
+
+#FFF8F2
 
 Success
 
