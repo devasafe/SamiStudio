@@ -11,7 +11,7 @@ import { BlueprintScene } from "./blueprint-scene";
 export function BlueprintCanvas() {
   return (
     <Canvas
-      dpr={[1, 1.75]}
+      dpr={[1, 1.5]}
       camera={{ fov: 42, near: 0.1, far: 60, position: [7.5, 6, 9] }}
       gl={{ antialias: true, toneMapping: ACESFilmicToneMapping }}
       aria-hidden

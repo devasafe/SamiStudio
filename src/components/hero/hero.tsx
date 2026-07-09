@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "@/components/icons";
 import { Container } from "@/components/layout/container";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -22,19 +22,43 @@ const BlueprintCanvas = dynamic(
  * O scroll constrói o ambiente — a seção fica fixa (pin) enquanto
  * a Blueprint Engine avança do wireframe ao render final.
  */
+type HeroMode = "static" | "3d";
+
 export function Hero() {
   const { locale, dictionary } = useLanguage();
   const sectionRef = useRef<HTMLElement | null>(null);
-  useBlueprintScroll(sectionRef);
+
+  /**
+   * Docs/04: o mobile não reproduz o Hero desktop — recebe uma versão
+   * estática elegante (sem Three.js e sem pin), preservando performance.
+   * O 3D monta só em desktop, após o primeiro paint (Docs/21).
+   */
+  const [mode, setMode] = useState<HeroMode>("static");
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!desktop || reducedMotion) {
+      return;
+    }
+    const timer = window.setTimeout(() => setMode("3d"), 150);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useBlueprintScroll(sectionRef, mode === "3d");
   const progress = useBlueprintProgress();
 
-  // O texto do Hero sai de cena no início da narrativa.
-  const textOpacity = 1 - Math.min(1, progress / phases.blueprint.to);
+  // O texto do Hero sai de cena no início da narrativa (apenas no modo 3D).
+  const textOpacity = mode === "3d" ? 1 - Math.min(1, progress / phases.blueprint.to) : 1;
 
   return (
     <section ref={sectionRef} className="relative h-svh overflow-hidden">
       <div className="absolute inset-0">
-        <BlueprintCanvas />
+        {mode === "3d" ? (
+          <BlueprintCanvas />
+        ) : (
+          // Versão estática: gradiente quente da paleta oficial.
+          <div className="from-ivory via-background to-beige absolute inset-0 bg-gradient-to-br" />
+        )}
       </div>
 
       {/* Gradiente para legibilidade do texto sobre a cena. */}

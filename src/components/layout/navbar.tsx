@@ -60,7 +60,6 @@ export function Navbar() {
         <Link
           href={localePath(locale, "/")}
           className="font-heading text-body-lg tracking-tight whitespace-nowrap"
-          aria-label={dictionary.meta.siteName}
         >
           Sami da Silva
           <span className="text-muted-foreground"> Studio</span>

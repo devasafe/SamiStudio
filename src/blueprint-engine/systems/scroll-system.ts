@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, type RefObject } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { ScrollTrigger as ScrollTriggerType } from "gsap/ScrollTrigger";
 import { blueprintProgress } from "../core/progress-store";
 
 /**
  * Scroll System (Docs/18): o scroll é o único controlador da narrativa.
  * Fixa (pin) a seção do Hero e converte o scroll em progress (scrub).
+ * GSAP é carregado sob demanda — só quando a narrativa 3D está ativa —
+ * para manter o bundle inicial leve (Docs/21).
  */
-export function useBlueprintScroll(sectionRef: RefObject<HTMLElement | null>): void {
+export function useBlueprintScroll(
+  sectionRef: RefObject<HTMLElement | null>,
+  enabled = true
+): void {
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) {
+    if (!section || !enabled) {
       return;
     }
 
@@ -22,20 +26,32 @@ export function useBlueprintScroll(sectionRef: RefObject<HTMLElement | null>): v
       return;
     }
 
-    gsap.registerPlugin(ScrollTrigger);
+    let trigger: ScrollTriggerType | undefined;
+    let cancelled = false;
 
-    const trigger = ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: "+=300%",
-      pin: true,
-      scrub: true,
-      onUpdate: (self) => blueprintProgress.set(self.progress),
-    });
+    void (async () => {
+      const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+      if (cancelled) {
+        return;
+      }
+      gsap.registerPlugin(ScrollTrigger);
+      trigger = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "+=300%",
+        pin: true,
+        scrub: true,
+        onUpdate: (self) => blueprintProgress.set(self.progress),
+      });
+    })();
 
     return () => {
-      trigger.kill();
+      cancelled = true;
+      trigger?.kill();
       blueprintProgress.set(0);
     };
-  }, [sectionRef]);
+  }, [sectionRef, enabled]);
 }

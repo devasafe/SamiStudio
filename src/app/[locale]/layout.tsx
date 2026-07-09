@@ -6,6 +6,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Providers } from "@/components/providers/providers";
 import { Analytics } from "@/components/shared/analytics";
 import { FloatingWhatsApp } from "@/components/shared/floating-whatsapp";
+import { StructuredData } from "@/components/shared/structured-data";
 import { isLocale, localePath, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getSiteSettings } from "@/lib/settings";
@@ -98,6 +99,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           <Footer locale={locale} dictionary={dictionary} settings={settings} />
           {whatsappNumber ? <FloatingWhatsApp number={whatsappNumber} /> : null}
         </Providers>
+        <StructuredData locale={locale} dictionary={dictionary} settings={settings} />
         <Analytics measurementId={gaMeasurementId} />
       </body>
     </html>
