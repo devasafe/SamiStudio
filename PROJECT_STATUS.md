@@ -10,7 +10,7 @@ Versão
 
 Última atualização
 
-2026-07-08
+2026-07-09
 
 ---
 
@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-⬜ Não iniciada
+🟨 Em andamento (FASE 1 concluída)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-░░░░░░░░░░░░░░░░░░░░ 0%
+██░░░░░░░░░░░░░░░░░░ 9%
 
 Projeto Geral
 
-██████░░░░░░░░░░░░░░ 25%
+███████░░░░░░░░░░░░░ 32%
 
 ---
 
@@ -66,13 +66,21 @@ Foundation
 
 Status
 
+✅ Concluída (2026-07-09)
+
+Milestone 2
+
+Core Architecture
+
+Status
+
 ⬜ Não iniciada
 
 ---
 
 # Próxima Tarefa
 
-Criar estrutura inicial do projeto Next.js.
+FASE 2 — Core Architecture: criar Layout, Providers, sistema de rotas, Theme, sistema de idiomas, Design Tokens e componentes base.
 
 ---
 
@@ -170,7 +178,7 @@ Pode-se desenvolver toda a estrutura do projeto.
 
 ## Estrutura
 
-⬜
+✅
 
 ---
 

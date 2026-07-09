@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+build
+coverage
+package-lock.json
+public
+Docs
+Adr
+Claude.md
+Readme.md
+PROJECT_STATUS.md
+IMPLEMENTATION_PLAN.md
+Assets
+Research
+References
+.obsidian
