@@ -26,6 +26,11 @@
       "description": "Solicita una cotización para tu proyecto de visualización arquitectónica."
     }
   },
+  "hero": {
+    "headline": "Del trazo al render final.",
+    "subheadline": "Visualización arquitectónica hiperrealista para arquitectos, diseñadores de interiores y constructoras.",
+    "scroll": "Desplázate para construir"
+  },
   "nav": {
     "home": "Inicio",
     "about": "Nosotros",

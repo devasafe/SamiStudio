@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-🟨 Em andamento (FASES 1, 2 e 3 concluídas)
+🟨 Em andamento (FASES 1 a 4 concluídas)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-█████░░░░░░░░░░░░░░░ 27%
+███████░░░░░░░░░░░░░ 36%
 
 Projeto Geral
 
-█████████░░░░░░░░░░░ 45%
+██████████░░░░░░░░░░ 52%
 
 ---
 
@@ -90,13 +90,27 @@ Blueprint Engine
 
 Status
 
+✅ Concluída (2026-07-09) — Hero provisório com narrativa de interior (wireframe → mobiliário → golden hour). Modelo real da Sami entra na FASE 9 via pipeline Blender.
+
+Milestone 5
+
+Website
+
+Status
+
 ⬜ Não iniciada
 
 ---
 
 # Próxima Tarefa
 
-FASE 4 — Blueprint Engine: instalar Three.js/R3F/GSAP, criar Engine, Scene, Camera, Lights, Timeline, Progress Controller e modelo temporário (Hero provisório).
+FASE 5 — Website: seções da home (Clientes, Sobre, Serviços, Processo, Portfólio, Diferenciais, Depoimentos, FAQ, CTA) e páginas internas.
+
+---
+
+# Ferramentas
+
+Blender MCP instalado e conectado (2026-07-09): uv/uvx via winget, addon habilitado no Blender 5.1.2 (D:\PROGRAMAS\Blender), servidor registrado no Claude Code (escopo user).
 
 ---
 
@@ -200,7 +214,7 @@ Pode-se desenvolver toda a estrutura do projeto.
 
 ## Hero
 
-⬜
+🟨 Funcionando com modelo provisório (narrativa de interior); aguardando projeto real da Sami (FASE 9)
 
 ---
 

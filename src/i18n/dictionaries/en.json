@@ -26,6 +26,11 @@
       "description": "Request a quote for your architectural visualization project."
     }
   },
+  "hero": {
+    "headline": "From lines to final render.",
+    "subheadline": "Hyper-realistic architectural visualization for architects, interior designers and builders.",
+    "scroll": "Scroll to build"
+  },
   "nav": {
     "home": "Home",
     "about": "About",

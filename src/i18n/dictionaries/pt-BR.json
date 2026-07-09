@@ -26,6 +26,11 @@
       "description": "Solicite um orçamento para o seu projeto de visualização arquitetônica."
     }
   },
+  "hero": {
+    "headline": "Do traço ao render final.",
+    "subheadline": "Visualização arquitetônica hiper-realista para arquitetos, designers de interiores e construtoras.",
+    "scroll": "Role para construir"
+  },
   "nav": {
     "home": "Início",
     "about": "Sobre",
