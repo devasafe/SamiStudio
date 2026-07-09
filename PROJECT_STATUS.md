@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-🟨 Em andamento (FASES 1 e 2 concluídas)
+🟨 Em andamento (FASES 1, 2 e 3 concluídas)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-████░░░░░░░░░░░░░░░░ 18%
+█████░░░░░░░░░░░░░░░ 27%
 
 Projeto Geral
 
-████████░░░░░░░░░░░░ 39%
+█████████░░░░░░░░░░░ 45%
 
 ---
 
@@ -82,13 +82,21 @@ Design System
 
 Status
 
+✅ Concluída (2026-07-09)
+
+Milestone 4
+
+Blueprint Engine
+
+Status
+
 ⬜ Não iniciada
 
 ---
 
 # Próxima Tarefa
 
-FASE 3 — Design System: Button, Input, Card, Modal, Navbar, Footer, Typography, Grid, Container, Icons.
+FASE 4 — Blueprint Engine: instalar Three.js/R3F/GSAP, criar Engine, Scene, Camera, Lights, Timeline, Progress Controller e modelo temporário (Hero provisório).
 
 ---
 

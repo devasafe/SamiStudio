@@ -12,7 +12,8 @@ interface PagePlaceholderProps {
  */
 export function PagePlaceholder({ title, description, note }: PagePlaceholderProps) {
   return (
-    <main className="flex-1">
+    // pt-22 compensa a navbar fixa de 88px.
+    <main className="flex-1 pt-22">
       <Section>
         <Container>
           <h1 className="text-h1">{title}</h1>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
+import { Footer } from "@/components/layout/footer";
+import { Navbar } from "@/components/layout/navbar";
 import { Providers } from "@/components/providers/providers";
 import { isLocale, localePath, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -76,7 +78,9 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
     >
       <body className="flex min-h-full flex-col">
         <Providers locale={locale} dictionary={dictionary}>
+          <Navbar />
           {children}
+          <Footer locale={locale} dictionary={dictionary} />
         </Providers>
       </body>
     </html>

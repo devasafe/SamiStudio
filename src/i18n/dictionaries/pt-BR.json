@@ -37,6 +37,15 @@
     "requestQuote": "Solicitar orçamento",
     "viewPortfolio": "Ver portfólio",
     "underConstruction": "Página em construção.",
-    "language": "Idioma"
+    "language": "Idioma",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu"
+  },
+  "footer": {
+    "tagline": "From Blueprint to Reality — visualização arquitetônica premium.",
+    "navigation": "Navegação",
+    "contact": "Contato",
+    "languages": "Idiomas",
+    "rights": "Todos os direitos reservados."
   }
 }

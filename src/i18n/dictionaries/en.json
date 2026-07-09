@@ -37,6 +37,15 @@
     "requestQuote": "Request a quote",
     "viewPortfolio": "View portfolio",
     "underConstruction": "Page under construction.",
-    "language": "Language"
+    "language": "Language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "footer": {
+    "tagline": "From Blueprint to Reality — premium architectural visualization.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "languages": "Languages",
+    "rights": "All rights reserved."
   }
 }
