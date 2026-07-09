@@ -26,3 +26,34 @@ O que NÃO gostamos / oportunidades para a Sami:
 O que pode inspirar:
 - Seção de estatísticas (StatCard já previsto no doc 09)
 - Agendamento de reunião como CTA secundário (avaliar com a cliente)
+
+---
+
+2. OF3D Creative / Oficina 3D Studio (referência enviada pela cliente em 2026-07-09)
+
+URL: https://of3dcreative.com.br/
+
+O que é: estúdio 3D brasileiro (Santa Catarina). Navegação: Projetos / Sobre / Serviços / On Experience / Contato. Tagline "Explorando Universos Criativos".
+
+O que gostamos:
+- Estética limpa com bastante white space e headlines grandes em bold (alinha com nosso Design System)
+- Hierarquia clara de navegação
+- Múltiplos canais de contato visíveis (WhatsApp, e-mail, telefone)
+- Skip-to-content (acessibilidade)
+
+O que NÃO gostamos / observações:
+- Conteúdo descritivo raso na home
+- Carregamento de imagens com placeholders pesados
+- CTAs genéricos ("Saiba mais")
+
+O que pode inspirar:
+- Tom "universo criativo" na headline — mas o nosso conceito segue "From Blueprint to Reality"
+- Bloco de contato do footer com WhatsApp/e-mail/telefone
+
+---
+
+3. Manual da Marca (Canva) — enviado pela cliente em 2026-07-09
+
+URL: https://www.canva.com/design/DAHOuVaxOZY/W9TZg_2RV8wRtaydEyq_7w/edit
+
+Status: PENDENTE — link de edição do Canva exige login (não acessível). Solicitado export em PDF para Assets/. Ao receber: atualizar paleta/tipografia no Design System (Docs/05 e 08 — pendências da identidade visual).

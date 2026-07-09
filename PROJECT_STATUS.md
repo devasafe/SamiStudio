@@ -26,7 +26,7 @@ Arquitetura
 
 Implementação
 
-🟨 Em andamento (FASES 1 a 5 concluídas)
+🟨 Em andamento (FASES 1 a 6 concluídas)
 
 Testes
 
@@ -50,11 +50,11 @@ Planejamento
 
 Implementação
 
-█████████░░░░░░░░░░░ 45%
+███████████░░░░░░░░░ 55%
 
 Projeto Geral
 
-███████████░░░░░░░░░ 58%
+█████████████░░░░░░░ 64%
 
 ---
 
@@ -106,13 +106,29 @@ Backend
 
 Status
 
+✅ Concluída (2026-07-09) — API v1 completa e testada em runtime. Pendências de credenciais: MONGODB_URI (Atlas), CLOUDINARY_* e seed do admin (npm run db:seed).
+
+Milestone 7
+
+Painel Administrativo
+
+Status
+
 ⬜ Não iniciada
 
 ---
 
 # Próxima Tarefa
 
-FASE 6 — Backend: MongoDB, Models, API, Auth, Upload/Cloudinary, SEO, Traduções.
+FASE 7 — Painel Administrativo: Login, Dashboard, CRUDs (Projetos, Serviços, FAQ, Depoimentos), Traduções e Configurações.
+
+---
+
+# Materiais Recebidos (atualização 2026-07-09)
+
+Referências de sites: ✅ Viper 3D Studio + OF3D Creative (registradas em References/Sites/Links.txt)
+
+Manual da Marca: 🟨 link Canva recebido, mas inacessível (requer login) — aguardando export em PDF na pasta Assets/
 
 ---
 
