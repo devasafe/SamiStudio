@@ -7,10 +7,12 @@ import { blueprintProgress } from "../core/progress-store";
 import { easeOutCubic } from "../utils/math";
 
 // Percurso cinematográfico (Docs/04): plano técnico aberto → enquadramento final do render.
+// Percurso: vista técnica alta → enquadramento final com o ambiente
+// INTEIRO na tela (validado visualmente em 1440x900, fov 42).
 const startPosition = new Vector3(7.5, 6, 9);
-const endPosition = new Vector3(3.4, 1.8, 5.2);
+const endPosition = new Vector3(6.2, 3.4, 9.0);
 const startTarget = new Vector3(0, 0.6, -0.6);
-const endTarget = new Vector3(-0.2, 1.1, -1.2);
+const endTarget = new Vector3(0, 0.9, -0.5);
 
 /**
  * Camera System (Docs/17): movimento lento, suave e previsível,
