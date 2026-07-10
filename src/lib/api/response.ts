@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Error as MongooseError } from "mongoose";
 import { ZodError } from "zod";
 import { ApiError } from "./errors";
 
@@ -40,6 +41,21 @@ export async function withErrorHandling(handler: Handler): Promise<NextResponse>
         .map((issue) => `${issue.path.join(".") || "corpo"}: ${issue.message}`)
         .join("; ");
       return fail("Dados inválidos.", 422, details);
+    }
+    // Chave duplicada do MongoDB (ex.: slug já usado por outro registro).
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code: unknown }).code === 11000
+    ) {
+      return fail("Já existe um registro com esse slug — edite o existente ou troque o slug.", 409);
+    }
+    if (error instanceof MongooseError.ValidationError) {
+      return fail("Dados inválidos.", 422, error.message);
+    }
+    if (error instanceof MongooseError.CastError) {
+      return fail("Identificador ou valor em formato inválido.", 422);
     }
     console.error("[api]", error);
     return fail("Erro interno.", 500);
