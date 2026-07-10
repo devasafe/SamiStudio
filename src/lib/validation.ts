@@ -15,6 +15,14 @@ const slug = z
 
 const translations = z.record(z.string(), z.record(z.string(), z.string().optional())).optional();
 
+/** Imagens devem vir do upload do painel (Cloudinary), nunca de link externo. */
+const uploadedImage = z
+  .string()
+  .url()
+  .refine((url) => url.startsWith("https://res.cloudinary.com/"), {
+    message: "Use o botão de upload — links externos não são aceitos.",
+  });
+
 export const categoryCreateSchema = z.object({
   name: z.string().min(1).max(80),
   slug,
@@ -42,7 +50,7 @@ export const projectCreateSchema = z.object({
   country: z.string().max(120).optional(),
   categoryId: z.string().length(24).optional(),
   year: z.number().int().min(2000).max(2100).optional(),
-  coverImage: z.string().url().optional(),
+  coverImage: uploadedImage.optional(),
   gallery: z
     .array(
       z.object({
@@ -75,7 +83,7 @@ export const serviceCreateSchema = z.object({
   slug,
   description: z.string().max(5000).optional(),
   icon: z.string().max(80).optional(),
-  coverImage: z.string().url().optional(),
+  coverImage: uploadedImage.optional(),
   gallery: z.array(z.string().url()).optional(),
   order: z.number().int().min(0).optional(),
   seo: seoSchema,
