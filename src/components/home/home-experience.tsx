@@ -15,6 +15,9 @@ import { cn } from "@/lib/utils";
 /** Render final da Sami — destino do crossfade (FASE 9). */
 const FINAL_RENDER_SRC = "/images/hero-render-final.webp";
 
+/** Render top-down da Sami — imagem estática do hero (2026-07-10). */
+const HERO_IMAGE_SRC = "/images/hero-top.webp";
+
 // A cena 3D só existe no cliente e só em desktop.
 const BlueprintCanvas = dynamic(
   () => import("@/blueprint-engine").then((module) => module.BlueprintCanvas),
@@ -62,6 +65,7 @@ export function HomeExperience({ children, layouts = [] }: HomeExperienceProps) 
   const zoneRef = useRef<HTMLDivElement | null>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const finalRenderRef = useRef<HTMLDivElement | null>(null);
+  const heroImageRef = useRef<HTMLDivElement | null>(null);
   const contentScrimRef = useRef<HTMLDivElement | null>(null);
 
   const [mode, setMode] = useState<HeroMode>("static");
@@ -114,6 +118,12 @@ export function HomeExperience({ children, layouts = [] }: HomeExperienceProps) 
         element.style.transform = `translateY(${offset}px)`;
         element.style.pointerEvents = opacity > 0.5 ? "auto" : "none";
       });
+      // A imagem estática do hero sai de cena junto com o primeiro slide,
+      // revelando a vinheta 3D que monta atrás dela.
+      if (heroImageRef.current) {
+        const { opacity } = slideState(progress, 0, slideCount);
+        heroImageRef.current.style.opacity = String(opacity);
+      }
       // Crossfade final: o 3D dissolve na foto renderizada real,
       // e o scrim de conteúdo sai de cena para a foto respirar.
       const finale = phaseProgress(progress, FINALE.from, FINALE.to);
@@ -171,7 +181,16 @@ export function HomeExperience({ children, layouts = [] }: HomeExperienceProps) 
     return (
       <div>
         <div className="relative overflow-hidden">
-          <div className="from-ivory via-background to-beige absolute inset-0 bg-gradient-to-br" />
+          <Image
+            src={HERO_IMAGE_SRC}
+            alt=""
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover"
+            aria-hidden
+          />
+          <div className="from-background/85 via-background/45 absolute inset-0 bg-gradient-to-r to-transparent" />
           <div className="relative h-svh">{heroContent}</div>
         </div>
         {sections}
@@ -186,9 +205,21 @@ export function HomeExperience({ children, layouts = [] }: HomeExperienceProps) 
 
   return (
     <div ref={zoneRef} className="relative h-svh overflow-hidden">
-      {/* 3D ao fundo, sempre presente */}
+      {/* 3D ao fundo, sempre presente (fundo do site é o ambiente) */}
       <div className="absolute inset-0" aria-hidden>
         <BlueprintCanvas />
+      </div>
+      {/* Imagem estática do hero: cobre o 3D na primeira tela */}
+      <div ref={heroImageRef} className="pointer-events-none absolute inset-0" aria-hidden>
+        <Image
+          src={HERO_IMAGE_SRC}
+          alt=""
+          fill
+          sizes="100vw"
+          quality={90}
+          priority
+          className="object-cover"
+        />
       </div>
       {/* Render final da Sami: dissolve por cima do 3D no finale */}
       <div
@@ -205,8 +236,8 @@ export function HomeExperience({ children, layouts = [] }: HomeExperienceProps) 
           quality={90}
           className="object-cover"
         />
-        {/* Scrim suave para a legibilidade do CTA sobre a foto */}
-        <div className="from-background/55 via-background/20 absolute inset-0 bg-gradient-to-t to-transparent" />
+        {/* Véu escuro para destacar o texto claro do CTA sobre a foto */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/35 to-black/15" />
       </div>
 
       {/* Gradiente sutil para legibilidade da coluna de conteúdo */}

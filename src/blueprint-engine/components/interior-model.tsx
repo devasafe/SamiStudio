@@ -77,6 +77,9 @@ export function InteriorModel() {
         const materials: RevealEntry["materials"] = [];
         node.traverse((child) => {
           if (child instanceof Mesh) {
+            // Vinheta sem sala: a mobília projeta sombra no apara-sombras.
+            child.castShadow = true;
+            child.receiveShadow = true;
             const cloned = (child.material as Material).clone() as Material & { opacity: number };
             child.material = cloned;
             materials.push(cloned);
@@ -112,7 +115,7 @@ export function InteriorModel() {
     const lampMaterials: MeshStandardMaterial[] = [];
     for (const entry of entries) {
       for (const material of entry.materials) {
-        if (material.name === "GoldShade" && material instanceof MeshStandardMaterial) {
+        if (material.name === "LampShade" && material instanceof MeshStandardMaterial) {
           material.emissive.set("#ffb066");
           material.emissiveIntensity = 0;
           lampMaterials.push(material);

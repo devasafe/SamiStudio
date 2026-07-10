@@ -6,26 +6,46 @@ import { PerspectiveCamera, Vector3 } from "three";
 import { blueprintPointer } from "../core/pointer-store";
 import { blueprintProgress } from "../core/progress-store";
 import { ASSEMBLY_END, FINALE } from "../timeline/phases";
-import { clamp01, damp, easeOutCubic, phaseProgress } from "../utils/math";
+import { clamp01, damp, phaseProgress } from "../utils/math";
+
+interface Pose {
+  position: Vector3;
+  target: Vector3;
+}
 
 /**
- * Percurso (decisão do cliente, 2026-07-10): começa perto do wireframe e
- * AFASTA enquanto o ambiente monta — completo, o objeto fica menor e
- * inteiro na tela. Depois da montagem, parallax sutil segue o mouse.
+ * Uma perspectiva da vinheta por seção (decisão do cliente, 2026-07-10):
+ * o scroll conduz a câmera de pose em pose, mostrando a mobília de
+ * ângulos diferentes a cada slide.
  */
-// Poses derivadas da RefCam do Blender (ângulo do render real da Sami):
-// o destino é o MESMO enquadramento da foto — base do crossfade final.
-const startPosition = new Vector3(-0.3, 1.6, 2.6);
-const endPosition = new Vector3(-2.3, 1.45, 7.6);
-const startTarget = new Vector3(1.0, 1.2, -1.5);
-const endTarget = new Vector3(1.3, 1.0, -2.0);
+const POSES: Pose[] = [
+  // Hero (atrás da imagem estática)
+  { position: new Vector3(9.5, 4.0, 11.5), target: new Vector3(0, 0.6, 0) },
+  // Sobre — 3/4 direita
+  { position: new Vector3(8.5, 3.4, 10.5), target: new Vector3(0, 0.6, 0) },
+  // Serviços — lateral esquerda
+  { position: new Vector3(-9.5, 3.0, 8.0), target: new Vector3(0, 0.5, 0) },
+  // Processo — vista alta (eco do render top-down do hero)
+  { position: new Vector3(4.0, 11.0, 5.0), target: new Vector3(0, 0, 0) },
+  // Portfólio — frontal baixa
+  { position: new Vector3(0.8, 1.8, 11.0), target: new Vector3(0, 0.7, 0) },
+  // FAQ — traseira
+  { position: new Vector3(-8.0, 5.0, -9.0), target: new Vector3(0, 0.4, 0) },
+  // CTA — retorno suave (a foto real cobre a cena no finale)
+  { position: new Vector3(9.0, 4.5, 10.5), target: new Vector3(0, 0.5, 0) },
+];
 
 // Amplitude do parallax (movimento máximo com o mouse nos cantos).
 const PARALLAX_POS = 0.55;
 const PARALLAX_TARGET = 0.25;
 
-/** Fração da largura que desloca o ambiente para o centro da metade direita. */
+/** Fração da largura que desloca a vinheta para o centro da metade direita. */
 const RIGHT_SHIFT = 0.24;
+
+/** Suaviza a transição dentro de cada trecho entre poses. */
+function smoothstep(t: number): number {
+  return t * t * (3 - 2 * t);
+}
 
 export function BlueprintCamera() {
   const position = useRef(new Vector3());
@@ -45,28 +65,29 @@ export function BlueprintCamera() {
 
   useFrame(({ camera, size }, delta) => {
     const progress = blueprintProgress.get();
-    const t = easeOutCubic(clamp01(progress / ASSEMBLY_END));
-    position.current.lerpVectors(startPosition, endPosition, t);
-    target.current.lerpVectors(startTarget, endTarget, t);
 
-    // Finale: recentraliza o enquadramento e assenta a câmera para o
-    // crossfade com a foto real (mesmo ângulo da RefCam).
+    // Pose por seção, com easing por trecho.
+    const f = clamp01(progress) * (POSES.length - 1);
+    const index = Math.min(POSES.length - 2, Math.floor(f));
+    const t = smoothstep(f - index);
+    position.current.lerpVectors(POSES[index].position, POSES[index + 1].position, t);
+    target.current.lerpVectors(POSES[index].target, POSES[index + 1].target, t);
+
+    // Finale: recentraliza o enquadramento para o crossfade com a foto.
     const finale = phaseProgress(progress, FINALE.from, FINALE.to);
 
-    // Conforme monta, o enquadramento desliza para a metade direita;
-    // no finale, volta ao centro para casar com a foto.
     if (camera instanceof PerspectiveCamera) {
       camera.setViewOffset(
         size.width,
         size.height,
-        -t * (1 - finale) * size.width * RIGHT_SHIFT,
+        -(1 - finale) * size.width * RIGHT_SHIFT,
         0,
         size.width,
         size.height
       );
     }
 
-    // Parallax só com o ambiente montado; congela no finale.
+    // Parallax só com a vinheta montada; congela no finale.
     const pointer = blueprintPointer.get();
     const interactive = progress >= ASSEMBLY_END ? 1 - finale : 0;
     parallaxX.current = damp(parallaxX.current, pointer.x * interactive, 4, delta);

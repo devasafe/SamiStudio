@@ -4,24 +4,23 @@
  * detalhes e por fim a atmosfera do render final.
  */
 export const phases = {
-  /** Somente linhas: wireframe técnico do ambiente. */
-  blueprint: { from: 0.0, to: 0.04 },
-  /** Piso e paredes se materializam. */
-  shell: { from: 0.04, to: 0.085 },
+  /** Reservado (formato vinheta não tem fase de linhas). */
+  blueprint: { from: 0.0, to: 0.02 },
+  /** Reservado (sem casca no formato vinheta). */
+  shell: { from: 0.02, to: 0.1 },
   /** Mobiliário principal aparece em sequência. */
-  furniture: { from: 0.085, to: 0.13 },
-  /** Detalhes: tapete, luminária, plantas, quadros. */
-  details: { from: 0.13, to: 0.16 },
-  /** Acabamento do render. */
-  render: { from: 0.16, to: 0.175 },
+  furniture: { from: 0.1, to: 0.17 },
+  /** Detalhes: tapete, luminária, plantas. */
+  details: { from: 0.15, to: 0.22 },
+  /** Acabamento. */
+  render: { from: 0.17, to: 0.22 },
 } as const;
 
 /**
- * Fim da montagem (decisão do cliente, 2026-07-10): o ambiente deve estar
- * completo quando a seção Sobre assenta (~18% do scroll). Depois disso a
- * cena entra no modo interativo (parallax + luzes no hover).
+ * Fim da montagem: a vinheta aparece na transição hero → Sobre e está
+ * completa quando a seção assenta. Depois entra o modo interativo.
  */
-export const ASSEMBLY_END = phases.render.to;
+export const ASSEMBLY_END = phases.details.to;
 
 /**
  * Finale (decisão do cliente, 2026-07-10): na transição para o CTA,

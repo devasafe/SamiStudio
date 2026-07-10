@@ -58,17 +58,30 @@ export function BlueprintLights() {
 
   return (
     <>
-      {/* Key light entrando pela janela do fundo, à direita (como no render). */}
-      <directionalLight ref={keyRef} position={[6, 4.2, -6]} intensity={0.7} />
+      {/* Key light alta lateral: modela a mobília e projeta a sombra no chão. */}
+      <directionalLight
+        ref={keyRef}
+        position={[5, 7, 4]}
+        intensity={0.7}
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+        shadow-camera-left={-8}
+        shadow-camera-right={8}
+        shadow-camera-top={8}
+        shadow-camera-bottom={-8}
+        shadow-camera-far={30}
+        shadow-normalBias={0.06}
+        shadow-bias={-0.0002}
+      />
       <ambientLight ref={fillRef} intensity={0.55} />
-      {/* Lustre dourado: acende no hover (posição do Details_Chandelier). */}
+      {/* Luminária de piso: acende no hover (posição do Details_FloorLamp). */}
       <pointLight
         ref={lampRef}
-        position={[3.8, 2.0, -2.0]}
+        position={[-2.35, 1.7, -1.6]}
         color="#ffb066"
         intensity={0}
-        distance={9}
-        decay={1.6}
+        distance={8}
+        decay={1.7}
       />
     </>
   );
