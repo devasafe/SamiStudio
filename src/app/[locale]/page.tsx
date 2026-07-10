@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AboutSection } from "@/components/about/about-section";
-import { Hero } from "@/components/hero/hero";
+import { HomeExperience } from "@/components/home/home-experience";
 import { PortfolioSection } from "@/components/portfolio/portfolio-section";
 import { ServicesSection } from "@/components/services/services-section";
 import { CTASection } from "@/components/shared/cta-section";
@@ -36,14 +36,15 @@ export default async function HomePage({ params }: PageProps) {
   ]);
   return (
     <main className="flex-1">
-      <Hero />
-      <AboutSection
-        locale={locale}
-        dictionary={dictionary}
-        photo={safeImageUrl(settings?.aboutPhoto)}
-      />
-      <ServicesSection dictionary={dictionary} items={services} />
-      <ProcessSection dictionary={dictionary} />
+      <HomeExperience>
+        <AboutSection
+          locale={locale}
+          dictionary={dictionary}
+          photo={safeImageUrl(settings?.aboutPhoto)}
+        />
+        <ServicesSection dictionary={dictionary} items={services} />
+        <ProcessSection dictionary={dictionary} />
+      </HomeExperience>
       <PortfolioSection locale={locale} dictionary={dictionary} projects={projects} />
       <FAQSection dictionary={dictionary} items={faqs} />
       <CTASection locale={locale} dictionary={dictionary} />

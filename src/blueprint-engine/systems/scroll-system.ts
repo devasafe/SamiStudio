@@ -6,17 +6,14 @@ import { blueprintProgress } from "../core/progress-store";
 
 /**
  * Scroll System (Docs/18): o scroll é o único controlador da narrativa.
- * Fixa (pin) a seção do Hero e converte o scroll em progress (scrub).
- * GSAP é carregado sob demanda — só quando a narrativa 3D está ativa —
- * para manter o bundle inicial leve (Docs/21).
+ * O progress avança conforme o usuário percorre a zona de narrativa
+ * (hero + seções com o 3D fixo), sem pin — o conteúdo flui ao lado.
+ * GSAP é carregado sob demanda para manter o bundle inicial leve (Docs/21).
  */
-export function useBlueprintScroll(
-  sectionRef: RefObject<HTMLElement | null>,
-  enabled = true
-): void {
+export function useBlueprintScroll(zoneRef: RefObject<HTMLElement | null>, enabled = true): void {
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || !enabled) {
+    const zone = zoneRef.current;
+    if (!zone || !enabled) {
       return;
     }
 
@@ -39,10 +36,9 @@ export function useBlueprintScroll(
       }
       gsap.registerPlugin(ScrollTrigger);
       trigger = ScrollTrigger.create({
-        trigger: section,
+        trigger: zone,
         start: "top top",
-        end: "+=300%",
-        pin: true,
+        end: "bottom bottom",
         scrub: true,
         onUpdate: (self) => blueprintProgress.set(self.progress),
       });
@@ -53,5 +49,5 @@ export function useBlueprintScroll(
       trigger?.kill();
       blueprintProgress.set(0);
     };
-  }, [sectionRef, enabled]);
+  }, [zoneRef, enabled]);
 }
