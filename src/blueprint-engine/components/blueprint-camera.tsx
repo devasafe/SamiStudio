@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Vector3 } from "three";
+import { useEffect, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { PerspectiveCamera, Vector3 } from "three";
 import { blueprintPointer } from "../core/pointer-store";
 import { blueprintProgress } from "../core/progress-store";
 import { ASSEMBLY_END } from "../timeline/phases";
@@ -22,17 +22,43 @@ const endTarget = new Vector3(0, 0.9, -0.5);
 const PARALLAX_POS = 0.55;
 const PARALLAX_TARGET = 0.25;
 
+/** Fração da largura que desloca o ambiente para o centro da metade direita. */
+const RIGHT_SHIFT = 0.24;
+
 export function BlueprintCamera() {
   const position = useRef(new Vector3());
   const target = useRef(new Vector3());
   const parallaxX = useRef(0);
   const parallaxY = useRef(0);
 
-  useFrame(({ camera }, delta) => {
+  // Limpa o view offset ao desmontar (câmera é compartilhada pelo canvas).
+  const camera = useThree((state) => state.camera);
+  useEffect(() => {
+    return () => {
+      if (camera instanceof PerspectiveCamera) {
+        camera.clearViewOffset();
+      }
+    };
+  }, [camera]);
+
+  useFrame(({ camera, size }, delta) => {
     const progress = blueprintProgress.get();
     const t = easeOutCubic(clamp01(progress / ASSEMBLY_END));
     position.current.lerpVectors(startPosition, endPosition, t);
     target.current.lerpVectors(startTarget, endTarget, t);
+
+    // Conforme monta, o enquadramento desliza para a metade direita
+    // (offset negativo move o conteúdo da cena para a direita da tela).
+    if (camera instanceof PerspectiveCamera) {
+      camera.setViewOffset(
+        size.width,
+        size.height,
+        -t * size.width * RIGHT_SHIFT,
+        0,
+        size.width,
+        size.height
+      );
+    }
 
     // Parallax só com o ambiente montado, com amortecimento suave.
     const pointer = blueprintPointer.get();
