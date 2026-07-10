@@ -38,18 +38,18 @@ export function BlueprintLights() {
     const hoverTarget = progress >= ASSEMBLY_END && pointer.x > 0 ? 1 : 0;
     glow.current = damp(glow.current, hoverTarget, 5, delta);
 
+    // Iluminação assada nas texturas (bake Cycles): as luzes de runtime
+    // são só "exibição" — ambiente ~1.0 e uma chave leve para direção.
     const key = keyRef.current;
     if (key) {
-      // Com o environment (IBL) somando, a chave dourada fica sutil.
-      key.intensity = lerp(0.7, 1.35, warmth) + glow.current * 0.45;
+      key.intensity = lerp(0.2, 0.35, warmth) + glow.current * 0.45;
       key.color.copy(color.current.copy(coolKey).lerp(warmKey, warmth * 0.7));
     }
 
     const fill = fillRef.current;
     if (fill) {
-      // Ambiente mais baixo: o environment (IBL) já preenche as sombras.
-      fill.intensity = lerp(0.3, 0.18, warmth);
-      fill.color.copy(color.current.copy(coolFill).lerp(warmFill, warmth));
+      fill.intensity = lerp(0.85, 0.78, warmth);
+      fill.color.copy(color.current.copy(coolFill).lerp(warmFill, warmth * 0.5));
     }
 
     const lamp = lampRef.current;

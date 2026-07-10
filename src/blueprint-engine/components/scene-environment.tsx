@@ -18,7 +18,8 @@ export function SceneEnvironment() {
     const pmrem = new PMREMGenerator(gl);
     const environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environment = environment;
-    scene.environmentIntensity = 0.5;
+    // Baixo: a iluminação principal vem assada nas texturas (bake Cycles).
+    scene.environmentIntensity = 0.18;
     return () => {
       scene.environment = null;
       environment.dispose();
