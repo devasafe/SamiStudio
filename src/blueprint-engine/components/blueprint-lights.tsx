@@ -40,13 +40,15 @@ export function BlueprintLights() {
 
     const key = keyRef.current;
     if (key) {
-      key.intensity = lerp(0.7, 2.6, warmth) + glow.current * 0.5;
-      key.color.copy(color.current.copy(coolKey).lerp(warmKey, warmth));
+      // Com o environment (IBL) somando, a chave dourada fica sutil.
+      key.intensity = lerp(0.7, 1.35, warmth) + glow.current * 0.45;
+      key.color.copy(color.current.copy(coolKey).lerp(warmKey, warmth * 0.7));
     }
 
     const fill = fillRef.current;
     if (fill) {
-      fill.intensity = lerp(0.55, 0.35, warmth);
+      // Ambiente mais baixo: o environment (IBL) já preenche as sombras.
+      fill.intensity = lerp(0.3, 0.18, warmth);
       fill.color.copy(color.current.copy(coolFill).lerp(warmFill, warmth));
     }
 

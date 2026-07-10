@@ -81,6 +81,14 @@ export function InteriorModel() {
             child.castShadow = true;
             child.receiveShadow = true;
             const cloned = (child.material as Material).clone() as Material & { opacity: number };
+            // A lã do sofá taupe vem laranja do PolyHaven: multiplica a cor
+            // para neutralizar (equivalente ao baseColorFactor do glTF).
+            if (
+              node.name.startsWith("Furniture_SofaTaupe") &&
+              cloned instanceof MeshStandardMaterial
+            ) {
+              cloned.color.set("#8f8a84");
+            }
             child.material = cloned;
             materials.push(cloned);
           }
