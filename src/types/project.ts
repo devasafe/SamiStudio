@@ -12,3 +12,18 @@ export interface ProjectPreview {
   /** Classes do bloco de capa até as imagens reais chegarem via CMS. */
   coverClass: string;
 }
+
+/** Item de portfólio pronto para exibição (CMS ou placeholder). */
+export interface PortfolioItem {
+  slug: string;
+  title: string;
+  description?: string;
+  client?: string;
+  city?: string;
+  year?: number;
+  /** Imagem real (Cloudinary) quando cadastrada via CMS. */
+  coverImage?: string;
+  /** Bloco neutro de fallback (placeholders). */
+  coverClass?: string;
+  categoryLabel?: string;
+}

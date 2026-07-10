@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { ImageField } from "@/components/admin/image-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,10 +15,12 @@ export interface FieldOption {
 export interface FieldConfig {
   name: string;
   label: string;
-  type: "text" | "textarea" | "number" | "checkbox" | "select" | "url" | "email";
+  type: "text" | "textarea" | "number" | "checkbox" | "select" | "url" | "email" | "image";
   options?: FieldOption[];
   placeholder?: string;
   required?: boolean;
+  /** Proporção do recorte para type "image" (ex.: 4/3). */
+  aspect?: number;
 }
 
 export type EntityValues = Record<string, unknown>;
@@ -71,6 +74,18 @@ export function EntityForm({
       {fields.map((field) => {
         const id = `field-${field.name}`;
         const value = values[field.name];
+
+        if (field.type === "image") {
+          return (
+            <ImageField
+              key={field.name}
+              label={field.label}
+              value={String(value ?? "")}
+              aspect={field.aspect ?? 4 / 3}
+              onChange={(url) => setValue(field.name, url)}
+            />
+          );
+        }
 
         if (field.type === "checkbox") {
           return (

@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Box, Building2, Camera, PencilRuler, Sparkles } from "@/components/icons";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { serviceIcon } from "@/components/services/service-icon";
 import { CTASection } from "@/components/shared/cta-section";
 import { Heading, Paragraph } from "@/components/ui/typography";
 import { resolveLocale } from "@/i18n/resolve-locale";
+import { getServices } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/metadata";
-
-const serviceIcons = [Box, Camera, Building2, PencilRuler, Sparkles];
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -25,6 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ServicesPage({ params }: PageProps) {
   const { locale, dictionary } = await resolveLocale(params);
+  const items = await getServices(locale, dictionary);
   const services = dictionary.sections.services;
 
   return (
@@ -43,8 +43,8 @@ export default async function ServicesPage({ params }: PageProps) {
       <Section className="bg-surface">
         <Container>
           <div className="divide-border divide-y">
-            {services.items.map((service, index) => {
-              const Icon = serviceIcons[index] ?? Box;
+            {items.map((service, index) => {
+              const Icon = serviceIcon(service.icon, index);
               return (
                 <article
                   key={service.title}

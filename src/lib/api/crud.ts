@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { NextRequest, NextResponse } from "next/server";
 import type { Model, QueryFilter, UpdateQuery } from "mongoose";
 import type { ZodType } from "zod";
@@ -47,6 +48,8 @@ export function createCrud<T extends SoftDeletable>({
       const data = createSchema.parse(await request.json()) as Partial<T>;
       const doc = await model.create(data);
       await logAction(session, "create", entity, String(doc._id));
+      // Conteúdo mudou: regenera as páginas do site.
+      revalidatePath("/", "layout");
       return ok(doc, "Criado com sucesso.", undefined, 201);
     });
   }
@@ -65,6 +68,8 @@ export function createCrud<T extends SoftDeletable>({
         throw new ApiError(404, "Registro não encontrado.");
       }
       await logAction(session, "update", entity, id);
+      // Conteúdo mudou: regenera as páginas do site.
+      revalidatePath("/", "layout");
       return ok(doc, "Atualizado com sucesso.");
     });
   }
@@ -82,6 +87,8 @@ export function createCrud<T extends SoftDeletable>({
         throw new ApiError(404, "Registro não encontrado.");
       }
       await logAction(session, "delete", entity, id);
+      // Conteúdo mudou: regenera as páginas do site.
+      revalidatePath("/", "layout");
       return ok(null, "Removido com sucesso.");
     });
   }

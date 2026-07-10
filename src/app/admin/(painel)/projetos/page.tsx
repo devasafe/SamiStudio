@@ -29,7 +29,7 @@ export default function AdminProjectsPage() {
         { name: "country", label: "País", type: "text" },
         { name: "year", label: "Ano", type: "number" },
         { name: "categoryId", label: "Categoria", type: "select" },
-        { name: "coverImage", label: "Imagem de capa (URL)", type: "url" },
+        { name: "coverImage", label: "Imagem de capa", type: "image", aspect: 4 / 3 },
         { name: "featured", label: "Projeto em destaque", type: "checkbox" },
         {
           name: "status",

@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 import type { QueryFilter } from "mongoose";
 import { logAction } from "@/lib/api/audit";
@@ -79,6 +80,8 @@ export async function POST(request: NextRequest) {
     const data = projectCreateSchema.parse(await request.json());
     const project = await Project.create(data);
     await logAction(session, "create", "Project", String(project._id));
+    // Conteúdo mudou: regenera as páginas do site.
+    revalidatePath("/", "layout");
     return ok(project, "Projeto criado.", undefined, 201);
   });
 }

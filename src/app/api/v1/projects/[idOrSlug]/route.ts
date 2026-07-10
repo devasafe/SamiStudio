@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 import { isValidObjectId } from "mongoose";
 import { logAction } from "@/lib/api/audit";
@@ -46,6 +47,8 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       throw new ApiError(404, "Projeto não encontrado.");
     }
     await logAction(session, "update", "Project", idOrSlug);
+    // Conteúdo mudou: regenera as páginas do site.
+    revalidatePath("/", "layout");
     return ok(project, "Projeto atualizado.");
   });
 }
@@ -68,6 +71,8 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       throw new ApiError(404, "Projeto não encontrado.");
     }
     await logAction(session, "delete", "Project", idOrSlug);
+    // Conteúdo mudou: regenera as páginas do site.
+    revalidatePath("/", "layout");
     return ok(null, "Projeto removido.");
   });
 }

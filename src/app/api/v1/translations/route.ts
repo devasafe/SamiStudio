@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 import { logAction } from "@/lib/api/audit";
 import { ok, withErrorHandling } from "@/lib/api/response";
@@ -31,6 +32,8 @@ export async function PATCH(request: NextRequest) {
       { new: true, upsert: true }
     );
     await logAction(session, "update", "Translation", locale);
+    // Conteúdo mudou: regenera as páginas do site.
+    revalidatePath("/", "layout");
     return ok(translation, "Traduções atualizadas.");
   });
 }

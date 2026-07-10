@@ -5,8 +5,8 @@ import { PortfolioGrid } from "@/components/portfolio/portfolio-grid";
 import { CTASection } from "@/components/shared/cta-section";
 import { Heading, Paragraph } from "@/components/ui/typography";
 import { resolveLocale } from "@/i18n/resolve-locale";
+import { getPublishedProjects } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/metadata";
-import { placeholderProjects } from "@/lib/placeholder-projects";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PortfolioPage({ params }: PageProps) {
   const { locale, dictionary } = await resolveLocale(params);
+  const projects = await getPublishedProjects(locale, dictionary);
   const portfolio = dictionary.sections.portfolio;
 
   return (
@@ -35,7 +36,7 @@ export default async function PortfolioPage({ params }: PageProps) {
             {portfolio.subtitle}
           </Paragraph>
           <div className="mt-16">
-            <PortfolioGrid projects={placeholderProjects} />
+            <PortfolioGrid projects={projects} />
           </div>
         </Container>
       </Section>

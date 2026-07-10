@@ -23,7 +23,7 @@ export default function AdminServicesPage() {
         },
         { name: "description", label: "Descrição", type: "textarea" },
         { name: "icon", label: "Ícone (nome Lucide)", type: "text", placeholder: "ex.: camera" },
-        { name: "coverImage", label: "Imagem de capa (URL)", type: "url" },
+        { name: "coverImage", label: "Imagem de capa", type: "image", aspect: 4 / 3 },
         { name: "order", label: "Ordem", type: "number" },
       ]}
     />

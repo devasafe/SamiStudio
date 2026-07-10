@@ -6,12 +6,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { SectionTitle } from "@/components/ui/typography";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import type { ProjectPreview } from "@/types/project";
+import type { PortfolioItem } from "@/types/project";
 
 interface PortfolioSectionProps {
   locale: Locale;
   dictionary: Dictionary;
-  projects: ProjectPreview[];
+  projects: PortfolioItem[];
 }
 
 /** Portfólio em destaque na home (Docs/03): provas de competência. */

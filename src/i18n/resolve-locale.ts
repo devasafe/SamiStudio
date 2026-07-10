@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
+import { getMergedDictionary } from "@/lib/dictionary";
 import { isLocale, type Locale } from "./config";
-import { getDictionary, type Dictionary } from "./get-dictionary";
+import type { Dictionary } from "./get-dictionary";
 
 interface ResolvedLocale {
   locale: Locale;
@@ -16,5 +17,5 @@ export async function resolveLocale(params: Promise<{ locale: string }>): Promis
   if (!isLocale(locale)) {
     notFound();
   }
-  return { locale, dictionary: await getDictionary(locale) };
+  return { locale, dictionary: await getMergedDictionary(locale) };
 }

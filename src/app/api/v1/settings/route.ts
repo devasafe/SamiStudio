@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 import { logAction } from "@/lib/api/audit";
 import { ok, withErrorHandling } from "@/lib/api/response";
@@ -22,6 +23,8 @@ export async function PATCH(request: NextRequest) {
     const data = settingsUpdateSchema.parse(await request.json());
     const settings = await SiteSettings.findOneAndUpdate({}, data, { new: true, upsert: true });
     await logAction(session, "update", "SiteSettings", String(settings._id));
+    // Conteúdo mudou: regenera as páginas do site.
+    revalidatePath("/", "layout");
     return ok(settings, "Configurações atualizadas.");
   });
 }

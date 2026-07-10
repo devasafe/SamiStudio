@@ -7,14 +7,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { SectionTitle } from "@/components/ui/typography";
+import type { FaqItem } from "@/lib/content";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
 interface FAQSectionProps {
   dictionary: Dictionary;
+  items: FaqItem[];
 }
 
 /** FAQ em accordion (Docs/03): eliminar dúvidas antes do CTA. */
-export function FAQSection({ dictionary }: FAQSectionProps) {
+export function FAQSection({ dictionary, items }: FAQSectionProps) {
   const faq = dictionary.sections.faq;
 
   return (
@@ -22,7 +24,7 @@ export function FAQSection({ dictionary }: FAQSectionProps) {
       <Container className="max-w-4xl">
         <SectionTitle eyebrow={faq.eyebrow} title={faq.title} align="center" />
         <Accordion className="mt-16">
-          {faq.items.map((item) => (
+          {items.map((item) => (
             <AccordionItem key={item.question} value={item.question}>
               <AccordionTrigger className="text-body font-heading py-6">
                 {item.question}

@@ -8,7 +8,7 @@ import { Analytics } from "@/components/shared/analytics";
 import { FloatingWhatsApp } from "@/components/shared/floating-whatsapp";
 import { StructuredData } from "@/components/shared/structured-data";
 import { isLocale, localePath, locales, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getMergedDictionary } from "@/lib/dictionary";
 import { getSiteSettings } from "@/lib/settings";
 import "../globals.css";
 
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
   if (!isLocale(locale)) {
     notFound();
   }
-  const dictionary = await getDictionary(locale);
+  const dictionary = await getMergedDictionary(locale);
 
   return {
     metadataBase: new URL(siteUrl),
@@ -81,7 +81,10 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
   if (!isLocale(locale)) {
     notFound();
   }
-  const [dictionary, settings] = await Promise.all([getDictionary(locale), getSiteSettings()]);
+  const [dictionary, settings] = await Promise.all([
+    getMergedDictionary(locale),
+    getSiteSettings(),
+  ]);
 
   const whatsappNumber = settings?.whatsapp ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
   const gaMeasurementId =
