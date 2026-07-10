@@ -67,10 +67,10 @@ export function BlueprintLights() {
         intensity={0.7}
         castShadow
         shadow-mapSize={[1024, 1024]}
-        shadow-camera-left={-8}
-        shadow-camera-right={8}
-        shadow-camera-top={8}
-        shadow-camera-bottom={-8}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
         shadow-camera-far={30}
         shadow-normalBias={0.06}
         shadow-bias={-0.0002}

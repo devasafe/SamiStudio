@@ -20,7 +20,7 @@ export function BlueprintScene() {
       {/* Apara-sombras: só a sombra é visível, o plano é transparente. */}
       <mesh rotation-x={-Math.PI / 2} position={[0, -0.01, 0]} receiveShadow>
         <planeGeometry args={[40, 40]} />
-        <shadowMaterial opacity={0.18} />
+        <shadowMaterial opacity={0.13} />
       </mesh>
       <Suspense fallback={null}>
         <InteriorModel />

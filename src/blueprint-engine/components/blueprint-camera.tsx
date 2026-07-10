@@ -18,21 +18,23 @@ interface Pose {
  * o scroll conduz a câmera de pose em pose, mostrando a mobília de
  * ângulos diferentes a cada slide.
  */
+// Estilo maquete/diorama (referência ICG, 2026-07-10): 3/4 altas com
+// lente longa (fov 30), sensação quase isométrica.
 const POSES: Pose[] = [
   // Hero (atrás da imagem estática)
-  { position: new Vector3(9.5, 4.0, 11.5), target: new Vector3(0, 0.6, 0) },
-  // Sobre — 3/4 direita
-  { position: new Vector3(8.5, 3.4, 10.5), target: new Vector3(0, 0.6, 0) },
-  // Serviços — lateral esquerda
-  { position: new Vector3(-9.5, 3.0, 8.0), target: new Vector3(0, 0.5, 0) },
-  // Processo — vista alta (eco do render top-down do hero)
-  { position: new Vector3(4.0, 11.0, 5.0), target: new Vector3(0, 0, 0) },
-  // Portfólio — frontal baixa
-  { position: new Vector3(0.8, 1.8, 11.0), target: new Vector3(0, 0.7, 0) },
-  // FAQ — traseira
-  { position: new Vector3(-8.0, 5.0, -9.0), target: new Vector3(0, 0.4, 0) },
+  { position: new Vector3(14, 10, 14), target: new Vector3(0, 0.5, 0) },
+  // Sobre — 3/4 direita alta
+  { position: new Vector3(13, 9, 13), target: new Vector3(0, 0.5, 0) },
+  // Serviços — 3/4 esquerda
+  { position: new Vector3(-14, 8, 11), target: new Vector3(0, 0.4, 0) },
+  // Processo — quase top-down (eco do render do hero)
+  { position: new Vector3(7, 17, 8), target: new Vector3(0, 0, 0) },
+  // Portfólio — frontal ao nível dos olhos da maquete
+  { position: new Vector3(2, 4, 18), target: new Vector3(0, 0.8, 0) },
+  // FAQ — traseira alta
+  { position: new Vector3(-12, 10, -13), target: new Vector3(0, 0.3, 0) },
   // CTA — retorno suave (a foto real cobre a cena no finale)
-  { position: new Vector3(9.0, 4.5, 10.5), target: new Vector3(0, 0.5, 0) },
+  { position: new Vector3(13, 9.5, 13), target: new Vector3(0, 0.5, 0) },
 ];
 
 // Amplitude do parallax (movimento máximo com o mouse nos cantos).

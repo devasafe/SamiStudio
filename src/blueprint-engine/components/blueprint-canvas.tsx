@@ -27,7 +27,7 @@ export function BlueprintCanvas() {
     <Canvas
       dpr={[1, 1.5]}
       shadows
-      camera={{ fov: 42, near: 0.1, far: 60, position: [5.5, 2.4, 6.5] }}
+      camera={{ fov: 30, near: 0.1, far: 90, position: [14, 10, 14] }}
       gl={{ antialias: true, alpha: true, toneMapping: ACESFilmicToneMapping }}
       aria-hidden
     >
