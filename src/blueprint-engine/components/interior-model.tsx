@@ -112,7 +112,7 @@ export function InteriorModel() {
     const lampMaterials: MeshStandardMaterial[] = [];
     for (const entry of entries) {
       for (const material of entry.materials) {
-        if (material.name === "LampShade" && material instanceof MeshStandardMaterial) {
+        if (material.name === "GoldShade" && material instanceof MeshStandardMaterial) {
           material.emissive.set("#ffb066");
           material.emissiveIntensity = 0;
           lampMaterials.push(material);

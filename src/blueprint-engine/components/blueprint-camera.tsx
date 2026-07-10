@@ -13,10 +13,12 @@ import { clamp01, damp, easeOutCubic } from "../utils/math";
  * AFASTA enquanto o ambiente monta — completo, o objeto fica menor e
  * inteiro na tela. Depois da montagem, parallax sutil segue o mouse.
  */
-const startPosition = new Vector3(4.6, 2.2, 6.6);
-const endPosition = new Vector3(7.0, 3.9, 10.2);
-const startTarget = new Vector3(-0.3, 1.0, -0.8);
-const endTarget = new Vector3(0, 0.9, -0.5);
+// Poses derivadas da RefCam do Blender (ângulo do render real da Sami):
+// o destino é o MESMO enquadramento da foto — base do crossfade final.
+const startPosition = new Vector3(-0.3, 1.6, 2.6);
+const endPosition = new Vector3(-2.3, 1.45, 7.6);
+const startTarget = new Vector3(1.0, 1.2, -1.5);
+const endTarget = new Vector3(1.3, 1.0, -2.0);
 
 // Amplitude do parallax (movimento máximo com o mouse nos cantos).
 const PARALLAX_POS = 0.55;

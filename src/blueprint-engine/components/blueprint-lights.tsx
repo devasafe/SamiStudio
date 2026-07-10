@@ -58,17 +58,17 @@ export function BlueprintLights() {
 
   return (
     <>
-      {/* Key light entrando pela janela (parede esquerda). */}
-      <directionalLight ref={keyRef} position={[-6, 4.5, 2.5]} intensity={0.7} />
+      {/* Key light entrando pela janela do fundo, à direita (como no render). */}
+      <directionalLight ref={keyRef} position={[6, 4.2, -6]} intensity={0.7} />
       <ambientLight ref={fillRef} intensity={0.55} />
-      {/* Luminária de piso: acende no hover (posição do Details_Lamp). */}
+      {/* Lustre dourado: acende no hover (posição do Details_Chandelier). */}
       <pointLight
         ref={lampRef}
-        position={[-1.6, 1.75, -2.3]}
+        position={[3.8, 2.0, -2.0]}
         color="#ffb066"
         intensity={0}
-        distance={7}
-        decay={1.8}
+        distance={9}
+        decay={1.6}
       />
     </>
   );
