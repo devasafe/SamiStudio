@@ -4,23 +4,24 @@
  * detalhes e por fim a atmosfera do render final.
  */
 export const phases = {
-  /** Reservado (formato vinheta não tem fase de linhas). */
+  /** Reservado. */
   blueprint: { from: 0.0, to: 0.02 },
-  /** Reservado (sem casca no formato vinheta). */
+  /** Reservado. */
   shell: { from: 0.02, to: 0.1 },
-  /** Mobiliário principal aparece em sequência. */
-  furniture: { from: 0.1, to: 0.17 },
-  /** Detalhes: tapete, luminária, plantas. */
-  details: { from: 0.15, to: 0.22 },
-  /** Acabamento. */
-  render: { from: 0.17, to: 0.22 },
+  /**
+   * A casa se monta bloco a bloco ao longo das seções (decisão do
+   * cliente, 2026-07-10): começa ao sair do hero e conclui no meio
+   * da jornada — a montagem É o espetáculo.
+   */
+  furniture: { from: 0.1, to: 0.6 },
+  /** Reservado (a casa é um único conjunto de blocos). */
+  details: { from: 0.55, to: 0.62 },
+  /** Aquecimento da luz no fim da montagem. */
+  render: { from: 0.55, to: 0.62 },
 } as const;
 
-/**
- * Fim da montagem: a vinheta aparece na transição hero → Sobre e está
- * completa quando a seção assenta. Depois entra o modo interativo.
- */
-export const ASSEMBLY_END = phases.details.to;
+/** Fim da montagem: depois disso entra o modo interativo (hover). */
+export const ASSEMBLY_END = phases.render.to;
 
 /**
  * Finale (decisão do cliente, 2026-07-10): na transição para o CTA,

@@ -66,7 +66,7 @@ export function BlueprintLights() {
         position={[5, 7, 4]}
         intensity={0.7}
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[512, 512]}
         shadow-camera-left={-10}
         shadow-camera-right={10}
         shadow-camera-top={10}
