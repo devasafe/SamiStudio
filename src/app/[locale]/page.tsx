@@ -36,7 +36,7 @@ export default async function HomePage({ params }: PageProps) {
   ]);
   return (
     <main className="flex-1">
-      <HomeExperience>
+      <HomeExperience layouts={["left", "left", "left", "full", "left", "full"]}>
         <AboutSection
           locale={locale}
           dictionary={dictionary}
@@ -44,10 +44,10 @@ export default async function HomePage({ params }: PageProps) {
         />
         <ServicesSection dictionary={dictionary} items={services} />
         <ProcessSection dictionary={dictionary} />
+        <PortfolioSection locale={locale} dictionary={dictionary} projects={projects} />
+        <FAQSection dictionary={dictionary} items={faqs} />
+        <CTASection locale={locale} dictionary={dictionary} />
       </HomeExperience>
-      <PortfolioSection locale={locale} dictionary={dictionary} projects={projects} />
-      <FAQSection dictionary={dictionary} items={faqs} />
-      <CTASection locale={locale} dictionary={dictionary} />
     </main>
   );
 }

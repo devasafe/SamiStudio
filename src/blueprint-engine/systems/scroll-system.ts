@@ -4,13 +4,22 @@ import { useEffect, type RefObject } from "react";
 import type { ScrollTrigger as ScrollTriggerType } from "gsap/ScrollTrigger";
 import { blueprintProgress } from "../core/progress-store";
 
+interface ScrollOptions {
+  /** Quantidade de telas de scroll da experiência (slides). */
+  screens?: number;
+}
+
 /**
  * Scroll System (Docs/18): o scroll é o único controlador da narrativa.
- * O progress avança conforme o usuário percorre a zona de narrativa
- * (hero + seções com o 3D fixo), sem pin — o conteúdo flui ao lado.
+ * A zona fica fixa (pin) e o usuário "percorre" a experiência: o progress
+ * alimenta a cena 3D e as transições de seção.
  * GSAP é carregado sob demanda para manter o bundle inicial leve (Docs/21).
  */
-export function useBlueprintScroll(zoneRef: RefObject<HTMLElement | null>, enabled = true): void {
+export function useBlueprintScroll(
+  zoneRef: RefObject<HTMLElement | null>,
+  enabled = true,
+  { screens = 4 }: ScrollOptions = {}
+): void {
   useEffect(() => {
     const zone = zoneRef.current;
     if (!zone || !enabled) {
@@ -38,7 +47,8 @@ export function useBlueprintScroll(zoneRef: RefObject<HTMLElement | null>, enabl
       trigger = ScrollTrigger.create({
         trigger: zone,
         start: "top top",
-        end: "bottom bottom",
+        end: `+=${Math.max(1, screens - 1) * 100}%`,
+        pin: true,
         scrub: true,
         onUpdate: (self) => blueprintProgress.set(self.progress),
       });
@@ -49,5 +59,5 @@ export function useBlueprintScroll(zoneRef: RefObject<HTMLElement | null>, enabl
       trigger?.kill();
       blueprintProgress.set(0);
     };
-  }, [zoneRef, enabled]);
+  }, [zoneRef, enabled, screens]);
 }
