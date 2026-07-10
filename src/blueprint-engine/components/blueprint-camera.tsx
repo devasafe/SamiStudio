@@ -3,29 +3,48 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
+import { blueprintPointer } from "../core/pointer-store";
 import { blueprintProgress } from "../core/progress-store";
-import { easeOutCubic } from "../utils/math";
-
-// Percurso cinematográfico (Docs/04): plano técnico aberto → enquadramento final do render.
-// Percurso: vista técnica alta → enquadramento final com o ambiente
-// INTEIRO na tela (validado visualmente em 1440x900, fov 42).
-const startPosition = new Vector3(7.5, 6, 9);
-const endPosition = new Vector3(6.2, 3.4, 9.0);
-const startTarget = new Vector3(0, 0.6, -0.6);
-const endTarget = new Vector3(0, 0.9, -0.5);
+import { ASSEMBLY_END } from "../timeline/phases";
+import { clamp01, damp, easeOutCubic } from "../utils/math";
 
 /**
- * Camera System (Docs/17): movimento lento, suave e previsível,
- * controlado exclusivamente pelo progress.
+ * Percurso (decisão do cliente, 2026-07-10): começa perto do wireframe e
+ * AFASTA enquanto o ambiente monta — completo, o objeto fica menor e
+ * inteiro na tela. Depois da montagem, parallax sutil segue o mouse.
  */
-export function BlueprintCamera() {
-  const target = useRef(new Vector3());
-  const position = useRef(new Vector3());
+const startPosition = new Vector3(4.6, 2.2, 6.6);
+const endPosition = new Vector3(7.0, 3.9, 10.2);
+const startTarget = new Vector3(-0.3, 1.0, -0.8);
+const endTarget = new Vector3(0, 0.9, -0.5);
 
-  useFrame(({ camera }) => {
-    const t = easeOutCubic(blueprintProgress.get());
+// Amplitude do parallax (movimento máximo com o mouse nos cantos).
+const PARALLAX_POS = 0.55;
+const PARALLAX_TARGET = 0.25;
+
+export function BlueprintCamera() {
+  const position = useRef(new Vector3());
+  const target = useRef(new Vector3());
+  const parallaxX = useRef(0);
+  const parallaxY = useRef(0);
+
+  useFrame(({ camera }, delta) => {
+    const progress = blueprintProgress.get();
+    const t = easeOutCubic(clamp01(progress / ASSEMBLY_END));
     position.current.lerpVectors(startPosition, endPosition, t);
     target.current.lerpVectors(startTarget, endTarget, t);
+
+    // Parallax só com o ambiente montado, com amortecimento suave.
+    const pointer = blueprintPointer.get();
+    const interactive = progress >= ASSEMBLY_END ? 1 : 0;
+    parallaxX.current = damp(parallaxX.current, pointer.x * interactive, 4, delta);
+    parallaxY.current = damp(parallaxY.current, pointer.y * interactive, 4, delta);
+
+    position.current.x += parallaxX.current * PARALLAX_POS;
+    position.current.y += -parallaxY.current * PARALLAX_POS * 0.5;
+    target.current.x += parallaxX.current * PARALLAX_TARGET;
+    target.current.y += -parallaxY.current * PARALLAX_TARGET * 0.4;
+
     camera.position.copy(position.current);
     camera.lookAt(target.current);
   });

@@ -17,3 +17,8 @@ export function phaseProgress(progress: number, from: number, to: number): numbe
 export function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
+
+/** Aproximação exponencial suave (independente de framerate). */
+export function damp(current: number, target: number, lambda: number, delta: number): number {
+  return lerp(current, target, 1 - Math.exp(-lambda * delta));
+}

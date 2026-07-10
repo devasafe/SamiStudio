@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import {
@@ -10,11 +10,13 @@ import {
   LineSegments,
   Material,
   Mesh,
+  MeshStandardMaterial,
   type Object3D,
 } from "three";
+import { blueprintPointer } from "../core/pointer-store";
 import { blueprintProgress } from "../core/progress-store";
-import { phases } from "../timeline/phases";
-import { easeOutCubic, lerp, phaseProgress } from "../utils/math";
+import { ASSEMBLY_END, phases } from "../timeline/phases";
+import { damp, easeOutCubic, lerp, phaseProgress } from "../utils/math";
 
 /**
  * Modelo do Hero carregado via pipeline Blender → GLB (Docs/15, ADR-013).
@@ -51,8 +53,9 @@ function staggered(index: number, count: number, phase: { from: number; to: numb
 
 export function InteriorModel() {
   const { scene } = useGLTF(MODEL_URL);
+  const lampGlow = useRef(0);
 
-  const { entries, wireMaterial, wires } = useMemo(() => {
+  const { entries, wireMaterial, wires, lampMaterials } = useMemo(() => {
     const buckets = new Map<string, Object3D[]>();
     for (const node of scene.children) {
       const bucket = bucketPhase(node.name);
@@ -105,7 +108,19 @@ export function InteriorModel() {
       });
     }
 
-    return { entries, wireMaterial, wires };
+    // Cúpula da luminária: ganha brilho próprio no hover (modo interativo).
+    const lampMaterials: MeshStandardMaterial[] = [];
+    for (const entry of entries) {
+      for (const material of entry.materials) {
+        if (material.name === "LampShade" && material instanceof MeshStandardMaterial) {
+          material.emissive.set("#ffb066");
+          material.emissiveIntensity = 0;
+          lampMaterials.push(material);
+        }
+      }
+    }
+
+    return { entries, wireMaterial, wires, lampMaterials };
   }, [scene]);
 
   // Descarta as EdgesGeometry ao desmontar.
@@ -120,11 +135,18 @@ export function InteriorModel() {
     };
   }, [wires, wireMaterial]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     const progress = blueprintProgress.get();
 
     wireMaterial.opacity = 1 - phaseProgress(progress, phases.furniture.from, phases.furniture.to);
     wires.visible = wireMaterial.opacity > 0.001;
+
+    // Luminária acesa enquanto o mouse estiver sobre o ambiente.
+    const hoverTarget = progress >= ASSEMBLY_END && blueprintPointer.get().x > 0 ? 1 : 0;
+    lampGlow.current = damp(lampGlow.current, hoverTarget, 5, delta);
+    for (const material of lampMaterials) {
+      material.emissiveIntensity = lampGlow.current * 1.4;
+    }
 
     for (const entry of entries) {
       const t = easeOutCubic(phaseProgress(progress, entry.from, entry.to));
