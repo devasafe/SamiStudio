@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { Grid } from "@/components/layout/grid";
@@ -10,21 +11,29 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 interface AboutSectionProps {
   locale: Locale;
   dictionary: Dictionary;
+  /** Foto da Sami cadastrada nas Configurações (CMS). */
+  photo?: string;
 }
 
 /** Seção Sobre da home (Docs/03): humanizar e criar autoridade. */
-export function AboutSection({ locale, dictionary }: AboutSectionProps) {
+export function AboutSection({ locale, dictionary, photo }: AboutSectionProps) {
   const about = dictionary.sections.about;
 
   return (
     <Section>
       <Container>
         <Grid className="items-center">
-          {/* Foto da Sami entra quando os materiais chegarem (CMS). */}
-          <div
-            aria-hidden
-            className="col-span-4 aspect-[4/5] rounded-lg bg-gradient-to-br from-stone-100 via-stone-200 to-stone-300 md:col-span-4 lg:col-span-5"
-          />
+          <div className="relative col-span-4 aspect-[4/5] overflow-hidden rounded-lg bg-gradient-to-br from-stone-100 via-stone-200 to-stone-300 md:col-span-4 lg:col-span-5">
+            {photo ? (
+              <Image
+                src={photo}
+                alt={about.title}
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover"
+              />
+            ) : null}
+          </div>
           <div className="col-span-4 md:col-span-4 lg:col-span-6 lg:col-start-7">
             <SectionTitle eyebrow={about.eyebrow} title={about.title} subtitle={about.text} />
             <Link

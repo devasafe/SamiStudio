@@ -8,7 +8,9 @@ import { FAQSection } from "@/components/shared/faq-section";
 import { ProcessSection } from "@/components/shared/process-section";
 import { resolveLocale } from "@/i18n/resolve-locale";
 import { getFaqs, getPublishedProjects, getServices } from "@/lib/content";
+import { safeImageUrl } from "@/lib/images";
 import { buildPageMetadata } from "@/lib/metadata";
+import { getSiteSettings } from "@/lib/settings";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -26,15 +28,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function HomePage({ params }: PageProps) {
   const { locale, dictionary } = await resolveLocale(params);
-  const [projects, services, faqs] = await Promise.all([
+  const [projects, services, faqs, settings] = await Promise.all([
     getPublishedProjects(locale, dictionary),
     getServices(locale, dictionary),
     getFaqs(locale, dictionary),
+    getSiteSettings(),
   ]);
   return (
     <main className="flex-1">
       <Hero />
-      <AboutSection locale={locale} dictionary={dictionary} />
+      <AboutSection
+        locale={locale}
+        dictionary={dictionary}
+        photo={safeImageUrl(settings?.aboutPhoto)}
+      />
       <ServicesSection dictionary={dictionary} items={services} />
       <ProcessSection dictionary={dictionary} />
       <PortfolioSection locale={locale} dictionary={dictionary} projects={projects} />

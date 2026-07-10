@@ -13,6 +13,8 @@ export interface SiteSettingsDoc {
   facebook?: string;
   youtube?: string;
   behance?: string;
+  /** Foto da Sami exibida na seção Sobre (upload via painel). */
+  aboutPhoto?: string;
   seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: string };
   analytics?: { gaMeasurementId?: string };
   heroProject?: string;
@@ -36,6 +38,7 @@ const siteSettingsSchema = new Schema<SiteSettingsDoc>(
     facebook: String,
     youtube: String,
     behance: String,
+    aboutPhoto: String,
     seo: { title: String, description: String, keywords: [String], ogImage: String },
     analytics: { gaMeasurementId: String },
     heroProject: String,

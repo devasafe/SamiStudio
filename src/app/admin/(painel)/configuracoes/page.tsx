@@ -6,6 +6,7 @@ import { EntityForm, type EntityValues, type FieldConfig } from "@/components/ad
 
 const fields: FieldConfig[] = [
   { name: "siteName", label: "Nome do site", type: "text" },
+  { name: "aboutPhoto", label: "Foto da Sami (seção Sobre)", type: "image", aspect: 4 / 5 },
   { name: "email", label: "E-mail de contato", type: "email" },
   { name: "phone", label: "Telefone", type: "text" },
   { name: "whatsapp", label: "WhatsApp (com DDI, ex.: 5511999999999)", type: "text" },

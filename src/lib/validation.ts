@@ -126,6 +126,7 @@ export const settingsUpdateSchema = z.object({
   facebook: z.string().url().optional(),
   youtube: z.string().url().optional(),
   behance: z.string().url().optional(),
+  aboutPhoto: uploadedImage.optional(),
   seo: seoSchema,
   analytics: z.object({ gaMeasurementId: z.string().max(40).optional() }).optional(),
   heroProject: z.string().max(120).optional(),
