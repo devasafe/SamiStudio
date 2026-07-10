@@ -22,19 +22,19 @@ interface Pose {
 // lente longa (fov 30). Alvo elevado: a casa tem ~5m de altura.
 const POSES: Pose[] = [
   // Hero (atrás da imagem estática)
-  { position: new Vector3(17, 12, 17), target: new Vector3(0, 1.9, 0) },
+  { position: new Vector3(23, 16, 23), target: new Vector3(0, 1.9, 0) },
   // Sobre — 3/4 direita alta
-  { position: new Vector3(15.5, 10.5, 15.5), target: new Vector3(0, 1.9, 0) },
+  { position: new Vector3(21, 14, 21), target: new Vector3(0, 1.9, 0) },
   // Serviços — 3/4 esquerda
-  { position: new Vector3(-17, 10, 13), target: new Vector3(0, 1.7, 0) },
+  { position: new Vector3(-23, 13.5, 17.5), target: new Vector3(0, 1.7, 0) },
   // Processo — quase top-down (eco do render do hero)
-  { position: new Vector3(9, 22, 10), target: new Vector3(0, 0.5, 0) },
+  { position: new Vector3(12, 30, 13.5), target: new Vector3(0, 0.5, 0) },
   // Portfólio — frontal, olhando para dentro da casa
-  { position: new Vector3(3, 6.5, 21), target: new Vector3(0, 2.2, 0) },
+  { position: new Vector3(4, 9, 28), target: new Vector3(0, 2.2, 0) },
   // FAQ — aérea afastada do canto oposto (interior visto de cima)
-  { position: new Vector3(-13, 30, -14), target: new Vector3(0, 0, 0) },
+  { position: new Vector3(-17.5, 40, -19), target: new Vector3(0, 0, 0) },
   // CTA — retorno suave (a foto real cobre a cena no finale)
-  { position: new Vector3(16, 11, 16), target: new Vector3(0, 1.9, 0) },
+  { position: new Vector3(21.5, 15, 21.5), target: new Vector3(0, 1.9, 0) },
 ];
 
 // Amplitude do parallax (movimento máximo com o mouse nos cantos).
