@@ -28,6 +28,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Assets estáticos (inclui decoder Draco de terceiros)
+    "public/**",
   ]),
 ]);
 

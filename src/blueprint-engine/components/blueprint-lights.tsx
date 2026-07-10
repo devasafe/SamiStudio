@@ -76,14 +76,14 @@ export function BlueprintLights() {
         shadow-bias={-0.0002}
       />
       <ambientLight ref={fillRef} intensity={0.55} />
-      {/* Luminária de piso: acende no hover (posição do Details_FloorLamp). */}
+      {/* Luz interna da casa: acende no hover (aconchego no diorama). */}
       <pointLight
         ref={lampRef}
-        position={[-2.35, 1.7, -1.6]}
+        position={[0, 2.4, 0]}
         color="#ffb066"
         intensity={0}
-        distance={8}
-        decay={1.7}
+        distance={14}
+        decay={1.6}
       />
     </>
   );

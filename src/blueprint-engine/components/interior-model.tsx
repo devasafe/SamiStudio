@@ -34,6 +34,8 @@ interface RevealEntry {
   to: number;
   /** Casca não escala (paredes crescem estranho); mobiliário/detalhes sim. */
   scales: boolean;
+  /** Escala original do nó no GLB (o reveal multiplica sobre ela). */
+  baseScale: number;
 }
 
 function bucketPhase(name: string) {
@@ -52,7 +54,8 @@ function staggered(index: number, count: number, phase: { from: number; to: numb
 }
 
 export function InteriorModel() {
-  const { scene } = useGLTF(MODEL_URL);
+  // Draco com decoder auto-hospedado (public/draco) — sem CDN externo.
+  const { scene } = useGLTF(MODEL_URL, "/draco/");
   const lampGlow = useRef(0);
 
   const { entries, wireMaterial, wires, lampMaterials } = useMemo(() => {
@@ -86,7 +89,13 @@ export function InteriorModel() {
           }
         });
         const window = bucket.scales ? staggered(index, nodes.length, bucket.phase) : bucket.phase;
-        entries.push({ node, materials, ...window, scales: bucket.scales });
+        entries.push({
+          node,
+          materials,
+          ...window,
+          scales: bucket.scales,
+          baseScale: node.scale.x,
+        });
       });
     }
 
@@ -158,7 +167,7 @@ export function InteriorModel() {
         continue;
       }
       if (entry.scales) {
-        entry.node.scale.setScalar(lerp(0.85, 1, t));
+        entry.node.scale.setScalar(entry.baseScale * lerp(0.85, 1, t));
       }
       for (const material of entry.materials) {
         material.transparent = t < 1;
@@ -175,4 +184,4 @@ export function InteriorModel() {
   );
 }
 
-useGLTF.preload(MODEL_URL);
+useGLTF.preload(MODEL_URL, "/draco/");
