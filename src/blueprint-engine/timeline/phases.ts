@@ -23,4 +23,11 @@ export const phases = {
  */
 export const ASSEMBLY_END = phases.render.to;
 
+/**
+ * Finale (decisão do cliente, 2026-07-10): na transição para o CTA,
+ * a câmera recentraliza e o 3D dissolve na foto renderizada real —
+ * "From Blueprint to Reality" literal.
+ */
+export const FINALE = { from: 0.86, to: 0.97 } as const;
+
 export type PhaseName = keyof typeof phases;

@@ -5,8 +5,8 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera, Vector3 } from "three";
 import { blueprintPointer } from "../core/pointer-store";
 import { blueprintProgress } from "../core/progress-store";
-import { ASSEMBLY_END } from "../timeline/phases";
-import { clamp01, damp, easeOutCubic } from "../utils/math";
+import { ASSEMBLY_END, FINALE } from "../timeline/phases";
+import { clamp01, damp, easeOutCubic, phaseProgress } from "../utils/math";
 
 /**
  * Percurso (decisão do cliente, 2026-07-10): começa perto do wireframe e
@@ -49,22 +49,26 @@ export function BlueprintCamera() {
     position.current.lerpVectors(startPosition, endPosition, t);
     target.current.lerpVectors(startTarget, endTarget, t);
 
-    // Conforme monta, o enquadramento desliza para a metade direita
-    // (offset negativo move o conteúdo da cena para a direita da tela).
+    // Finale: recentraliza o enquadramento e assenta a câmera para o
+    // crossfade com a foto real (mesmo ângulo da RefCam).
+    const finale = phaseProgress(progress, FINALE.from, FINALE.to);
+
+    // Conforme monta, o enquadramento desliza para a metade direita;
+    // no finale, volta ao centro para casar com a foto.
     if (camera instanceof PerspectiveCamera) {
       camera.setViewOffset(
         size.width,
         size.height,
-        -t * size.width * RIGHT_SHIFT,
+        -t * (1 - finale) * size.width * RIGHT_SHIFT,
         0,
         size.width,
         size.height
       );
     }
 
-    // Parallax só com o ambiente montado, com amortecimento suave.
+    // Parallax só com o ambiente montado; congela no finale.
     const pointer = blueprintPointer.get();
-    const interactive = progress >= ASSEMBLY_END ? 1 : 0;
+    const interactive = progress >= ASSEMBLY_END ? 1 - finale : 0;
     parallaxX.current = damp(parallaxX.current, pointer.x * interactive, 4, delta);
     parallaxY.current = damp(parallaxY.current, pointer.y * interactive, 4, delta);
 
