@@ -15,12 +15,15 @@ export interface ProjectPreview {
 
 /** Foto para o mosaico masonry (portfólio e galerias). */
 export interface MasonryPhoto {
+  /** URL da imagem real; vazia quando é um bloco placeholder. */
   url: string;
   alt: string;
   width?: number;
   height?: number;
   /** Quando presente, a foto é um link (mosaico geral → projeto). */
   href?: string;
+  /** Classes do bloco neutro quando não há imagem real (fallback do CMS vazio). */
+  placeholderClass?: string;
 }
 
 /** Item de portfólio pronto para exibição (CMS ou placeholder). */

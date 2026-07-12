@@ -21,17 +21,24 @@ export function PhotoMasonry({ photos, onPhotoClick, sizes }: PhotoMasonryProps)
   return (
     <div className="columns-2 gap-0 sm:columns-3 lg:columns-4">
       {photos.map((photo, index) => {
-        const image = (
+        // Foto real → next/image; sem URL → bloco placeholder (CMS vazio).
+        const image = photo.url ? (
           <Image
             src={photo.url}
             alt={photo.alt}
             width={photo.width ?? 1200}
             height={photo.height ?? 900}
             sizes={sizes ?? DEFAULT_SIZES}
-            className="block h-auto w-full"
+            className="block h-auto w-full object-cover"
+          />
+        ) : (
+          <div
+            role="img"
+            aria-label={photo.alt}
+            className={`aspect-[4/3] w-full ${photo.placeholderClass ?? "bg-muted"}`}
           />
         );
-        const key = `${photo.url}-${index}`;
+        const key = `${photo.url || photo.alt}-${index}`;
         const base = "block w-full break-inside-avoid";
 
         if (photo.href) {

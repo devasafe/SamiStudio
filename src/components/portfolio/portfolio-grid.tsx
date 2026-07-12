@@ -19,13 +19,14 @@ export function PortfolioGrid({ projects }: PortfolioGridProps) {
   const labels = [...new Set(projects.map((p) => p.categoryLabel).filter(Boolean))] as string[];
   const filtered = filter === "all" ? projects : projects.filter((p) => p.categoryLabel === filter);
 
-  const photos: MasonryPhoto[] = filtered
-    .filter((project) => project.coverImage)
-    .map((project) => ({
-      url: project.coverImage as string,
-      alt: project.title,
-      href: localePath(locale, `/portfolio/${project.slug}`),
-    }));
+  // Todo projeto entra: com capa vira foto, sem capa vira bloco placeholder
+  // (mantém o fallback do CMS vazio em vez de deixar o mosaico em branco).
+  const photos: MasonryPhoto[] = filtered.map((project) => ({
+    url: project.coverImage ?? "",
+    alt: project.title,
+    href: localePath(locale, `/portfolio/${project.slug}`),
+    placeholderClass: project.coverImage ? undefined : project.coverClass,
+  }));
 
   const filterButton = (value: string, label: string) => (
     <button
@@ -53,7 +54,7 @@ export function PortfolioGrid({ projects }: PortfolioGridProps) {
         </div>
       ) : null}
 
-      {photos.length === 0 ? (
+      {filtered.length === 0 ? (
         <p className="text-body text-muted-foreground mt-16">{dictionary.portfolioPage.empty}</p>
       ) : (
         <div className="mt-12">

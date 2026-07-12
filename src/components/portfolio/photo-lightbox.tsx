@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, X } from "@/components/icons";
 import type { MasonryPhoto } from "@/types/project";
@@ -23,6 +23,8 @@ interface PhotoLightboxProps {
 /** Overlay full-screen com a foto ampliada; navegação por setas e teclado. */
 export function PhotoLightbox({ photos, index, onClose, onNavigate, labels }: PhotoLightboxProps) {
   const isOpen = index !== null;
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
 
   const go = useCallback(
     (direction: number) => {
@@ -45,6 +47,21 @@ export function PhotoLightbox({ photos, index, onClose, onNavigate, labels }: Ph
         go(1);
       } else if (event.key === "ArrowLeft") {
         go(-1);
+      } else if (event.key === "Tab") {
+        // Trap de foco: mantém o Tab ciclando entre os botões do overlay.
+        const focusables = dialogRef.current?.querySelectorAll<HTMLElement>("button");
+        if (!focusables || focusables.length === 0) {
+          return;
+        }
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     };
     document.addEventListener("keydown", onKey);
@@ -55,6 +72,18 @@ export function PhotoLightbox({ photos, index, onClose, onNavigate, labels }: Ph
     };
   }, [isOpen, onClose, go]);
 
+  // Foco inicial no botão fechar ao abrir; devolve o foco ao fechar.
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+    restoreFocusRef.current = document.activeElement as HTMLElement | null;
+    dialogRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+    return () => {
+      restoreFocusRef.current?.focus?.();
+    };
+  }, [isOpen]);
+
   if (index === null) {
     return null;
   }
@@ -64,8 +93,10 @@ export function PhotoLightbox({ photos, index, onClose, onNavigate, labels }: Ph
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
+      aria-label={photo.alt}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
       onClick={onClose}
     >
