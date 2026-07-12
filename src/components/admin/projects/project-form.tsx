@@ -1,0 +1,271 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { api, AdminApiError } from "@/components/admin/api-client";
+import { GalleryUploader } from "@/components/admin/projects/gallery-uploader";
+import { coverFromGallery } from "@/components/admin/projects/gallery-utils";
+import { ImageUploader } from "@/components/admin/projects/image-uploader";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import type { GalleryItem } from "@/models/project";
+
+export interface ProjectFormValues {
+  title: string;
+  slug: string;
+  description: string;
+  client: string;
+  city: string;
+  country: string;
+  year: string;
+  categoryId: string;
+  status: "draft" | "published" | "archived";
+  featured: boolean;
+  gallery: GalleryItem[];
+  checkpoint: boolean;
+  beforeImage: string;
+  afterImage: string;
+}
+
+const EMPTY: ProjectFormValues = {
+  title: "",
+  slug: "",
+  description: "",
+  client: "",
+  city: "",
+  country: "",
+  year: "",
+  categoryId: "",
+  status: "draft",
+  featured: false,
+  gallery: [],
+  checkpoint: false,
+  beforeImage: "",
+  afterImage: "",
+};
+
+interface CategoryOption {
+  _id: string;
+  name: string;
+}
+
+interface ProjectFormProps {
+  initial?: Partial<ProjectFormValues>;
+  projectId?: string;
+}
+
+const inputClass = "border-border w-full rounded-md border px-3 py-2 text-sm";
+
+export function ProjectForm({ initial, projectId }: ProjectFormProps) {
+  const router = useRouter();
+  const [values, setValues] = useState<ProjectFormValues>({ ...EMPTY, ...initial });
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const { data } = await api<CategoryOption[]>("/categories");
+        setCategories(data);
+      } catch {
+        // sem categorias o select fica vazio; não bloqueia
+      }
+    })();
+  }, []);
+
+  function set<K extends keyof ProjectFormValues>(key: K, value: ProjectFormValues[K]) {
+    setValues((prev) => ({ ...prev, [key]: value }));
+  }
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setBusy(true);
+    setError(null);
+    const payload = {
+      title: values.title,
+      slug: values.slug,
+      description: values.description || undefined,
+      client: values.client || undefined,
+      city: values.city || undefined,
+      country: values.country || undefined,
+      year: values.year ? Number(values.year) : undefined,
+      categoryId: values.categoryId || undefined,
+      status: values.status,
+      featured: values.featured,
+      gallery: values.gallery,
+      coverImage: coverFromGallery(values.gallery),
+      checkpoint: values.checkpoint,
+      beforeImage: values.checkpoint ? values.beforeImage || undefined : undefined,
+      afterImage: values.checkpoint ? values.afterImage || undefined : undefined,
+    };
+    try {
+      if (projectId) {
+        await api(`/projects/${projectId}`, { method: "PATCH", json: payload });
+      } else {
+        await api("/projects", { method: "POST", json: payload });
+      }
+      router.push("/admin/projetos");
+    } catch (err) {
+      setError(err instanceof AdminApiError ? err.message : "Falha ao salvar.");
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
+      {error ? (
+        <p className="border-error/30 text-error rounded-md border px-4 py-3 text-sm">{error}</p>
+      ) : null}
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-1">
+          <Label htmlFor="title">Título</Label>
+          <input
+            id="title"
+            required
+            value={values.title}
+            onChange={(e) => set("title", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="slug">Slug (URL)</Label>
+          <input
+            id="slug"
+            required
+            value={values.slug}
+            placeholder="ex.: interior-miraflores"
+            onChange={(e) => set("slug", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        <Label htmlFor="description">Descrição</Label>
+        <textarea
+          id="description"
+          rows={4}
+          value={values.description}
+          onChange={(e) => set("description", e.target.value)}
+          className={inputClass}
+        />
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="space-y-1">
+          <Label htmlFor="client">Cliente</Label>
+          <input
+            id="client"
+            value={values.client}
+            onChange={(e) => set("client", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="city">Cidade</Label>
+          <input
+            id="city"
+            value={values.city}
+            onChange={(e) => set("city", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="country">País</Label>
+          <input
+            id="country"
+            value={values.country}
+            onChange={(e) => set("country", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="year">Ano</Label>
+          <input
+            id="year"
+            type="number"
+            value={values.year}
+            onChange={(e) => set("year", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="category">Categoria</Label>
+          <select
+            id="category"
+            value={values.categoryId}
+            onChange={(e) => set("categoryId", e.target.value)}
+            className={inputClass}
+          >
+            <option value="">—</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="status">Status</Label>
+          <select
+            id="status"
+            value={values.status}
+            onChange={(e) => set("status", e.target.value as ProjectFormValues["status"])}
+            className={inputClass}
+          >
+            <option value="draft">Rascunho</option>
+            <option value="published">Publicado</option>
+            <option value="archived">Arquivado</option>
+          </select>
+        </div>
+      </div>
+
+      <label className="flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={values.featured}
+          onChange={(e) => set("featured", e.target.checked)}
+        />
+        Projeto em destaque
+      </label>
+
+      <GalleryUploader value={values.gallery} onChange={(gallery) => set("gallery", gallery)} />
+
+      <div className="border-border space-y-4 rounded-md border p-4">
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={values.checkpoint}
+            onChange={(e) => set("checkpoint", e.target.checked)}
+          />
+          Checkpoint (comparação Antes / Depois)
+        </label>
+        {values.checkpoint ? (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ImageUploader
+              label="Antes"
+              value={values.beforeImage}
+              onChange={(url) => set("beforeImage", url)}
+            />
+            <ImageUploader
+              label="Depois"
+              value={values.afterImage}
+              onChange={(url) => set("afterImage", url)}
+            />
+          </div>
+        ) : null}
+      </div>
+
+      <div className="flex gap-3">
+        <Button type="submit" disabled={busy}>
+          {busy ? "Salvando..." : projectId ? "Salvar" : "Criar projeto"}
+        </Button>
+        <Button type="button" variant="outline" onClick={() => router.push("/admin/projetos")}>
+          Cancelar
+        </Button>
+      </div>
+    </form>
+  );
+}
