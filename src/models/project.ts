@@ -30,6 +30,7 @@ export interface ProjectDoc {
   video?: { url?: string; thumbnail?: string; provider?: string };
   beforeImage?: string;
   afterImage?: string;
+  checkpoint?: boolean;
   featured: boolean;
   status: "draft" | "published" | "archived";
   seo?: ProjectSeo;
@@ -63,6 +64,7 @@ const projectSchema = new Schema<ProjectDoc>(
     video: { url: String, thumbnail: String, provider: String },
     beforeImage: { type: String },
     afterImage: { type: String },
+    checkpoint: { type: Boolean, default: false },
     featured: { type: Boolean, default: false },
     status: { type: String, enum: ["draft", "published", "archived"], default: "draft" },
     seo: {

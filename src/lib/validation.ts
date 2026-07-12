@@ -71,6 +71,7 @@ export const projectCreateSchema = z.object({
     .optional(),
   beforeImage: z.string().url().optional(),
   afterImage: z.string().url().optional(),
+  checkpoint: z.boolean().optional(),
   featured: z.boolean().optional(),
   status: z.enum(["draft", "published", "archived"]).optional(),
   seo: seoSchema,

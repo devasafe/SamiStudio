@@ -49,3 +49,11 @@ describe("translationUpdateSchema", () => {
     expect(translationUpdateSchema.safeParse({ locale: "fr", content: {} }).success).toBe(false);
   });
 });
+
+describe("projectCreateSchema checkpoint", () => {
+  it("aceita checkpoint booleano e mantém opcional", () => {
+    const base = { slug: "casa-x", title: "Casa X" };
+    expect(projectCreateSchema.parse({ ...base, checkpoint: true }).checkpoint).toBe(true);
+    expect(projectCreateSchema.parse(base).checkpoint).toBeUndefined();
+  });
+});
