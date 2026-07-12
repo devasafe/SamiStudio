@@ -176,7 +176,8 @@
     "year": "Year",
     "category": "Category",
     "galleryComingSoon": "Gallery coming soon — this project will receive images from Sami's portfolio.",
-    "next": "Next project"
+    "next": "Next project",
+    "lightbox": { "close": "Close", "prev": "Previous photo", "next": "Next photo" }
   },
   "categories": {
     "residential": "Residential",

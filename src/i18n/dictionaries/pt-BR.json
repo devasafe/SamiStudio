@@ -176,7 +176,8 @@
     "year": "Ano",
     "category": "Categoria",
     "galleryComingSoon": "Galeria em breve — este projeto receberá as imagens do portfólio da Sami.",
-    "next": "Próximo projeto"
+    "next": "Próximo projeto",
+    "lightbox": { "close": "Fechar", "prev": "Foto anterior", "next": "Próxima foto" }
   },
   "categories": {
     "residential": "Residencial",
