@@ -13,6 +13,16 @@ export interface ProjectPreview {
   coverClass: string;
 }
 
+/** Foto para o mosaico masonry (portfólio e galerias). */
+export interface MasonryPhoto {
+  url: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  /** Quando presente, a foto é um link (mosaico geral → projeto). */
+  href?: string;
+}
+
 /** Item de portfólio pronto para exibição (CMS ou placeholder). */
 export interface PortfolioItem {
   slug: string;
@@ -26,4 +36,6 @@ export interface PortfolioItem {
   /** Bloco neutro de fallback (placeholders). */
   coverClass?: string;
   categoryLabel?: string;
+  /** Galeria do projeto pronta para o masonry (vazia se não houver). */
+  gallery?: MasonryPhoto[];
 }
