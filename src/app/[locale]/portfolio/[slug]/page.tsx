@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "@/components/icons";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { CTASection } from "@/components/shared/cta-section";
+import { ProjectGallery } from "@/components/portfolio/project-gallery";
 import { Heading, Paragraph } from "@/components/ui/typography";
 import { localePath } from "@/i18n/config";
 import { resolveLocale } from "@/i18n/resolve-locale";
@@ -93,6 +94,12 @@ export default async function ProjectPage({ params }: PageProps) {
               </span>
             )}
           </div>
+
+          {project.gallery && project.gallery.length > 0 ? (
+            <div className="mt-12">
+              <ProjectGallery photos={project.gallery} labels={labels.lightbox} />
+            </div>
+          ) : null}
 
           <dl className="border-border mt-12 grid grid-cols-2 gap-8 border-t pt-8 lg:grid-cols-4">
             {info.map((item) => (
