@@ -3,6 +3,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { connectDb } from "@/lib/db";
 import { safeImageUrl } from "@/lib/images";
+import { toMasonryPhotos } from "@/lib/gallery";
 import { placeholderProjects } from "@/lib/placeholder-projects";
 import { Category } from "@/models/category";
 import { Faq } from "@/models/faq";
@@ -26,15 +27,17 @@ function translated<
 }
 
 function toPortfolioItem(doc: ProjectDoc, locale: Locale, categoryName?: string): PortfolioItem {
+  const title = translated(doc, locale, "title", doc.title) ?? doc.title;
   return {
     slug: doc.slug,
-    title: translated(doc, locale, "title", doc.title) ?? doc.title,
+    title,
     description: translated(doc, locale, "description", doc.description),
     client: doc.client,
     city: doc.city,
     year: doc.year,
     coverImage: safeImageUrl(doc.coverImage),
     categoryLabel: categoryName,
+    gallery: toMasonryPhotos(doc.gallery, title),
   };
 }
 
