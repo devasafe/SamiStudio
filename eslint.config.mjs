@@ -13,14 +13,6 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/ban-ts-comment": "error",
     },
   },
-  {
-    // A Blueprint Engine muta objetos Three.js por frame (useFrame) —
-    // modelo imperativo inerente ao R3F, incompatível com esta regra.
-    files: ["src/blueprint-engine/**"],
-    rules: {
-      "react-hooks/immutability": "off",
-    },
-  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
@@ -28,7 +20,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Assets estáticos (inclui decoder Draco de terceiros)
+    // Assets estáticos.
     "public/**",
   ]),
 ]);
