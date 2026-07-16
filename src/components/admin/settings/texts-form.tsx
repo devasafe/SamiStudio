@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { setByPath } from "@/lib/cms/refs";
 import ptBR from "@/i18n/dictionaries/pt-BR.json";
 import en from "@/i18n/dictionaries/en.json";
 import es from "@/i18n/dictionaries/es.json";
@@ -50,26 +51,6 @@ function flatten(value: unknown, prefix = ""): Field[] {
   return [];
 }
 
-/** Reconstrói o objeto aninhado a partir dos overrides. */
-function unflatten(entries: Record<string, string>): Record<string, unknown> {
-  const root: Record<string, unknown> = {};
-  for (const [path, value] of Object.entries(entries)) {
-    const parts = path.split(".");
-    let node: Record<string, unknown> = root;
-    parts.forEach((part, i) => {
-      if (i === parts.length - 1) {
-        node[part] = value;
-        return;
-      }
-      if (typeof node[part] !== "object" || node[part] === null) {
-        node[part] = {};
-      }
-      node = node[part] as Record<string, unknown>;
-    });
-  }
-  return root;
-}
-
 interface TranslationDoc {
   locale: string;
   content: Record<string, unknown>;
@@ -83,7 +64,12 @@ interface TextsFormProps {
 /** Editor de textos do site, campo a campo, por idioma (Docs/12), restrito ao filtro da aba. */
 export function TextsForm({ filter }: TextsFormProps) {
   const [locale, setLocale] = useState<Locale>("pt-BR");
+  // `overrides` é só para exibir (valor do input); `dirty` guarda apenas o
+  // que a pessoa mudou nesta sessão — é o que handleSave aplica por cima do
+  // GET fresco, para não pisar em ramos que outra aba (ou o editor visual)
+  // gravou enquanto esta tela estava aberta.
   const [overrides, setOverrides] = useState<Record<string, string>>({});
+  const [dirty, setDirty] = useState<Record<string, string>>({});
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -106,6 +92,9 @@ export function TextsForm({ filter }: TextsFormProps) {
       .then(({ data }) => {
         const saved = data?.content ? flatten(data.content) : [];
         setOverrides(Object.fromEntries(saved.map((f) => [f.path, f.base])));
+        // Idioma trocou: recarrega do banco e descarta mudanças pendentes do
+        // idioma anterior, senão elas vazariam para o novo idioma no save.
+        setDirty({});
         setError(null);
         setMessage(null);
       })
@@ -122,6 +111,13 @@ export function TextsForm({ filter }: TextsFormProps) {
       }
       return next;
     });
+    setDirty((current) => {
+      // Vazio ou igual ao padrão: grava "" para o dicionário base assumir de
+      // volta (deepMerge do servidor ignora string vazia). Sempre registra o
+      // caminho como alterado nesta sessão, mesmo voltando ao valor salvo —
+      // handleSave precisa reaplicá-lo por cima do GET fresco de qualquer forma.
+      return { ...current, [path]: value === base ? "" : value };
+    });
   }
 
   async function handleSave() {
@@ -129,11 +125,16 @@ export function TextsForm({ filter }: TextsFormProps) {
     setError(null);
     setMessage(null);
     try {
-      // A rota troca o content inteiro: sem partir do salvo, a aba SEO apagaria
-      // os textos gravados pela aba Avançados (e vice-versa).
       const { data } = await api<TranslationDoc | null>(`/translations?locale=${locale}`);
-      const content = { ...(data?.content ?? {}), ...unflatten(overrides) };
+      // Parte sempre do que está salvo agora e toca só o que esta sessão mudou: a
+      // rota substitui o content inteiro, e um merge raso reverteria ramos que
+      // outra aba — ou o editor visual — gravou enquanto esta tela estava aberta.
+      let content: Record<string, unknown> = data?.content ?? {};
+      for (const [path, value] of Object.entries(dirty)) {
+        content = setByPath(content, path, value);
+      }
       await api("/translations", { method: "PATCH", json: { locale, content } });
+      setDirty({});
       setMessage("Textos salvos — o site já foi atualizado.");
     } catch (err) {
       setError(err instanceof AdminApiError ? err.message : "Falha ao salvar.");
