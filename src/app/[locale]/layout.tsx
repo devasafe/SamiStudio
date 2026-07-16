@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Allura, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { Providers } from "@/components/providers/providers";
+import { SmoothScroll } from "@/components/providers/smooth-scroll";
+import { AmbientBackground } from "@/components/shared/ambient-background";
 import { Analytics } from "@/components/shared/analytics";
 import { FloatingWhatsApp } from "@/components/shared/floating-whatsapp";
 import { StructuredData } from "@/components/shared/structured-data";
@@ -29,6 +31,13 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+});
+
+// Assinatura manuscrita da fundadora (seção Sobre).
+const allura = Allura({
+  variable: "--font-signature",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -93,9 +102,11 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
   return (
     <html
       lang={locale}
-      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} ${allura.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <SmoothScroll />
+        <AmbientBackground />
         <Providers locale={locale} dictionary={dictionary}>
           <Navbar />
           {children}

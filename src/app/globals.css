@@ -80,7 +80,7 @@
 
 :root {
   /* Paleta oficial — Manual da Marca Sami Studio (2026-07-09). */
-  --background: #f7f5f2;
+  --background: #cdc4b3;
   --foreground: #262626;
   --surface: #ffffff;
   --success: #16a34a;
@@ -159,6 +159,34 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/*
+ * Tema dark quente do portfólio (escopo local — aplicado no <main> de
+ * /portfolio). Mesma família do hero escuro da marca (#141009 / creme
+ * #f2ece0) com acento terracota; redefine os tokens, então os componentes
+ * que usam bg-background/text-foreground/border-border herdam sozinhos.
+ */
+.theme-portfolio-dark {
+  --background: #141009;
+  --foreground: #f2ece0;
+  --surface: #221a13;
+  --card: #221a13;
+  --card-foreground: #f2ece0;
+  --popover: #221a13;
+  --popover-foreground: #f2ece0;
+  --primary: #d4632a;
+  --primary-foreground: #17120d;
+  --secondary: #2a2118;
+  --secondary-foreground: #f2ece0;
+  --muted: #2a2118;
+  --muted-foreground: #b6a892;
+  --accent: #2a2118;
+  --accent-foreground: #f2ece0;
+  --destructive: #e5674a;
+  --border: rgba(242, 236, 224, 0.14);
+  --input: rgba(242, 236, 224, 0.18);
+  --ring: #d4632a;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -167,7 +195,8 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply scroll-smooth font-sans;
+    /* O smooth scroll é controlado pela Lenis (não pelo CSS). */
+    @apply font-sans;
   }
   h1,
   h2,
@@ -176,5 +205,13 @@
   h5,
   h6 {
     @apply font-heading;
+  }
+}
+
+/* Faixa infinita do carrossel de trabalhos: o conteúdo é duplicado 2x e o
+ * track desliza -50% (exatamente um conjunto) em loop contínuo. */
+@keyframes marquee-left {
+  to {
+    transform: translateX(-50%);
   }
 }
