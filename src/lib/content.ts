@@ -9,6 +9,7 @@ import { Category } from "@/models/category";
 import { Faq } from "@/models/faq";
 import { Project, type ProjectDoc } from "@/models/project";
 import { Service } from "@/models/service";
+import { Testimonial } from "@/models/testimonial";
 import type { PortfolioItem } from "@/types/project";
 
 /**
@@ -94,6 +95,8 @@ export interface ServiceItem {
   title: string;
   description: string;
   icon?: string;
+  /** Imagem de capa cadastrada no painel (Cloudinary). */
+  coverImage?: string;
 }
 
 export const getServices = cache(
@@ -106,6 +109,7 @@ export const getServices = cache(
           title: translated(doc, locale, "title", doc.title) ?? doc.title,
           description: translated(doc, locale, "description", doc.description) ?? "",
           icon: doc.icon,
+          coverImage: safeImageUrl(doc.coverImage),
         }));
       }
     } catch {
@@ -114,6 +118,38 @@ export const getServices = cache(
     return dictionary.sections.services.items;
   }
 );
+
+export interface TestimonialItem {
+  name: string;
+  role?: string;
+  company?: string;
+  text: string;
+  rating?: number;
+  photo?: string;
+}
+
+/**
+ * Depoimentos cadastrados no painel. Sem nenhum, devolve lista vazia e a
+ * seção não é exibida — depoimento de exemplo seria prova social inventada.
+ */
+export const getTestimonials = cache(async (locale: Locale): Promise<TestimonialItem[]> => {
+  try {
+    await connectDb();
+    const docs = await Testimonial.find({ deletedAt: null })
+      .sort({ order: 1, createdAt: -1 })
+      .lean();
+    return docs.map((doc) => ({
+      name: doc.name,
+      role: doc.role,
+      company: doc.company,
+      text: translated(doc, locale, "text", doc.text) ?? doc.text,
+      rating: doc.rating,
+      photo: safeImageUrl(doc.photo),
+    }));
+  } catch {
+    return [];
+  }
+});
 
 export interface FaqItem {
   question: string;
