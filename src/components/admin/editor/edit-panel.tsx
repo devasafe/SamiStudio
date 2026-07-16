@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { ImageField } from "@/components/admin/image-field";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,13 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
-  const ref = selection ? parseRef(selection.ref) : null;
+  // Memoizado em `selection`: parseRef por si só recria o objeto a cada
+  // render, e colocar esse objeto instável nas deps do efeito abaixo faria a
+  // busca à API rodar de novo em qualquer re-render do painel (ex.: ao
+  // digitar), não só quando a seleção muda. Com a memoização, a identidade de
+  // `ref` só muda quando `selection` muda, então ele pode entrar nas deps sem
+  // supressão de lint.
+  const ref = useMemo(() => (selection ? parseRef(selection.ref) : null), [selection]);
 
   // Busca o valor de verdade na fonte: o texto do DOM pode ser o base, não o
   // override salvo, e foto não tem texto nenhum.
@@ -48,11 +54,12 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
   // proíbe setState síncrono direto no corpo do effect. Como o callback roda
   // antes de qualquer await, o reset acontece na prática tão cedo quanto antes.
   //
-  // As deps usam ref?.kind/ref?.path, não o objeto `ref` inteiro: `ref` é
-  // recalculado a cada render (parseRef não memoiza), então colocar o objeto
-  // inteiro faria o effect — e a busca à API — rodar de novo em qualquer
-  // re-render do painel (ex.: ao digitar), não só quando a seleção muda.
+  // `ignore` evita a corrida de trocar de seleção rápido: se ela clica no
+  // texto A e depois no B antes da resposta de A voltar, sem essa guarda o
+  // setValue de A (que pode chegar depois do de B) sobrescreveria o valor já
+  // certo de B — painel mostrando o caminho/rótulo de B com o texto de A.
   useEffect(() => {
+    let ignore = false;
     void (async () => {
       setError(null);
       setSaved(false);
@@ -63,18 +70,29 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
       try {
         if (ref.kind === "text") {
           const { data } = await api<TranslationDoc | null>(`/translations?locale=${locale}`);
+          if (ignore) {
+            return;
+          }
           setValue(getByPath(data?.content, ref.path) ?? selection.value);
           return;
         }
         const { data } = await api<Settings | null>("/settings");
+        if (ignore) {
+          return;
+        }
         setValue(data?.[ref.path] ?? "");
       } catch (err) {
+        if (ignore) {
+          return;
+        }
         setError(err instanceof AdminApiError ? err.message : "Falha ao carregar o valor.");
         setValue(selection.value);
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- ver comentário acima: `ref` muda de identidade a cada render.
-  }, [selection, locale, ref?.kind, ref?.path]);
+    return () => {
+      ignore = true;
+    };
+  }, [selection, locale, ref]);
 
   async function save(next: string) {
     if (!ref) {
