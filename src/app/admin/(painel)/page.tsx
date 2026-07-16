@@ -78,6 +78,12 @@ export default function AdminDashboardPage() {
         <h2 className="font-heading text-lg">Atalhos</h2>
         <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
           <li>
+            {/* Caminho do dia a dia da dona — primeiro da lista de propósito. */}
+            <Link href="/admin/editor" className="hover:text-foreground underline">
+              Editar textos e fotos do site
+            </Link>
+          </li>
+          <li>
             <Link href="/admin/mensagens" className="hover:text-foreground underline">
               Ler mensagens do formulário de contato
             </Link>
@@ -88,7 +94,8 @@ export default function AdminDashboardPage() {
             </Link>
           </li>
           <li>
-            <Link href="/admin/configuracoes" className="hover:text-foreground underline">
+            {/* /admin/configuracoes virou só redirecionamento — aponta direto. */}
+            <Link href="/admin/ajustes" className="hover:text-foreground underline">
               Editar configurações do site
             </Link>
           </li>
