@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { type CmsSelection } from "@/lib/cms/refs";
+import { EditPanel } from "@/components/admin/editor/edit-panel";
+import { parseRef, type CmsSelection } from "@/lib/cms/refs";
 import { isTrustedEditMessage, type CmsMessage } from "@/lib/cms/protocol";
 import { cn } from "@/lib/utils";
 
@@ -177,13 +178,23 @@ export default function AdminEditorPage() {
           title="Prévia do site"
           className="min-w-0 flex-1"
         />
-        {/* Task 6 troca este bloco pelo <EditPanel /> */}
         <aside className="border-border w-96 shrink-0 overflow-y-auto border-l p-6">
-          {selected ? (
-            <pre className="text-xs">{JSON.stringify(selected, null, 2)}</pre>
-          ) : (
-            <p className="text-muted-foreground text-sm">Nada selecionado ainda.</p>
-          )}
+          <EditPanel
+            selection={selected}
+            locale={locale}
+            onSaved={(ref, value) => {
+              // Foto e dado de contato não têm o valor como texto na tela:
+              // recarrega a prévia em vez de escrever por cima do que aparece.
+              if (parseRef(ref)?.kind !== "text") {
+                iframeRef.current?.contentWindow?.location.reload();
+                return;
+              }
+              iframeRef.current?.contentWindow?.postMessage(
+                { type: "cms:patch", ref, value } satisfies CmsMessage,
+                window.location.origin
+              );
+            }}
+          />
         </aside>
       </div>
     </div>
