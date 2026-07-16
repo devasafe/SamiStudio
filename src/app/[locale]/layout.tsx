@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Allura, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
+import { EditBridge } from "@/components/cms/edit-bridge";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { Providers } from "@/components/providers/providers";
@@ -106,6 +107,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
     >
       <body className="flex min-h-full flex-col">
         <SmoothScroll />
+        <EditBridge />
         <AmbientBackground />
         <Providers locale={locale} dictionary={dictionary}>
           <Navbar />
