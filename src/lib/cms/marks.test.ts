@@ -2,7 +2,18 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import ptBR from "@/i18n/dictionaries/pt-BR.json";
+import { settingsUpdateSchema } from "@/lib/validation";
 import { getByPath, parseRef } from "./refs";
+
+/**
+ * Campos que o PATCH /settings de fato aceita. `settingsUpdateSchema` não é
+ * `.strict()` (zod descarta chave desconhecida em silêncio — ver
+ * validação.ts), então um `set:`/`img:` com typo hoje falha de ponta a ponta
+ * sem erro nenhum: painel manda `{emial: "x"}`, a rota devolve `{}`, o
+ * findOneAndUpdate grava `{}` com sucesso, e o painel mostra "Salvo." sem
+ * nada persistido. Validar aqui, na origem, é onde o erro é barato.
+ */
+const settingsKeys = new Set(Object.keys(settingsUpdateSchema.shape));
 
 /** Percorre src/ e devolve todo .tsx. */
 function tsxFiles(dir: string): string[] {
@@ -164,6 +175,26 @@ describe("marcação data-cms", () => {
           return !arrayIndexResolves(segments);
         }
         return getByPath(ptBR, mark.ref!.path) === undefined;
+      });
+    expect(broken.map((m) => `${m.file}: ${m.ref!.path}`)).toEqual([]);
+  });
+
+  it("todo set:/img: aponta para um campo que existe no schema de configurações", () => {
+    const broken = marks()
+      .map((mark) => ({ ...mark, ref: parseRef(mark.raw) }))
+      .filter((mark) => mark.ref?.kind === "set" || mark.ref?.kind === "img")
+      .filter((mark) => {
+        if (KNOWN_UNRESOLVABLE.has(mark.raw)) {
+          return false; // documentado — ver KNOWN_UNRESOLVABLE
+        }
+        const segments = segmentsOf(mark.ref!.path);
+        // set:/img: sempre aponta para uma chave plana do schema — não há
+        // arrays em settingsUpdateSchema. Um índice de lista ou interpolação
+        // parcial aqui seria um caso novo, não documentado: falha de propósito.
+        if (segments === null || segments.some((s) => s.wildcard)) {
+          return true;
+        }
+        return !settingsKeys.has(mark.ref!.path);
       });
     expect(broken.map((m) => `${m.file}: ${m.ref!.path}`)).toEqual([]);
   });
