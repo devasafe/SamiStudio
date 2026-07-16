@@ -41,20 +41,32 @@ export default async function ServicesPage({ params }: PageProps) {
       <section className="relative overflow-hidden pt-22">
         <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-0">
           <Container className="py-16 lg:py-24">
-            <p className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+            <p
+              className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+              data-cms="text:sections.services.eyebrow"
+            >
               <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
               {services.eyebrow}
             </p>
             <h1 className="font-heading mt-6 text-[clamp(2.4rem,5.2vw,4rem)] leading-[1.02] tracking-tight text-balance">
-              {services.titleLead}{" "}
-              <span className="text-[#cf5a18] italic">{services.titleEmphasis}</span>
+              <span data-cms="text:sections.services.titleLead">{services.titleLead}</span>{" "}
+              <span
+                className="text-[#cf5a18] italic"
+                data-cms="text:sections.services.titleEmphasis"
+              >
+                {services.titleEmphasis}
+              </span>
             </h1>
-            <p className="text-small mt-7 max-w-sm leading-relaxed text-[#d8cdba]">
+            <p
+              className="text-small mt-7 max-w-sm leading-relaxed text-[#d8cdba]"
+              data-cms="text:sections.services.subtitle"
+            >
               {services.subtitle}
             </p>
             <Link
               href={localePath(locale, "/contato")}
               className="text-caption group mt-10 inline-flex items-center gap-5 tracking-[0.18em] text-[#cf5a18] uppercase"
+              data-cms="text:sections.services.heroCta"
             >
               <span className="flex size-14 items-center justify-center rounded-full border border-[#cf5a18]/50 transition-colors duration-300 group-hover:bg-[#cf5a18] group-hover:text-[#0f0c09]">
                 <ArrowRight className="size-4" aria-hidden />
@@ -78,10 +90,16 @@ export default async function ServicesPage({ params }: PageProps) {
             </div>
             <div className="border-[#f2ece0]/12 bg-[#0f0c09]/85 p-6 backdrop-blur-sm lg:absolute lg:right-8 lg:bottom-8 lg:max-w-64 lg:border">
               <Sparkles className="size-5 text-[#cf5a18]" strokeWidth={1} aria-hidden />
-              <h2 className="text-caption mt-5 leading-relaxed tracking-[0.14em] uppercase">
+              <h2
+                className="text-caption mt-5 leading-relaxed tracking-[0.14em] uppercase"
+                data-cms="text:sections.services.heroCardTitle"
+              >
                 {services.heroCardTitle}
               </h2>
-              <p className="text-small mt-3 leading-relaxed text-[#d8cdba]/75">
+              <p
+                className="text-small mt-3 leading-relaxed text-[#d8cdba]/75"
+                data-cms="text:sections.services.heroCardText"
+              >
                 {services.heroCardText}
               </p>
             </div>
@@ -141,15 +159,24 @@ export default async function ServicesPage({ params }: PageProps) {
                 className="hidden size-16 shrink-0 lg:block"
               />
               <h2 className="font-heading text-[clamp(1.5rem,2.6vw,2.1rem)] leading-tight tracking-tight text-balance lg:flex-1">
-                {services.ctaLead}{" "}
-                <span className="text-[#cf5a18] italic">{services.ctaEmphasis}</span>
+                <span data-cms="text:sections.services.ctaLead">{services.ctaLead}</span>{" "}
+                <span
+                  className="text-[#cf5a18] italic"
+                  data-cms="text:sections.services.ctaEmphasis"
+                >
+                  {services.ctaEmphasis}
+                </span>
               </h2>
-              <p className="text-small max-w-xs leading-relaxed text-[#d8cdba]/75">
+              <p
+                className="text-small max-w-xs leading-relaxed text-[#d8cdba]/75"
+                data-cms="text:sections.services.ctaText"
+              >
                 {services.ctaText}
               </p>
               <Link
                 href={localePath(locale, "/contato")}
                 className="text-caption group inline-flex shrink-0 items-center justify-center gap-4 border border-[#cf5a18]/50 px-7 py-4 tracking-[0.18em] text-[#cf5a18] uppercase transition-colors duration-300 hover:bg-[#cf5a18] hover:text-[#0f0c09]"
+                data-cms="text:sections.services.ctaButton"
               >
                 {services.ctaButton}
                 <ArrowRight

@@ -58,20 +58,29 @@ export default async function AboutPage({ params }: PageProps) {
       <section className="relative overflow-hidden pt-22">
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_1fr]">
           <Container className="py-16 lg:py-24">
-            <p className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+            <p
+              className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+              data-cms="text:aboutPage.heroEyebrow"
+            >
               <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
               {page.heroEyebrow}
             </p>
             <h1 className="font-heading mt-6 text-[clamp(2.4rem,5.2vw,4rem)] leading-[1.02] tracking-tight text-balance">
-              {page.heroTitleLead}{" "}
-              <span className="text-[#cf5a18] italic">{page.heroTitleEmphasis}</span>
+              <span data-cms="text:aboutPage.heroTitleLead">{page.heroTitleLead}</span>{" "}
+              <span className="text-[#cf5a18] italic" data-cms="text:aboutPage.heroTitleEmphasis">
+                {page.heroTitleEmphasis}
+              </span>
             </h1>
-            <p className="text-small mt-7 max-w-md leading-relaxed text-[#d8cdba]">
+            <p
+              className="text-small mt-7 max-w-md leading-relaxed text-[#d8cdba]"
+              data-cms="text:aboutPage.heroText"
+            >
               {page.heroText}
             </p>
             <Link
               href={`#${FOUNDER_ANCHOR}`}
               className="text-caption group mt-10 inline-flex items-center gap-3 tracking-[0.18em] text-[#cf5a18] uppercase"
+              data-cms="text:aboutPage.heroCta"
             >
               {page.heroCta}
               <ArrowDown
@@ -81,7 +90,7 @@ export default async function AboutPage({ params }: PageProps) {
             </Link>
           </Container>
 
-          <div className="relative h-[26rem] lg:h-[38rem]">
+          <div className="relative h-[26rem] lg:h-[38rem]" data-cms="img:aboutPhoto">
             {portrait ? (
               <Image
                 src={portrait}
@@ -113,11 +122,16 @@ export default async function AboutPage({ params }: PageProps) {
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr_0.7fr] lg:gap-14">
             {/* Saudação + assinatura */}
             <div>
-              <p className="text-caption tracking-[0.22em] text-[#f2ece0]/45 uppercase">
+              <p
+                className="text-caption tracking-[0.22em] text-[#f2ece0]/45 uppercase"
+                data-cms="text:aboutPage.founderEyebrow"
+              >
                 {page.founderEyebrow}
               </p>
               <h2 className="font-heading mt-5 text-[clamp(1.9rem,3.4vw,2.6rem)] leading-[1.1] tracking-tight">
-                {page.founderGreeting} {firstName}.
+                {/* Só o pedaço fixo é marcado — o nome vem de settings.founderName (outro campo). */}
+                <span data-cms="text:aboutPage.founderGreeting">{page.founderGreeting}</span>{" "}
+                {firstName}.
               </h2>
               <p className="mt-6 [font-family:var(--font-signature)] text-3xl leading-none text-[#f2ece0]/80">
                 {firstName}
@@ -126,21 +140,31 @@ export default async function AboutPage({ params }: PageProps) {
 
             {/* História */}
             <div className="space-y-5 lg:pt-2">
-              {page.founderParagraphs.map((paragraph) => (
-                <p key={paragraph} className="text-small max-w-md leading-relaxed text-[#d8cdba]">
+              {page.founderParagraphs.map((paragraph, index) => (
+                <p
+                  key={paragraph}
+                  className="text-small max-w-md leading-relaxed text-[#d8cdba]"
+                  data-cms={`text:aboutPage.founderParagraphs.${index}`}
+                >
                   {paragraph}
                 </p>
               ))}
             </div>
 
-            {/* Números */}
+            {/* Números: vêm das Configurações (stat1..3), com fallback ao dicionário. */}
             <dl className="space-y-8 lg:border-l lg:border-[#f2ece0]/12 lg:pl-12">
-              {stats.map((stat) => (
+              {stats.map((stat, index) => (
                 <div key={stat.label}>
-                  <dt className="font-heading text-[clamp(2rem,3.4vw,2.8rem)] leading-none">
+                  <dt
+                    className="font-heading text-[clamp(2rem,3.4vw,2.8rem)] leading-none"
+                    data-cms={`set:stat${index + 1}Value`}
+                  >
                     {stat.value}
                   </dt>
-                  <dd className="text-caption mt-2 tracking-[0.18em] text-[#f2ece0]/50 uppercase">
+                  <dd
+                    className="text-caption mt-2 tracking-[0.18em] text-[#f2ece0]/50 uppercase"
+                    data-cms={`set:stat${index + 1}Label`}
+                  >
                     {stat.label}
                   </dd>
                 </div>
@@ -157,20 +181,29 @@ export default async function AboutPage({ params }: PageProps) {
 
         {/* Texto central */}
         <div className="bg-[#141009] px-6 py-16 lg:px-12 lg:py-24">
-          <p className="text-caption tracking-[0.22em] text-[#f2ece0]/45 uppercase">
+          <p
+            className="text-caption tracking-[0.22em] text-[#f2ece0]/45 uppercase"
+            data-cms="text:aboutPage.essenceEyebrow"
+          >
             {page.essenceEyebrow}
           </p>
           <h2 className="font-heading mt-6 text-[clamp(1.9rem,3.2vw,2.6rem)] leading-[1.08] tracking-tight">
-            {page.essenceTitleLead}{" "}
-            <span className="text-[#cf5a18] italic">{page.essenceTitleEmphasis}</span>
+            <span data-cms="text:aboutPage.essenceTitleLead">{page.essenceTitleLead}</span>{" "}
+            <span className="text-[#cf5a18] italic" data-cms="text:aboutPage.essenceTitleEmphasis">
+              {page.essenceTitleEmphasis}
+            </span>
           </h2>
           <span className="mt-8 block h-px w-10 rotate-[-35deg] bg-[#cf5a18]/70" aria-hidden />
-          <p className="text-small mt-8 max-w-xs leading-relaxed text-[#d8cdba]">
+          <p
+            className="text-small mt-8 max-w-xs leading-relaxed text-[#d8cdba]"
+            data-cms="text:aboutPage.essenceText"
+          >
             {page.essenceText}
           </p>
           <Link
             href={localePath(locale, "/servicos")}
             className="text-caption group mt-10 inline-flex items-center gap-2 tracking-[0.18em] text-[#cf5a18] uppercase"
+            data-cms="text:aboutPage.essenceCta"
           >
             {page.essenceCta}
             <ArrowUpRight
@@ -201,7 +234,10 @@ function EssenceCard({ index, photo, item }: EssenceCardProps) {
     return null;
   }
   return (
-    <div className="relative min-h-[26rem] bg-[#1c1611] lg:min-h-[34rem]">
+    <div
+      className="relative min-h-[26rem] bg-[#1c1611] lg:min-h-[34rem]"
+      data-cms={`img:essencePhoto${index + 1}`}
+    >
       {photo ? (
         <Image
           src={photo}
@@ -215,9 +251,17 @@ function EssenceCard({ index, photo, item }: EssenceCardProps) {
       <div className="absolute inset-x-0 bottom-0 p-6 lg:p-8">
         <div className="flex items-baseline gap-4">
           <span className="text-caption text-[#cf5a18]">{String(index + 1).padStart(2, "0")}</span>
-          <h3 className="text-caption tracking-[0.16em] uppercase">{item.title}</h3>
+          <h3
+            className="text-caption tracking-[0.16em] uppercase"
+            data-cms={`text:aboutPage.values.${index}.title`}
+          >
+            {item.title}
+          </h3>
         </div>
-        <p className="text-small mt-3 max-w-xs leading-relaxed text-[#d8cdba]/75">
+        <p
+          className="text-small mt-3 max-w-xs leading-relaxed text-[#d8cdba]/75"
+          data-cms={`text:aboutPage.values.${index}.description`}
+        >
           {item.description}
         </p>
       </div>

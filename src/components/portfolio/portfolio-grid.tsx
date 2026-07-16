@@ -82,6 +82,8 @@ export function PortfolioGrid({ projects }: PortfolioGridProps) {
                   ? "border-[#cf5a18] text-[#cf5a18]"
                   : "border-transparent text-[#f2ece0]/55 hover:text-[#f2ece0]"
               )}
+              // A aba "Todos" é o único texto de dicionário aqui; as demais vêm das categorias do banco.
+              data-cms={value === "all" ? "text:portfolioPage.all" : undefined}
             >
               {label}
             </button>
@@ -112,7 +114,9 @@ export function PortfolioGrid({ projects }: PortfolioGridProps) {
       </div>
 
       {visible.length === 0 ? (
-        <p className="text-small mt-16 text-[#d8cdba]">{page.empty}</p>
+        <p className="text-small mt-16 text-[#d8cdba]" data-cms="text:portfolioPage.empty">
+          {page.empty}
+        </p>
       ) : (
         <>
           <div className="mt-10 gap-4 sm:columns-2 lg:columns-3">
@@ -186,7 +190,12 @@ function PagerButton({ label, disabled, onClick, icon }: PagerButtonProps) {
           aria-hidden
         />
       ) : null}
-      <span className="max-sm:sr-only">{label}</span>
+      <span
+        className="max-sm:sr-only"
+        data-cms={icon === "prev" ? "text:portfolioPage.prevPage" : "text:portfolioPage.nextPage"}
+      >
+        {label}
+      </span>
       {icon === "next" ? (
         <Icon
           className="size-4 transition-transform duration-300 group-enabled:group-hover:translate-x-1"

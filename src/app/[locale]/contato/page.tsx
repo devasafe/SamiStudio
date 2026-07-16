@@ -40,19 +40,49 @@ export default async function ContactPage({ params }: PageProps) {
   const page = dictionary.contactPage;
 
   // Cada bloco só entra se o dado existir nas Configurações — sem linha vazia.
+  // Cada linha carrega seu próprio campo (`field`): a Localização tem duas
+  // (endereço + complemento) e o filtro abaixo pode remover qualquer uma das
+  // duas, então a posição sozinha não diz qual campo é qual.
   const channels = [
-    { icon: Mail, label: page.emailLabel, lines: [settings?.email] },
-    { icon: Phone, label: page.phoneLabel, lines: [settings?.phone] },
+    {
+      icon: Mail,
+      label: page.emailLabel,
+      labelRef: "contactPage.emailLabel",
+      lines: [{ value: settings?.email, field: "email" }],
+    },
+    {
+      icon: Phone,
+      label: page.phoneLabel,
+      labelRef: "contactPage.phoneLabel",
+      lines: [{ value: settings?.phone, field: "phone" }],
+    },
     {
       icon: Instagram,
       label: page.instagramLabel,
-      lines: [instagramHandle(settings?.instagram)],
+      labelRef: "contactPage.instagramLabel",
+      lines: [{ value: instagramHandle(settings?.instagram), field: "instagram" }],
       href: settings?.instagram,
     },
-    { icon: MapPin, label: page.locationLabel, lines: [settings?.address, settings?.locationNote] },
-    { icon: Clock, label: page.hoursLabel, lines: [settings?.businessHours] },
+    {
+      icon: MapPin,
+      label: page.locationLabel,
+      labelRef: "contactPage.locationLabel",
+      lines: [
+        { value: settings?.address, field: "address" },
+        { value: settings?.locationNote, field: "locationNote" },
+      ],
+    },
+    {
+      icon: Clock,
+      label: page.hoursLabel,
+      labelRef: "contactPage.hoursLabel",
+      lines: [{ value: settings?.businessHours, field: "businessHours" }],
+    },
   ]
-    .map((channel) => ({ ...channel, lines: channel.lines.filter(Boolean) as string[] }))
+    .map((channel) => ({
+      ...channel,
+      lines: channel.lines.filter((line): line is { value: string; field: string } => !!line.value),
+    }))
     .filter((channel) => channel.lines.length > 0);
 
   const photo = safeImageUrl(settings?.contactPhoto);
@@ -63,15 +93,23 @@ export default async function ContactPage({ params }: PageProps) {
       <Container>
         <section className="grid gap-12 py-16 lg:grid-cols-[1.2fr_1fr] lg:gap-16 lg:py-24">
           <div>
-            <p className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+            <p
+              className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+              data-cms="text:contactPage.heroEyebrow"
+            >
               <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
               {page.heroEyebrow}
             </p>
             <h1 className="font-heading mt-6 text-[clamp(2.4rem,5.2vw,4rem)] leading-[1.02] tracking-tight text-balance">
-              {page.heroTitleLead}{" "}
-              <span className="text-[#cf5a18] italic">{page.heroTitleEmphasis}</span>
+              <span data-cms="text:contactPage.heroTitleLead">{page.heroTitleLead}</span>{" "}
+              <span className="text-[#cf5a18] italic" data-cms="text:contactPage.heroTitleEmphasis">
+                {page.heroTitleEmphasis}
+              </span>
             </h1>
-            <p className="text-small mt-8 max-w-md leading-relaxed text-[#d8cdba]">
+            <p
+              className="text-small mt-8 max-w-md leading-relaxed text-[#d8cdba]"
+              data-cms="text:contactPage.heroText"
+            >
               {page.heroText}
             </p>
           </div>
@@ -85,6 +123,7 @@ export default async function ContactPage({ params }: PageProps) {
                   key={channel.label}
                   icon={channel.icon}
                   label={channel.label}
+                  labelRef={channel.labelRef}
                   lines={channel.lines}
                   href={channel.href}
                 />
@@ -98,7 +137,10 @@ export default async function ContactPage({ params }: PageProps) {
       <section className="border-t border-[#f2ece0]/10 bg-[#0f0c09]">
         <Container className="grid items-center gap-12 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="font-heading flex items-center gap-5 text-[clamp(1.6rem,2.6vw,2.1rem)] tracking-tight">
+            <h2
+              className="font-heading flex items-center gap-5 text-[clamp(1.6rem,2.6vw,2.1rem)] tracking-tight"
+              data-cms="text:contactPage.formTitle"
+            >
               <span className="h-px w-10 bg-[#cf5a18]" aria-hidden />
               {page.formTitle}
             </h2>
@@ -108,7 +150,7 @@ export default async function ContactPage({ params }: PageProps) {
           </div>
 
           <div className="relative">
-            <div className="relative aspect-[4/5] w-full">
+            <div className="relative aspect-[4/5] w-full" data-cms="img:contactPhoto">
               {photo ? (
                 <Image
                   src={photo}
@@ -124,8 +166,15 @@ export default async function ContactPage({ params }: PageProps) {
             {/* Cartão de apoio sobreposto à base da foto */}
             <div className="border border-[#f2ece0]/10 bg-[#0f0c09]/90 p-6 backdrop-blur-sm lg:absolute lg:right-10 lg:bottom-8 lg:left-0">
               <Sparkles className="size-5 text-[#cf5a18]" strokeWidth={1} aria-hidden />
-              <h3 className="font-heading mt-4 text-xl">{page.cardTitle}</h3>
-              <p className="text-small mt-3 leading-relaxed text-[#d8cdba]/75">{page.cardText}</p>
+              <h3 className="font-heading mt-4 text-xl" data-cms="text:contactPage.cardTitle">
+                {page.cardTitle}
+              </h3>
+              <p
+                className="text-small mt-3 leading-relaxed text-[#d8cdba]/75"
+                data-cms="text:contactPage.cardText"
+              >
+                {page.cardText}
+              </p>
             </div>
           </div>
         </Container>
@@ -137,16 +186,24 @@ export default async function ContactPage({ params }: PageProps) {
   );
 }
 
+interface ChannelLine {
+  value: string;
+  /** Campo em Configurações que originou o valor (ex.: "email", "address"). */
+  field: string;
+}
+
 interface ChannelProps {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
   label: string;
-  lines: string[];
+  /** Caminho do rótulo no dicionário (ex.: "contactPage.emailLabel"). */
+  labelRef: string;
+  lines: ChannelLine[];
   /** Quando existe, a primeira linha vira link externo (ex.: perfil no Instagram). */
   href?: string;
 }
 
 /** Canal de contato: ícone, rótulo e uma ou duas linhas de informação. */
-function Channel({ icon: Icon, label, lines, href }: ChannelProps) {
+function Channel({ icon: Icon, label, labelRef, lines, href }: ChannelProps) {
   const [first, ...rest] = lines;
 
   return (
@@ -155,8 +212,16 @@ function Channel({ icon: Icon, label, lines, href }: ChannelProps) {
         <Icon className="size-5" strokeWidth={1.5} />
       </span>
       <div>
-        <dt className="text-caption tracking-[0.18em] text-[#f2ece0]/45 uppercase">{label}</dt>
-        <dd className="text-small mt-1.5 leading-relaxed text-[#f2ece0]">
+        <dt
+          className="text-caption tracking-[0.18em] text-[#f2ece0]/45 uppercase"
+          data-cms={`text:${labelRef}`}
+        >
+          {label}
+        </dt>
+        <dd
+          className="text-small mt-1.5 leading-relaxed text-[#f2ece0]"
+          data-cms={`set:${first.field}`}
+        >
           {href ? (
             <a
               href={href}
@@ -164,15 +229,19 @@ function Channel({ icon: Icon, label, lines, href }: ChannelProps) {
               rel="noopener noreferrer"
               className="transition-colors duration-300 hover:text-[#cf5a18]"
             >
-              {first}
+              {first.value}
             </a>
           ) : (
-            first
+            first.value
           )}
         </dd>
         {rest.map((line) => (
-          <dd key={line} className="text-small mt-1.5 leading-relaxed text-[#f2ece0]">
-            {line}
+          <dd
+            key={line.field}
+            className="text-small mt-1.5 leading-relaxed text-[#f2ece0]"
+            data-cms={`set:${line.field}`}
+          >
+            {line.value}
           </dd>
         ))}
       </div>

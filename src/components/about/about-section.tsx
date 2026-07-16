@@ -77,10 +77,16 @@ export function AboutSection({ locale, dictionary, photo, overrides }: AboutSect
               />
             </Link>
             <div className="mt-12">
-              <p className="[font-family:var(--font-signature)] text-4xl leading-none text-[#cf5a18]">
+              <p
+                className="[font-family:var(--font-signature)] text-4xl leading-none text-[#cf5a18]"
+                data-cms="set:founderName"
+              >
                 {founder}
               </p>
-              <p className="text-caption mt-2 tracking-[0.18em] text-[#f2ece0]/60 uppercase">
+              <p
+                className="text-caption mt-2 tracking-[0.18em] text-[#f2ece0]/60 uppercase"
+                data-cms="set:founderRole"
+              >
                 {role}
               </p>
             </div>
@@ -113,14 +119,20 @@ export function AboutSection({ locale, dictionary, photo, overrides }: AboutSect
           </div>
         </div>
 
-        {/* Barra de números */}
+        {/* Barra de números: vêm das Configurações (stat1..3), com fallback ao dicionário. */}
         <dl className="mt-16 grid grid-cols-1 divide-y divide-[#f2ece0]/12 border-t border-[#f2ece0]/12 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {stats.map((stat) => (
+          {stats.map((stat, index) => (
             <div key={stat.label} className="px-6 py-8 text-center">
-              <dt className="font-heading text-[clamp(2rem,4vw,3rem)] leading-none">
+              <dt
+                className="font-heading text-[clamp(2rem,4vw,3rem)] leading-none"
+                data-cms={`set:stat${index + 1}Value`}
+              >
                 {stat.value}
               </dt>
-              <dd className="text-caption mt-3 tracking-[0.18em] text-[#f2ece0]/55 uppercase">
+              <dd
+                className="text-caption mt-3 tracking-[0.18em] text-[#f2ece0]/55 uppercase"
+                data-cms={`set:stat${index + 1}Label`}
+              >
                 {stat.label}
               </dd>
             </div>

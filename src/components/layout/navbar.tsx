@@ -35,11 +35,36 @@ export function Navbar() {
   const closeMenu = () => setMenuOpen(false);
 
   const links = [
-    { href: localePath(locale, "/"), label: dictionary.nav.home, exact: true },
-    { href: localePath(locale, "/sobre"), label: dictionary.nav.about, exact: true },
-    { href: localePath(locale, "/servicos"), label: dictionary.nav.services, exact: true },
-    { href: localePath(locale, "/portfolio"), label: dictionary.nav.portfolio, exact: false },
-    { href: localePath(locale, "/contato"), label: dictionary.nav.contact, exact: true },
+    {
+      href: localePath(locale, "/"),
+      label: dictionary.nav.home,
+      exact: true,
+      cms: "text:nav.home",
+    },
+    {
+      href: localePath(locale, "/sobre"),
+      label: dictionary.nav.about,
+      exact: true,
+      cms: "text:nav.about",
+    },
+    {
+      href: localePath(locale, "/servicos"),
+      label: dictionary.nav.services,
+      exact: true,
+      cms: "text:nav.services",
+    },
+    {
+      href: localePath(locale, "/portfolio"),
+      label: dictionary.nav.portfolio,
+      exact: false,
+      cms: "text:nav.portfolio",
+    },
+    {
+      href: localePath(locale, "/contato"),
+      label: dictionary.nav.contact,
+      exact: true,
+      cms: "text:nav.contact",
+    },
   ];
 
   const isActive = (href: string, exact: boolean) =>
@@ -89,6 +114,7 @@ export function Navbar() {
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
               )}
+              data-cms={link.cms}
             >
               {link.label}
             </Link>
@@ -104,6 +130,7 @@ export function Navbar() {
               "px-5",
               onDark && "border-[#f2ece0]/40 text-[#f2ece0] hover:bg-[#f2ece0] hover:text-[#141009]"
             )}
+            data-cms="text:common.requestQuote"
           >
             {dictionary.common.requestQuote}
           </Link>
@@ -134,6 +161,7 @@ export function Navbar() {
                   "text-h4 font-heading transition-colors",
                   isActive(link.href, link.exact) ? "text-foreground" : "text-muted-foreground"
                 )}
+                data-cms={link.cms}
               >
                 {link.label}
               </Link>
@@ -144,6 +172,7 @@ export function Navbar() {
                 href={localePath(locale, "/contato")}
                 onClick={closeMenu}
                 className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-5")}
+                data-cms="text:common.requestQuote"
               >
                 {dictionary.common.requestQuote}
               </Link>

@@ -22,29 +22,54 @@ interface FooterProps {
 export function Footer({ locale, dictionary, settings }: FooterProps) {
   const year = new Date().getFullYear();
 
+  // `cms` identifica o campo de Configurações por trás de cada link — o
+  // rótulo social é texto fixo ("Instagram"), então a marcação vai no campo
+  // real (a URL), não no rótulo exibido.
   const whatsappDigits = (settings?.whatsapp ?? "").replace(/\D/g, "");
   const contactLinks = [
-    settings?.email ? { href: `mailto:${settings.email}`, label: settings.email } : null,
-    settings?.phone
-      ? { href: `tel:${settings.phone.replace(/\s/g, "")}`, label: settings.phone }
+    settings?.email
+      ? { href: `mailto:${settings.email}`, label: settings.email, cms: "set:email" }
       : null,
-    whatsappDigits ? { href: `https://wa.me/${whatsappDigits}`, label: "WhatsApp" } : null,
-  ].filter((link): link is { href: string; label: string } => link !== null);
+    settings?.phone
+      ? {
+          href: `tel:${settings.phone.replace(/\s/g, "")}`,
+          label: settings.phone,
+          cms: "set:phone",
+        }
+      : null,
+    whatsappDigits
+      ? { href: `https://wa.me/${whatsappDigits}`, label: "WhatsApp", cms: "set:whatsapp" }
+      : null,
+  ].filter((link): link is { href: string; label: string; cms: string } => link !== null);
 
   const socialLinks = [
-    settings?.instagram ? { href: settings.instagram, label: "Instagram" } : null,
-    settings?.linkedin ? { href: settings.linkedin, label: "LinkedIn" } : null,
-    settings?.facebook ? { href: settings.facebook, label: "Facebook" } : null,
-    settings?.behance ? { href: settings.behance, label: "Behance" } : null,
-    settings?.youtube ? { href: settings.youtube, label: "YouTube" } : null,
-  ].filter((link): link is { href: string; label: string } => link !== null);
+    settings?.instagram
+      ? { href: settings.instagram, label: "Instagram", cms: "set:instagram" }
+      : null,
+    settings?.linkedin ? { href: settings.linkedin, label: "LinkedIn", cms: "set:linkedin" } : null,
+    settings?.facebook ? { href: settings.facebook, label: "Facebook", cms: "set:facebook" } : null,
+    settings?.behance ? { href: settings.behance, label: "Behance", cms: "set:behance" } : null,
+    settings?.youtube ? { href: settings.youtube, label: "YouTube", cms: "set:youtube" } : null,
+  ].filter((link): link is { href: string; label: string; cms: string } => link !== null);
 
   const navLinks = [
-    { href: localePath(locale, "/"), label: dictionary.nav.home },
-    { href: localePath(locale, "/sobre"), label: dictionary.nav.about },
-    { href: localePath(locale, "/servicos"), label: dictionary.nav.services },
-    { href: localePath(locale, "/portfolio"), label: dictionary.nav.portfolio },
-    { href: localePath(locale, "/contato"), label: dictionary.nav.contact },
+    { href: localePath(locale, "/"), label: dictionary.nav.home, cms: "text:nav.home" },
+    { href: localePath(locale, "/sobre"), label: dictionary.nav.about, cms: "text:nav.about" },
+    {
+      href: localePath(locale, "/servicos"),
+      label: dictionary.nav.services,
+      cms: "text:nav.services",
+    },
+    {
+      href: localePath(locale, "/portfolio"),
+      label: dictionary.nav.portfolio,
+      cms: "text:nav.portfolio",
+    },
+    {
+      href: localePath(locale, "/contato"),
+      label: dictionary.nav.contact,
+      cms: "text:nav.contact",
+    },
   ];
 
   return (
@@ -55,13 +80,19 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
             <p className="font-heading text-body-lg tracking-tight">
               Sami da Silva <span className="text-[#f2ece0]/60">Studio</span>
             </p>
-            <p className="text-small mt-4 max-w-sm text-[#f2ece0]/60">
+            <p
+              className="text-small mt-4 max-w-sm text-[#f2ece0]/60"
+              data-cms="text:footer.tagline"
+            >
               {dictionary.footer.tagline}
             </p>
           </div>
 
           <nav aria-label={dictionary.footer.navigation}>
-            <p className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase">
+            <p
+              className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase"
+              data-cms="text:footer.navigation"
+            >
               {dictionary.footer.navigation}
             </p>
             <ul className="mt-4 space-y-3">
@@ -70,6 +101,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                   <Link
                     href={link.href}
                     className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
+                    data-cms={link.cms}
                   >
                     {link.label}
                   </Link>
@@ -81,7 +113,10 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
           <div className="space-y-10">
             {contactLinks.length > 0 || socialLinks.length > 0 ? (
               <nav aria-label={dictionary.footer.contact}>
-                <p className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase">
+                <p
+                  className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase"
+                  data-cms="text:footer.contact"
+                >
                   {dictionary.footer.contact}
                 </p>
                 <ul className="mt-4 space-y-3">
@@ -90,6 +125,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                       <a
                         href={link.href}
                         className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
+                        data-cms={link.cms}
                       >
                         {link.label}
                       </a>
@@ -102,6 +138,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
+                        data-cms={link.cms}
                       >
                         {link.label}
                       </a>
@@ -112,7 +149,10 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
             ) : null}
 
             <nav aria-label={dictionary.footer.languages}>
-              <p className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase">
+              <p
+                className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase"
+                data-cms="text:footer.languages"
+              >
                 {dictionary.footer.languages}
               </p>
               <ul className="mt-4 space-y-3">
@@ -134,7 +174,8 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
 
         <div className="mt-16 border-t border-[#f2ece0]/10 pt-8">
           <p className="text-caption text-[#f2ece0]/50">
-            © {year} {dictionary.meta.siteName}. {dictionary.footer.rights}
+            © {year} <span data-cms="text:meta.siteName">{dictionary.meta.siteName}</span>.{" "}
+            <span data-cms="text:footer.rights">{dictionary.footer.rights}</span>
           </p>
         </div>
       </Container>
