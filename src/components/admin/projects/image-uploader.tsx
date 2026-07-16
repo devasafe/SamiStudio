@@ -7,6 +7,7 @@ import { CropDialog } from "@/components/admin/projects/crop-dialog";
 import { uploadImage } from "@/components/admin/projects/upload";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { safeImageUrl } from "@/lib/images";
 
 interface ImageUploaderProps {
   label: string;
@@ -16,6 +17,8 @@ interface ImageUploaderProps {
 
 /** Imagem única: envia o original por padrão; "Recortar" abre o CropDialog. */
 export function ImageUploader({ label, value, onChange }: ImageUploaderProps) {
+  // Só o que veio do upload (Cloudinary) pode ir para o next/image.
+  const preview = safeImageUrl(value);
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [cropSource, setCropSource] = useState<string | null>(null);
@@ -39,10 +42,10 @@ export function ImageUploader({ label, value, onChange }: ImageUploaderProps) {
     <div className="space-y-2">
       <Label>{label}</Label>
 
-      {value ? (
+      {preview ? (
         <div className="border-border relative w-full max-w-xs overflow-hidden rounded-md border">
           <Image
-            src={value}
+            src={preview}
             alt={label}
             width={320}
             height={240}
@@ -50,6 +53,12 @@ export function ImageUploader({ label, value, onChange }: ImageUploaderProps) {
             className="h-auto w-full"
           />
         </div>
+      ) : null}
+
+      {value && !preview ? (
+        <p className="text-error text-sm">
+          Valor atual não é uma imagem enviada pelo painel. Envie uma imagem para substituí-lo.
+        </p>
       ) : null}
 
       <div className="flex gap-2">

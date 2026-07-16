@@ -7,6 +7,7 @@ import { api, AdminApiError } from "@/components/admin/api-client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { safeImageUrl } from "@/lib/images";
 
 interface ImageFieldProps {
   label: string;
@@ -54,6 +55,8 @@ interface MediaResponse {
  * proporção exibida no site, enviado ao Cloudinary via API.
  */
 export function ImageField({ label, value, aspect, onChange }: ImageFieldProps) {
+  // Só o que veio do upload (Cloudinary) pode ir para o next/image.
+  const preview = safeImageUrl(value);
   const inputRef = useRef<HTMLInputElement>(null);
   const [source, setSource] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -105,13 +108,21 @@ export function ImageField({ label, value, aspect, onChange }: ImageFieldProps) 
     <div className="space-y-2">
       <Label>{label}</Label>
 
-      {value ? (
+      {preview ? (
         <div
           className="border-border relative overflow-hidden rounded-md border"
           style={{ aspectRatio: aspect, maxWidth: 320 }}
         >
-          <Image src={value} alt={label} fill sizes="320px" className="object-cover" />
+          <Image src={preview} alt={label} fill sizes="320px" className="object-cover" />
         </div>
+      ) : null}
+
+      {/* Valor salvo que não é uma imagem do upload (ex.: link de página colado
+          no banco): avisa em vez de derrubar a página no next/image. */}
+      {value && !preview ? (
+        <p className="text-error text-sm">
+          Valor atual não é uma imagem enviada pelo painel. Envie uma imagem para substituí-lo.
+        </p>
       ) : null}
 
       <div className="flex gap-2">

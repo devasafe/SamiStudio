@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { coverFromGallery } from "@/components/admin/projects/gallery-utils";
 import { Button } from "@/components/ui/button";
+import { safeImageUrl } from "@/lib/images";
 import type { GalleryItem } from "@/models/project";
 
 interface ProjectRow {
@@ -72,7 +73,9 @@ export function ProjectList() {
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {rows.map((row) => {
-            const cover = coverFromGallery(row.gallery ?? []) ?? row.coverImage;
+            // Só imagens do upload vão para o next/image (dado antigo/inválido
+            // no banco não pode derrubar a listagem).
+            const cover = safeImageUrl(coverFromGallery(row.gallery ?? []) ?? row.coverImage);
             return (
               <li
                 key={row._id}

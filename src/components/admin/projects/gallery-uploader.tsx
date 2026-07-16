@@ -8,6 +8,7 @@ import { moveItem, reindex, removeItem } from "@/components/admin/projects/galle
 import { uploadImage } from "@/components/admin/projects/upload";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { safeImageUrl } from "@/lib/images";
 import type { GalleryItem } from "@/models/project";
 
 interface GalleryUploaderProps {
@@ -114,14 +115,20 @@ export function GalleryUploader({ value, onChange }: GalleryUploaderProps) {
               }}
               className="border-border bg-background space-y-2 rounded-md border p-2"
             >
-              <div className="relative aspect-[4/3] overflow-hidden rounded">
-                <Image
-                  src={item.url}
-                  alt={item.alt ?? ""}
-                  fill
-                  sizes="200px"
-                  className="object-cover"
-                />
+              <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded">
+                {safeImageUrl(item.url) ? (
+                  <Image
+                    src={item.url}
+                    alt={item.alt ?? ""}
+                    fill
+                    sizes="200px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <span className="text-muted-foreground absolute inset-0 flex items-center justify-center px-2 text-center text-[10px]">
+                    Imagem inválida
+                  </span>
+                )}
                 {index === 0 ? (
                   <span className="bg-foreground text-background absolute top-1 left-1 rounded px-1.5 py-0.5 text-[10px]">
                     Capa
