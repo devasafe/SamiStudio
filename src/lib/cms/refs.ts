@@ -79,3 +79,50 @@ export function setByPath(
   });
   return root;
 }
+
+/**
+ * Remove um texto por caminho, sem mutar a origem — irmão do `setByPath`.
+ *
+ * Usado por "voltar ao padrão": remover o override (em vez de gravar `""`)
+ * evita que o painel releia esse `""` como override na próxima carga (o
+ * `deepMerge` do servidor ignora string vazia, mas a leitura crua do painel
+ * não — ver `texts-form.tsx`/`edit-panel.tsx`).
+ *
+ * Poda os ramos que ficarem vazios subindo até a raiz: sem isso, um
+ * `{ meta: { home: {} } }` residual voltaria em toda leitura como lixo sem
+ * explicação. Caminho inexistente devolve a origem inalterada.
+ */
+export function deleteByPath(
+  source: Record<string, unknown>,
+  path: string
+): Record<string, unknown> {
+  return deleteAt(source, path.split(".")) as Record<string, unknown>;
+}
+
+function deleteAt(node: unknown, keys: string[]): unknown {
+  if (typeof node !== "object" || node === null) {
+    return node;
+  }
+  const [key, ...rest] = keys;
+  const record = node as Record<string, unknown>;
+  if (!(key in record)) {
+    return node;
+  }
+  if (rest.length === 0) {
+    const remainder = { ...record };
+    delete remainder[key];
+    return remainder;
+  }
+  const child = deleteAt(record[key], rest);
+  if (child === record[key]) {
+    // Nada mudou mais fundo (caminho não existia) — devolve o nó inalterado.
+    return node;
+  }
+  const next = { ...record };
+  if (typeof child === "object" && child !== null && Object.keys(child).length === 0) {
+    delete next[key];
+  } else {
+    next[key] = child;
+  }
+  return next;
+}

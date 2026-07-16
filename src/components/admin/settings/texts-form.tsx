@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { setByPath } from "@/lib/cms/refs";
+import { deleteByPath, setByPath } from "@/lib/cms/refs";
 import ptBR from "@/i18n/dictionaries/pt-BR.json";
 import en from "@/i18n/dictionaries/en.json";
 import es from "@/i18n/dictionaries/es.json";
@@ -91,7 +91,13 @@ export function TextsForm({ filter }: TextsFormProps) {
     void api<TranslationDoc | null>(`/translations?locale=${locale}`)
       .then(({ data }) => {
         const saved = data?.content ? flatten(data.content) : [];
-        setOverrides(Object.fromEntries(saved.map((f) => [f.path, f.base])));
+        // Ignora overrides vazios: um "" pode ter sido gravado por uma versão
+        // anterior do painel (que persistia "" em vez de remover o override ao
+        // voltar ao padrão). Sem esse filtro, esse "" residual do banco volta a
+        // aparecer aqui como "alterado" e deixa o campo em branco.
+        setOverrides(
+          Object.fromEntries(saved.filter((f) => f.base !== "").map((f) => [f.path, f.base]))
+        );
         // Idioma trocou: recarrega do banco e descarta mudanças pendentes do
         // idioma anterior, senão elas vazariam para o novo idioma no save.
         setDirty({});
@@ -112,10 +118,11 @@ export function TextsForm({ filter }: TextsFormProps) {
       return next;
     });
     setDirty((current) => {
-      // Vazio ou igual ao padrão: grava "" para o dicionário base assumir de
-      // volta (deepMerge do servidor ignora string vazia). Sempre registra o
-      // caminho como alterado nesta sessão, mesmo voltando ao valor salvo —
-      // handleSave precisa reaplicá-lo por cima do GET fresco de qualquer forma.
+      // Vazio ou igual ao padrão: marca "" em dirty como sinal para handleSave
+      // remover o override (deleteByPath), não gravar "" no content — ver
+      // handleSave. Sempre registra o caminho como alterado nesta sessão, mesmo
+      // voltando ao valor salvo — handleSave precisa reaplicá-lo por cima do
+      // GET fresco de qualquer forma.
       return { ...current, [path]: value === base ? "" : value };
     });
   }
@@ -131,7 +138,12 @@ export function TextsForm({ filter }: TextsFormProps) {
       // outra aba — ou o editor visual — gravou enquanto esta tela estava aberta.
       let content: Record<string, unknown> = data?.content ?? {};
       for (const [path, value] of Object.entries(dirty)) {
-        content = setByPath(content, path, value);
+        // Vazio (voltar ao padrão) remove o override em vez de gravar "": um ""
+        // persistido é lido de volta como override no próximo carregamento (o
+        // deepMerge do servidor ignora string vazia, mas esta tela relê o
+        // content cru), deixando o campo em branco e marcado "alterado" para
+        // sempre.
+        content = value === "" ? deleteByPath(content, path) : setByPath(content, path, value);
       }
       await api("/translations", { method: "PATCH", json: { locale, content } });
       setDirty({});

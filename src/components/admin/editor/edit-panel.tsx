@@ -6,7 +6,7 @@ import { ImageField } from "@/components/admin/image-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { getByPath, parseRef, setByPath, type CmsSelection } from "@/lib/cms/refs";
+import { deleteByPath, getByPath, parseRef, setByPath, type CmsSelection } from "@/lib/cms/refs";
 
 /**
  * Proporção do recorte por foto — a mesma que as Configurações usavam. Recortar
@@ -73,7 +73,11 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
           if (ignore) {
             return;
           }
-          setValue(getByPath(data?.content, ref.path) ?? selection.value);
+          // "" cai no valor padrão, não vira campo em branco: pode ser um
+          // override "" gravado por uma versão anterior do painel (que
+          // persistia "" em vez de remover ao voltar ao padrão) — ler isso
+          // como override de verdade reproduziria o mesmo bug a cada carga.
+          setValue(getByPath(data?.content, ref.path) || selection.value);
           return;
         }
         const { data } = await api<Settings | null>("/settings");
@@ -105,7 +109,14 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
         // A rota substitui o content inteiro: parte do salvo para não apagar
         // os outros overrides do mesmo idioma.
         const { data } = await api<TranslationDoc | null>(`/translations?locale=${locale}`);
-        const content = setByPath(data?.content ?? {}, ref.path, next);
+        // Vazio (voltar ao padrão) remove o override em vez de gravar "": um ""
+        // persistido seria lido de volta como override (deepMerge do servidor
+        // ignora string vazia, mas a leitura acima do painel não), reproduzindo
+        // o mesmo campo em branco marcado como alterado.
+        const content =
+          next === ""
+            ? deleteByPath(data?.content ?? {}, ref.path)
+            : setByPath(data?.content ?? {}, ref.path, next);
         await api("/translations", { method: "PATCH", json: { locale, content } });
       } else {
         await api("/settings", { method: "PATCH", json: { [ref.path]: next } });
