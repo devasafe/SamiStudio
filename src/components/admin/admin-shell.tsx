@@ -15,8 +15,7 @@ const navItems = [
   { href: "/admin/servicos", label: "Serviços" },
   { href: "/admin/depoimentos", label: "Depoimentos" },
   { href: "/admin/faq", label: "FAQ" },
-  { href: "/admin/traducoes", label: "Traduções" },
-  { href: "/admin/configuracoes", label: "Configurações" },
+  { href: "/admin/ajustes", label: "Ajustes" },
 ];
 
 /** Estrutura do painel (Docs/12): sidebar + área de conteúdo, foco em produtividade. */
