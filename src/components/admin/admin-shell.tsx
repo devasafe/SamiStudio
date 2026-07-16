@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/editor", label: "Editar site" },
   { href: "/admin/mensagens", label: "Mensagens" },
   { href: "/admin/projetos", label: "Projetos" },
   { href: "/admin/categorias", label: "Categorias" },
