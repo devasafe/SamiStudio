@@ -346,7 +346,7 @@ export function isTrustedEditMessage(
 - [ ] **Step 8: Rodar tudo e ver passar**
 
 Run: `npx vitest run && npx tsc --noEmit && npx eslint src`
-Expected: PASS — 20 testes anteriores + 19 novos = 39; tsc e eslint sem saída.
+Expected: PASS — 20 testes anteriores + 17 novos = 37; tsc e eslint sem saída.
 
 - [ ] **Step 9: Commit**
 
@@ -692,6 +692,7 @@ Create `src/components/cms/edit-overlay.tsx`:
 "use client";
 
 import { useEffect } from "react";
+import { parseRef } from "@/lib/cms/refs";
 import { isTrustedEditMessage, type CmsMessage } from "@/lib/cms/protocol";
 
 /** Contorno do que é editável, injetado só no modo de edição. */
@@ -748,7 +749,13 @@ export function EditOverlay() {
       if (data.type !== "cms:patch") {
         return;
       }
-      // Atualização otimista: o revalidate do servidor confirma depois.
+      // Só `text:` tem o valor como texto na tela. Em `set:`, o elemento pode
+      // ser um rótulo fixo ("Instagram") cujo valor é uma URL; em `img:`, é a
+      // moldura da foto. Escrever o valor neles apagaria o conteúdo visível —
+      // nesses casos o editor recarrega a prévia em vez de adivinhar.
+      if (parseRef(data.ref)?.kind !== "text") {
+        return;
+      }
       document.querySelectorAll<HTMLElement>(`[data-cms="${data.ref}"]`).forEach((element) => {
         element.textContent = data.value;
       });
@@ -829,7 +836,7 @@ Create `src/app/admin/(painel)/editor/page.tsx`:
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { type CmsSelection } from "@/lib/cms/refs";
+import { parseRef, type CmsSelection } from "@/lib/cms/refs";
 import { isTrustedEditMessage, type CmsMessage } from "@/lib/cms/protocol";
 import { cn } from "@/lib/utils";
 
@@ -849,6 +856,8 @@ const LOCALES = [
 
 /** Se o overlay não responder nisto, algo quebrou — melhor dizer do que fingir. */
 const HANDSHAKE_TIMEOUT_MS = 5000;
+/** Intervalo entre tentativas de handshake (ver enableEditing). */
+const HANDSHAKE_RETRY_MS = 250;
 
 export default function AdminEditorPage() {
   const [locale, setLocale] = useState("pt-BR");
@@ -856,6 +865,8 @@ export default function AdminEditorPage() {
   const [selected, setSelected] = useState<CmsSelection | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "failed">("loading");
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  /** O laço de retry não enxerga o state: lê o ref. */
+  const readyRef = useRef(false);
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
@@ -865,6 +876,7 @@ export default function AdminEditorPage() {
       }
       const data = event.data as CmsMessage;
       if (data.type === "cms:ready") {
+        readyRef.current = true;
         setStatus("ready");
       }
       if (data.type === "cms:select") {
@@ -875,16 +887,35 @@ export default function AdminEditorPage() {
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
-  /** Reenviado a cada carga: se ela clicar num link, o modo continua ligado. */
+  /**
+   * Chamado a cada carga do iframe: se ela clicar num link dentro da prévia, o
+   * modo precisa voltar a ligar.
+   *
+   * Repete até o overlay confirmar com "cms:ready" porque o EditBridge só passa
+   * a ouvir depois que o React hidrata — uma única mensagem no onLoad pode
+   * chegar antes disso e se perder, deixando a prévia muda para sempre.
+   */
   const enableEditing = useCallback(() => {
-    iframeRef.current?.contentWindow?.postMessage(
-      { type: "cms:enable" } satisfies CmsMessage,
-      window.location.origin
-    );
-    // Sem "cms:ready" a tempo, a prévia ficaria muda e sem explicação.
-    window.setTimeout(() => {
-      setStatus((current) => (current === "ready" ? current : "failed"));
-    }, HANDSHAKE_TIMEOUT_MS);
+    readyRef.current = false;
+    setStatus("loading");
+    const startedAt = Date.now();
+
+    const timer = window.setInterval(() => {
+      if (readyRef.current) {
+        window.clearInterval(timer);
+        return;
+      }
+      if (Date.now() - startedAt > HANDSHAKE_TIMEOUT_MS) {
+        window.clearInterval(timer);
+        // Sem "cms:ready" a tempo, a prévia ficaria muda e sem explicação.
+        setStatus("failed");
+        return;
+      }
+      iframeRef.current?.contentWindow?.postMessage(
+        { type: "cms:enable" } satisfies CmsMessage,
+        window.location.origin
+      );
+    }, HANDSHAKE_RETRY_MS);
   }, []);
 
   return (
@@ -1191,6 +1222,12 @@ import { EditPanel } from "@/components/admin/editor/edit-panel";
             selection={selected}
             locale={locale}
             onSaved={(ref, value) => {
+              // Foto e dado de contato não têm o valor como texto na tela:
+              // recarrega a prévia em vez de escrever por cima do que aparece.
+              if (parseRef(ref)?.kind !== "text") {
+                iframeRef.current?.contentWindow?.location.reload();
+                return;
+              }
               iframeRef.current?.contentWindow?.postMessage(
                 { type: "cms:patch", ref, value } satisfies CmsMessage,
                 window.location.origin
@@ -1203,7 +1240,7 @@ import { EditPanel } from "@/components/admin/editor/edit-panel";
 - [ ] **Step 3: Verificar**
 
 Run: `npx tsc --noEmit && npx eslint src && npx vitest run`
-Expected: sem saída de tsc/eslint; 39 testes passando.
+Expected: sem saída de tsc/eslint; 40 testes passando.
 
 Verificação manual obrigatória — o fluxo inteiro só existe no navegador:
 1. Em `/admin/editor`, clique num título da home, mude o texto, salve. O texto
@@ -1514,7 +1551,7 @@ Serviços · Depoimentos · FAQ · Ajustes.
 - [ ] **Step 6: Verificar**
 
 Run: `npx tsc --noEmit && npx eslint src && npx vitest run`
-Expected: sem saída; 39 testes.
+Expected: sem saída; 40 testes.
 
 Run:
 ```bash
@@ -1555,7 +1592,7 @@ EOF
 
 - [ ] `npx tsc --noEmit` — sem saída
 - [ ] `npx eslint src` — sem saída
-- [ ] `npx vitest run` — 39 testes passando
+- [ ] `npx vitest run` — 40 testes passando (37 + os 3 da marcação)
 - [ ] `curl -s http://localhost:3000/ | grep -c "outline: 1px dashed"` → `0`
       (o overlay nunca vaza para o site público)
 - [ ] Rede de segurança da spec — as rotas que o editor usa exigem sessão:
