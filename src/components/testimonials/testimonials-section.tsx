@@ -28,14 +28,23 @@ export function TestimonialsSection({ dictionary, items }: TestimonialsSectionPr
     <section className="border-t border-[#f2ece0]/10 bg-[#141009] text-[#f2ece0]">
       <Container className="py-24 lg:py-28">
         <div className="text-center">
-          <p className="text-caption inline-flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+          <p
+            className="text-caption inline-flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+            data-cms="text:sections.testimonials.eyebrow"
+          >
             <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
             {testimonials.eyebrow}
           </p>
-          <h2 className="font-heading mt-5 text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] tracking-tight">
+          <h2
+            className="font-heading mt-5 text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] tracking-tight"
+            data-cms="text:sections.testimonials.title"
+          >
             {testimonials.title}
           </h2>
-          <p className="text-small mx-auto mt-5 max-w-md leading-relaxed text-[#d8cdba]">
+          <p
+            className="text-small mx-auto mt-5 max-w-md leading-relaxed text-[#d8cdba]"
+            data-cms="text:sections.testimonials.subtitle"
+          >
             {testimonials.subtitle}
           </p>
         </div>

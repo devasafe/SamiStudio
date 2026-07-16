@@ -30,12 +30,20 @@ export function CTASection({ locale, dictionary }: CTASectionProps) {
 
       <Container className="relative flex flex-col items-center text-center">
         <Heading level={2} className="max-w-2xl text-balance">
-          {cta.title}
+          {/* Heading não repassa atributos extras para a tag; o span inline
+              carrega a marcação sem alterar a estrutura do título. */}
+          <span data-cms="text:sections.cta.title">{cta.title}</span>
         </Heading>
-        <p className="text-body-lg mt-6 max-w-xl text-[#d8cdba]">{cta.subtitle}</p>
+        <p
+          className="text-body-lg mt-6 max-w-xl text-[#d8cdba]"
+          data-cms="text:sections.cta.subtitle"
+        >
+          {cta.subtitle}
+        </p>
         <Link
           href={localePath(locale, "/contato")}
           className={`${buttonVariants({ variant: "default", size: "xl" })} mt-10`}
+          data-cms="text:sections.cta.button"
         >
           {cta.button}
         </Link>

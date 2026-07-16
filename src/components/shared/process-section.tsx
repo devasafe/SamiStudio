@@ -65,14 +65,23 @@ export function ProcessSection({ dictionary }: ProcessSectionProps) {
       <Container className="relative py-24 lg:py-28">
         {/* Cabeçalho */}
         <div className="text-center">
-          <p className="text-caption inline-flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+          <p
+            className="text-caption inline-flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+            data-cms="text:sections.process.eyebrow"
+          >
             <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
             {process.eyebrow}
           </p>
-          <h2 className="font-heading mt-5 text-[clamp(2.2rem,5vw,3.8rem)] leading-[1.05] tracking-tight">
+          <h2
+            className="font-heading mt-5 text-[clamp(2.2rem,5vw,3.8rem)] leading-[1.05] tracking-tight"
+            data-cms="text:sections.process.title"
+          >
             {process.title}
           </h2>
-          <p className="text-small mx-auto mt-5 max-w-md leading-relaxed text-[#d8cdba]">
+          <p
+            className="text-small mx-auto mt-5 max-w-md leading-relaxed text-[#d8cdba]"
+            data-cms="text:sections.process.subtitle"
+          >
             {process.subtitle}
           </p>
         </div>
@@ -88,9 +97,17 @@ export function ProcessSection({ dictionary }: ProcessSectionProps) {
                 </span>
                 <span className="h-10 w-px bg-[#f2ece0]/12" aria-hidden />
                 <Icon className="size-10 text-[#cf5a18]" strokeWidth={1} aria-hidden />
-                <h3 className="font-heading mt-6 text-2xl">{step.title}</h3>
+                <h3
+                  className="font-heading mt-6 text-2xl"
+                  data-cms={`text:sections.process.steps.${index}.title`}
+                >
+                  {step.title}
+                </h3>
                 <span className="mt-3 h-px w-8 bg-[#cf5a18]/50" aria-hidden />
-                <p className="text-small mt-4 max-w-[15rem] leading-relaxed text-[#d8cdba]/80">
+                <p
+                  className="text-small mt-4 max-w-[15rem] leading-relaxed text-[#d8cdba]/80"
+                  data-cms={`text:sections.process.steps.${index}.description`}
+                >
                   {step.description}
                 </p>
               </li>
@@ -102,7 +119,10 @@ export function ProcessSection({ dictionary }: ProcessSectionProps) {
         <div className="mt-20 flex items-center gap-6 border-t border-[#f2ece0]/10 pt-8">
           <span className="h-px flex-1 bg-[#f2ece0]/10" aria-hidden />
           <p className="text-caption text-center tracking-[0.2em] text-[#f2ece0]/45 uppercase">
-            {process.footerLead} <span className="text-[#cf5a18]">{process.footerEmphasis}</span>
+            <span data-cms="text:sections.process.footerLead">{process.footerLead}</span>{" "}
+            <span className="text-[#cf5a18]" data-cms="text:sections.process.footerEmphasis">
+              {process.footerEmphasis}
+            </span>
           </p>
           <span className="h-px flex-1 bg-[#f2ece0]/10" aria-hidden />
         </div>

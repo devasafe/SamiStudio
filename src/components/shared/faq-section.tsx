@@ -24,16 +24,27 @@ export function FAQSection({ locale, dictionary, items }: FAQSectionProps) {
         {/* Cabeçalho: título à esquerda, subtítulo à direita separado por um fio */}
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-16">
           <div>
-            <p className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+            <p
+              className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+              data-cms="text:sections.faq.eyebrow"
+            >
               <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
               {faq.eyebrow}
             </p>
-            <h2 className="font-heading mt-5 text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.02] tracking-tight">
+            <h2
+              className="font-heading mt-5 text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.02] tracking-tight"
+              data-cms="text:sections.faq.title"
+            >
               {faq.title}
             </h2>
           </div>
           <div className="flex items-center lg:border-l lg:border-[#f2ece0]/12 lg:pl-16">
-            <p className="text-small max-w-sm leading-relaxed text-[#d8cdba]">{faq.subtitle}</p>
+            <p
+              className="text-small max-w-sm leading-relaxed text-[#d8cdba]"
+              data-cms="text:sections.faq.subtitle"
+            >
+              {faq.subtitle}
+            </p>
           </div>
         </div>
 
@@ -72,10 +83,13 @@ export function FAQSection({ locale, dictionary, items }: FAQSectionProps) {
           >
             ?
           </span>
-          <p className="text-small text-[#d8cdba]/80">{faq.footerText}</p>
+          <p className="text-small text-[#d8cdba]/80" data-cms="text:sections.faq.footerText">
+            {faq.footerText}
+          </p>
           <Link
             href={localePath(locale, "/contato")}
             className="text-caption group inline-flex items-center gap-2 border-b border-[#cf5a18]/50 pb-1 tracking-[0.18em] text-[#cf5a18] uppercase transition-colors hover:border-[#cf5a18]"
+            data-cms="text:sections.faq.footerCta"
           >
             {faq.footerCta}
             <ArrowUpRight

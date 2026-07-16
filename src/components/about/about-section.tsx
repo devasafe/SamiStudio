@@ -46,17 +46,29 @@ export function AboutSection({ locale, dictionary, photo, overrides }: AboutSect
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           {/* Coluna de texto */}
           <div className="relative z-10 max-w-xl">
-            <p className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+            <p
+              className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+              data-cms="text:sections.about.eyebrow"
+            >
               <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
               {about.eyebrow}
             </p>
             <h2 className="font-heading mt-6 text-[clamp(2rem,4.6vw,3.4rem)] leading-[1.05] tracking-tight text-balance">
-              {about.titleLead} <span className="text-[#cf5a18] italic">{about.titleEmphasis}</span>
+              <span data-cms="text:sections.about.titleLead">{about.titleLead}</span>{" "}
+              <span className="text-[#cf5a18] italic" data-cms="text:sections.about.titleEmphasis">
+                {about.titleEmphasis}
+              </span>
             </h2>
-            <p className="text-small mt-7 max-w-md leading-relaxed text-[#d8cdba]">{about.text}</p>
+            <p
+              className="text-small mt-7 max-w-md leading-relaxed text-[#d8cdba]"
+              data-cms="text:sections.about.text"
+            >
+              {about.text}
+            </p>
             <Link
               href={localePath(locale, "/sobre")}
               className="text-caption group mt-9 inline-flex items-center gap-3 rounded-md border border-[#f2ece0]/30 px-7 py-3.5 tracking-[0.18em] uppercase transition-colors duration-300 hover:bg-[#f2ece0] hover:text-[#141009]"
+              data-cms="text:sections.about.cta"
             >
               {about.cta}
               <ArrowRight

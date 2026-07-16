@@ -66,7 +66,10 @@ export function LatestCarousel({ photos, ctaLabel }: LatestCarouselProps) {
                       className="object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-[#141009]/0 opacity-0 transition-all duration-300 group-hover/item:bg-[#141009]/65 group-hover/item:opacity-100">
-                      <span className="text-caption inline-flex items-center gap-1.5 tracking-[0.18em] text-[#f2ece0] uppercase">
+                      <span
+                        className="text-caption inline-flex items-center gap-1.5 tracking-[0.18em] text-[#f2ece0] uppercase"
+                        data-cms="text:sections.latest.viewProject"
+                      >
                         {ctaLabel}
                         <span aria-hidden>→</span>
                       </span>

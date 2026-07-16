@@ -32,20 +32,32 @@ export function ServicesSection({ locale, dictionary, items }: ServicesSectionPr
         <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
           {/* Chamada */}
           <div className="max-w-lg">
-            <p className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+            <p
+              className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase"
+              data-cms="text:sections.services.eyebrow"
+            >
               <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
               {services.eyebrow}
             </p>
             <h2 className="font-heading mt-6 text-[clamp(2.2rem,5vw,3.8rem)] leading-[1.02] tracking-tight text-balance">
-              {services.titleLead}{" "}
-              <span className="text-[#cf5a18] italic">{services.titleEmphasis}</span>
+              <span data-cms="text:sections.services.titleLead">{services.titleLead}</span>{" "}
+              <span
+                className="text-[#cf5a18] italic"
+                data-cms="text:sections.services.titleEmphasis"
+              >
+                {services.titleEmphasis}
+              </span>
             </h2>
-            <p className="text-small mt-6 max-w-sm leading-relaxed text-[#d8cdba]">
+            <p
+              className="text-small mt-6 max-w-sm leading-relaxed text-[#d8cdba]"
+              data-cms="text:sections.services.subtitle"
+            >
               {services.subtitle}
             </p>
             <Link
               href={localePath(locale, "/servicos")}
               className="text-caption group mt-9 inline-flex items-center gap-4 border border-[#cf5a18]/50 px-7 py-4 tracking-[0.18em] uppercase transition-colors duration-300 hover:bg-[#cf5a18] hover:text-[#0f0c09]"
+              data-cms="text:sections.services.viewAll"
             >
               {services.viewAll}
               <ArrowRight
