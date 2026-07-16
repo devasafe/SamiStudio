@@ -52,7 +52,26 @@
       "eyebrow": "O estúdio",
       "title": "Quem dá vida aos seus projetos",
       "text": "O Sami da Silva Studio transforma projetos de arquitetura e interiores em imagens hiper-realistas. Cada render é tratado como uma peça única: composição, luz e materiais pensados para valorizar o projeto e convencer quem decide.",
-      "cta": "Conheça o Studio"
+      "cta": "Conheça o Studio",
+      "titleLead": "Mais que renders,",
+      "titleEmphasis": "damos vida aos seus projetos.",
+      "founder": "Sami da Silva",
+      "role": "Fundadora & Diretora Criativa",
+      "badge": "Arquitetura · Render · Design",
+      "stats": [
+        {
+          "value": "6+",
+          "label": "Anos de estúdio"
+        },
+        {
+          "value": "120+",
+          "label": "Projetos entregues"
+        },
+        {
+          "value": "40+",
+          "label": "Clientes atendidos"
+        }
+      ]
     },
     "services": {
       "eyebrow": "Serviços",
@@ -79,7 +98,22 @@
           "title": "IA aplicada",
           "description": "Fluxos com inteligência artificial para explorar variações do projeto com rapidez."
         }
-      ]
+      ],
+      "titleLead": "Do modelo 3D ao",
+      "titleEmphasis": "render final",
+      "viewAll": "Ver todos os serviços",
+      "heroCta": "Solicitar orçamento",
+      "heroCardTitle": "Visualizações que geram decisões",
+      "heroCardText": "Imagens que traduzem ideias em experiências reais.",
+      "ctaLead": "Cada projeto é único.",
+      "ctaEmphasis": "Nossos serviços também.",
+      "ctaText": "Atendemos projetos de todos os tamanhos com o mesmo nível de dedicação e excelência.",
+      "ctaButton": "Vamos conversar"
+    },
+    "latest": {
+      "eyebrow": "Portfólio",
+      "title": "Trabalhos recentes",
+      "viewProject": "Ver projeto"
     },
     "process": {
       "eyebrow": "Processo",
@@ -101,7 +135,15 @@
           "title": "Entrega",
           "description": "Render final em alta resolução, pronto para apresentar e divulgar."
         }
-      ]
+      ],
+      "subtitle": "Um processo claro e colaborativo para transformar seu projeto em imagens que impressionam.",
+      "footerLead": "Transparência em cada etapa.",
+      "footerEmphasis": "Qualidade em cada detalhe."
+    },
+    "testimonials": {
+      "eyebrow": "Depoimentos",
+      "title": "O que dizem nossos clientes",
+      "subtitle": "A confiança de quem viu o projeto sair do papel e virar imagem."
     },
     "portfolio": {
       "eyebrow": "Portfólio",
@@ -134,7 +176,10 @@
           "question": "Em quais formatos recebo as imagens?",
           "answer": "Imagens em alta resolução (JPG/PNG) prontas para apresentações, redes sociais e impressão. Outros formatos podem ser combinados."
         }
-      ]
+      ],
+      "subtitle": "Respondemos as principais dúvidas sobre nossos serviços e processos.",
+      "footerText": "Ainda tem dúvidas? Fale com a gente.",
+      "footerCta": "Entrar em contato"
     },
     "cta": {
       "title": "Vamos tirar seu projeto do papel?",
@@ -163,11 +208,38 @@
         "title": "Parceria",
         "description": "Comunicação próxima do início ao fim do projeto."
       }
-    ]
+    ],
+    "heroEyebrow": "Sobre o estúdio",
+    "heroTitleLead": "Por trás de cada detalhe,",
+    "heroTitleEmphasis": "existe intenção.",
+    "heroText": "O Sami da Silva Studio nasceu da paixão por transformar projetos em imagens que despertam sensações. Mais que renders, criamos experiências visuais que valorizam projetos e contam histórias.",
+    "heroCta": "Conheça nossa história",
+    "founderEyebrow": "Fundadora",
+    "founderGreeting": "Oi, eu sou",
+    "founderParagraphs": [
+      "Apaixonada por arquitetura, design e tecnologia desde jovem, encontrei nos renders 3D a forma perfeita de unir criatividade e precisão.",
+      "Acredito que cada projeto tem um propósito e merece ser apresentado da forma mais real, estética e emocionante possível.",
+      "Fundei o estúdio para entregar não apenas imagens bonitas, mas resultados que geram conexão, desejo e valor."
+    ],
+    "essenceEyebrow": "Nossa essência",
+    "essenceTitleLead": "Mais que estética,",
+    "essenceTitleEmphasis": "entregamos sensações.",
+    "essenceText": "Cada luz, cada textura e cada ângulo são pensados para comunicar o melhor do seu projeto.",
+    "essenceCta": "Nossos serviços"
   },
   "portfolioPage": {
     "all": "Todos",
-    "empty": "Nenhum projeto nesta categoria ainda."
+    "empty": "Nenhum projeto nesta categoria ainda.",
+    "heroEyebrow": "Portfólio",
+    "heroTitleLead": "Projetos que ganham",
+    "heroTitleEmphasis": "vida.",
+    "heroText": "Cada render carrega intenção, técnica e sensibilidade. Explore uma seleção de projetos desenvolvidos para nossos clientes.",
+    "sortLabel": "Ordenar projetos",
+    "sortRecent": "Mais recentes",
+    "sortOldest": "Mais antigos",
+    "prevPage": "Página anterior",
+    "nextPage": "Próxima página",
+    "pageStatus": "Página {current} de {total}"
   },
   "projectPage": {
     "back": "Voltar ao portfólio",
@@ -177,7 +249,35 @@
     "category": "Categoria",
     "galleryComingSoon": "Galeria em breve — este projeto receberá as imagens do portfólio da Sami.",
     "next": "Próximo projeto",
-    "lightbox": { "close": "Fechar", "prev": "Foto anterior", "next": "Próxima foto" }
+    "lightbox": {
+      "close": "Fechar",
+      "prev": "Foto anterior",
+      "next": "Próxima foto"
+    }
+  },
+  "contactPage": {
+    "heroEyebrow": "Contato",
+    "heroTitleLead": "Vamos transformar suas ideias em",
+    "heroTitleEmphasis": "realidade.",
+    "heroText": "Entre em contato e conte sobre seu projeto. Será um prazer entender suas necessidades e criar algo único para você.",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Telefone / WhatsApp",
+    "instagramLabel": "Instagram",
+    "locationLabel": "Localização",
+    "hoursLabel": "Horário de atendimento",
+    "formTitle": "Envie uma mensagem",
+    "fieldName": "Nome completo",
+    "fieldEmail": "E-mail",
+    "fieldPhone": "Telefone / WhatsApp",
+    "fieldSubject": "Assunto",
+    "fieldMessage": "Conte sobre seu projeto",
+    "submit": "Enviar mensagem",
+    "sending": "Enviando...",
+    "privacy": "Seus dados estão protegidos. Não enviamos spam.",
+    "success": "Mensagem enviada! Responderemos em breve.",
+    "error": "Não foi possível enviar. Tente novamente em instantes.",
+    "cardTitle": "Atendimento personalizado",
+    "cardText": "Cada projeto é único. Nossa equipe está pronta para criar soluções sob medida para você."
   },
   "categories": {
     "residential": "Residencial",

@@ -52,7 +52,26 @@
       "eyebrow": "The studio",
       "title": "The people who bring your projects to life",
       "text": "Sami da Silva Studio turns architecture and interior projects into hyper-realistic images. Every render is treated as a unique piece: composition, light and materials crafted to elevate the project and convince decision-makers.",
-      "cta": "Meet the Studio"
+      "cta": "Meet the Studio",
+      "titleLead": "More than renders,",
+      "titleEmphasis": "we bring your projects to life.",
+      "founder": "Sami da Silva",
+      "role": "Founder & Creative Director",
+      "badge": "Architecture · Render · Design",
+      "stats": [
+        {
+          "value": "6+",
+          "label": "Years in studio"
+        },
+        {
+          "value": "120+",
+          "label": "Projects delivered"
+        },
+        {
+          "value": "40+",
+          "label": "Happy clients"
+        }
+      ]
     },
     "services": {
       "eyebrow": "Services",
@@ -79,7 +98,22 @@
           "title": "Applied AI",
           "description": "AI-powered workflows to explore project variations quickly."
         }
-      ]
+      ],
+      "titleLead": "From 3D model to",
+      "titleEmphasis": "final render",
+      "viewAll": "See all services",
+      "heroCta": "Request a quote",
+      "heroCardTitle": "Visuals that drive decisions",
+      "heroCardText": "Images that turn ideas into real experiences.",
+      "ctaLead": "Every project is unique.",
+      "ctaEmphasis": "So are our services.",
+      "ctaText": "We take on projects of every size with the same dedication and care.",
+      "ctaButton": "Let's talk"
+    },
+    "latest": {
+      "eyebrow": "Portfolio",
+      "title": "Recent work",
+      "viewProject": "View project"
     },
     "process": {
       "eyebrow": "Process",
@@ -101,7 +135,15 @@
           "title": "Delivery",
           "description": "Final render in high resolution, ready to present and publish."
         }
-      ]
+      ],
+      "subtitle": "A clear, collaborative process to turn your project into images that impress.",
+      "footerLead": "Transparency at every step.",
+      "footerEmphasis": "Quality in every detail."
+    },
+    "testimonials": {
+      "eyebrow": "Testimonials",
+      "title": "What our clients say",
+      "subtitle": "The trust of those who saw their project leave the blueprint and become an image."
     },
     "portfolio": {
       "eyebrow": "Portfolio",
@@ -134,7 +176,10 @@
           "question": "In which formats do I receive the images?",
           "answer": "High-resolution images (JPG/PNG) ready for presentations, social media and print. Other formats can be arranged."
         }
-      ]
+      ],
+      "subtitle": "The most common questions about our services and process.",
+      "footerText": "Still have questions? Talk to us.",
+      "footerCta": "Get in touch"
     },
     "cta": {
       "title": "Shall we bring your project to life?",
@@ -163,11 +208,38 @@
         "title": "Partnership",
         "description": "Close communication from start to finish."
       }
-    ]
+    ],
+    "heroEyebrow": "About the studio",
+    "heroTitleLead": "Behind every detail,",
+    "heroTitleEmphasis": "there is intention.",
+    "heroText": "Sami da Silva Studio was born from a passion for turning projects into images that stir emotion. More than renders, we create visual experiences that elevate projects and tell stories.",
+    "heroCta": "Discover our story",
+    "founderEyebrow": "Founder",
+    "founderGreeting": "Hi, I'm",
+    "founderParagraphs": [
+      "Passionate about architecture, design and technology from an early age, I found in 3D renders the perfect way to unite creativity and precision.",
+      "I believe every project has a purpose and deserves to be presented in the most real, beautiful and moving way possible.",
+      "I founded the studio to deliver not just beautiful images, but results that create connection, desire and value."
+    ],
+    "essenceEyebrow": "Our essence",
+    "essenceTitleLead": "More than aesthetics,",
+    "essenceTitleEmphasis": "we deliver feeling.",
+    "essenceText": "Every light, texture and angle is designed to communicate the best of your project.",
+    "essenceCta": "Our services"
   },
   "portfolioPage": {
     "all": "All",
-    "empty": "No projects in this category yet."
+    "empty": "No projects in this category yet.",
+    "heroEyebrow": "Portfolio",
+    "heroTitleLead": "Projects that come",
+    "heroTitleEmphasis": "alive.",
+    "heroText": "Every render carries intent, craft and sensibility. Explore a selection of projects made for our clients.",
+    "sortLabel": "Sort projects",
+    "sortRecent": "Most recent",
+    "sortOldest": "Oldest first",
+    "prevPage": "Previous page",
+    "nextPage": "Next page",
+    "pageStatus": "Page {current} of {total}"
   },
   "projectPage": {
     "back": "Back to portfolio",
@@ -177,7 +249,35 @@
     "category": "Category",
     "galleryComingSoon": "Gallery coming soon — this project will receive images from Sami's portfolio.",
     "next": "Next project",
-    "lightbox": { "close": "Close", "prev": "Previous photo", "next": "Next photo" }
+    "lightbox": {
+      "close": "Close",
+      "prev": "Previous photo",
+      "next": "Next photo"
+    }
+  },
+  "contactPage": {
+    "heroEyebrow": "Contact",
+    "heroTitleLead": "Let's turn your ideas into",
+    "heroTitleEmphasis": "reality.",
+    "heroText": "Get in touch and tell us about your project. We would love to understand your needs and create something unique for you.",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone / WhatsApp",
+    "instagramLabel": "Instagram",
+    "locationLabel": "Location",
+    "hoursLabel": "Business hours",
+    "formTitle": "Send a message",
+    "fieldName": "Full name",
+    "fieldEmail": "Email",
+    "fieldPhone": "Phone / WhatsApp",
+    "fieldSubject": "Subject",
+    "fieldMessage": "Tell us about your project",
+    "submit": "Send message",
+    "sending": "Sending...",
+    "privacy": "Your data is safe. We never send spam.",
+    "success": "Message sent! We will get back to you soon.",
+    "error": "Could not send it. Please try again in a moment.",
+    "cardTitle": "Personal service",
+    "cardText": "Every project is unique. Our team is ready to craft a tailored solution for you."
   },
   "categories": {
     "residential": "Residential",

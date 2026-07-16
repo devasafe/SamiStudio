@@ -52,7 +52,26 @@
       "eyebrow": "El estudio",
       "title": "Quienes dan vida a tus proyectos",
       "text": "Sami da Silva Studio transforma proyectos de arquitectura e interiores en imágenes hiperrealistas. Cada render se trata como una pieza única: composición, luz y materiales pensados para valorizar el proyecto y convencer a quien decide.",
-      "cta": "Conoce el Studio"
+      "cta": "Conoce el Studio",
+      "titleLead": "Más que renders,",
+      "titleEmphasis": "damos vida a tus proyectos.",
+      "founder": "Sami da Silva",
+      "role": "Fundadora y Directora Creativa",
+      "badge": "Arquitectura · Render · Diseño",
+      "stats": [
+        {
+          "value": "6+",
+          "label": "Años de estudio"
+        },
+        {
+          "value": "120+",
+          "label": "Proyectos entregados"
+        },
+        {
+          "value": "40+",
+          "label": "Clientes satisfechos"
+        }
+      ]
     },
     "services": {
       "eyebrow": "Servicios",
@@ -79,7 +98,22 @@
           "title": "IA aplicada",
           "description": "Flujos con inteligencia artificial para explorar variaciones del proyecto con rapidez."
         }
-      ]
+      ],
+      "titleLead": "Del modelo 3D al",
+      "titleEmphasis": "render final",
+      "viewAll": "Ver todos los servicios",
+      "heroCta": "Solicitar presupuesto",
+      "heroCardTitle": "Visualizaciones que generan decisiones",
+      "heroCardText": "Imágenes que traducen ideas en experiencias reales.",
+      "ctaLead": "Cada proyecto es único.",
+      "ctaEmphasis": "Nuestros servicios también.",
+      "ctaText": "Atendemos proyectos de todos los tamaños con el mismo nivel de dedicación y excelencia.",
+      "ctaButton": "Hablemos"
+    },
+    "latest": {
+      "eyebrow": "Portafolio",
+      "title": "Trabajos recientes",
+      "viewProject": "Ver proyecto"
     },
     "process": {
       "eyebrow": "Proceso",
@@ -101,7 +135,15 @@
           "title": "Entrega",
           "description": "Render final en alta resolución, listo para presentar y difundir."
         }
-      ]
+      ],
+      "subtitle": "Un proceso claro y colaborativo para transformar tu proyecto en imágenes que impresionan.",
+      "footerLead": "Transparencia en cada etapa.",
+      "footerEmphasis": "Calidad en cada detalle."
+    },
+    "testimonials": {
+      "eyebrow": "Testimonios",
+      "title": "Lo que dicen nuestros clientes",
+      "subtitle": "La confianza de quienes vieron su proyecto salir del papel y volverse imagen."
     },
     "portfolio": {
       "eyebrow": "Portafolio",
@@ -134,7 +176,10 @@
           "question": "¿En qué formatos recibo las imágenes?",
           "answer": "Imágenes en alta resolución (JPG/PNG) listas para presentaciones, redes sociales e impresión. Otros formatos pueden acordarse."
         }
-      ]
+      ],
+      "subtitle": "Respondemos las principales dudas sobre nuestros servicios y procesos.",
+      "footerText": "¿Aún tienes dudas? Habla con nosotros.",
+      "footerCta": "Ponte en contacto"
     },
     "cta": {
       "title": "¿Llevamos tu proyecto a la realidad?",
@@ -163,11 +208,38 @@
         "title": "Cercanía",
         "description": "Comunicación cercana de principio a fin."
       }
-    ]
+    ],
+    "heroEyebrow": "Sobre el estudio",
+    "heroTitleLead": "Detrás de cada detalle,",
+    "heroTitleEmphasis": "existe intención.",
+    "heroText": "Sami da Silva Studio nació de la pasión por transformar proyectos en imágenes que despiertan sensaciones. Más que renders, creamos experiencias visuales que valorizan proyectos y cuentan historias.",
+    "heroCta": "Conoce nuestra historia",
+    "founderEyebrow": "Fundadora",
+    "founderGreeting": "Hola, soy",
+    "founderParagraphs": [
+      "Apasionada por la arquitectura, el diseño y la tecnología desde joven, encontré en los renders 3D la forma perfecta de unir creatividad y precisión.",
+      "Creo que cada proyecto tiene un propósito y merece ser presentado de la forma más real, estética y emocionante posible.",
+      "Fundé el estudio para entregar no solo imágenes bonitas, sino resultados que generan conexión, deseo y valor."
+    ],
+    "essenceEyebrow": "Nuestra esencia",
+    "essenceTitleLead": "Más que estética,",
+    "essenceTitleEmphasis": "entregamos sensaciones.",
+    "essenceText": "Cada luz, cada textura y cada ángulo están pensados para comunicar lo mejor de tu proyecto.",
+    "essenceCta": "Nuestros servicios"
   },
   "portfolioPage": {
     "all": "Todos",
-    "empty": "Aún no hay proyectos en esta categoría."
+    "empty": "Aún no hay proyectos en esta categoría.",
+    "heroEyebrow": "Portafolio",
+    "heroTitleLead": "Proyectos que cobran",
+    "heroTitleEmphasis": "vida.",
+    "heroText": "Cada render lleva intención, técnica y sensibilidad. Explora una selección de proyectos desarrollados para nuestros clientes.",
+    "sortLabel": "Ordenar proyectos",
+    "sortRecent": "Más recientes",
+    "sortOldest": "Más antiguos",
+    "prevPage": "Página anterior",
+    "nextPage": "Página siguiente",
+    "pageStatus": "Página {current} de {total}"
   },
   "projectPage": {
     "back": "Volver al portafolio",
@@ -177,7 +249,35 @@
     "category": "Categoría",
     "galleryComingSoon": "Galería próximamente — este proyecto recibirá las imágenes del portafolio de Sami.",
     "next": "Siguiente proyecto",
-    "lightbox": { "close": "Cerrar", "prev": "Foto anterior", "next": "Foto siguiente" }
+    "lightbox": {
+      "close": "Cerrar",
+      "prev": "Foto anterior",
+      "next": "Foto siguiente"
+    }
+  },
+  "contactPage": {
+    "heroEyebrow": "Contacto",
+    "heroTitleLead": "Transformemos tus ideas en",
+    "heroTitleEmphasis": "realidad.",
+    "heroText": "Ponte en contacto y cuéntanos sobre tu proyecto. Será un placer entender tus necesidades y crear algo único para ti.",
+    "emailLabel": "Correo",
+    "phoneLabel": "Teléfono / WhatsApp",
+    "instagramLabel": "Instagram",
+    "locationLabel": "Ubicación",
+    "hoursLabel": "Horario de atención",
+    "formTitle": "Envía un mensaje",
+    "fieldName": "Nombre completo",
+    "fieldEmail": "Correo",
+    "fieldPhone": "Teléfono / WhatsApp",
+    "fieldSubject": "Asunto",
+    "fieldMessage": "Cuéntanos sobre tu proyecto",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando...",
+    "privacy": "Tus datos están protegidos. No enviamos spam.",
+    "success": "¡Mensaje enviado! Responderemos pronto.",
+    "error": "No se pudo enviar. Inténtalo de nuevo en un momento.",
+    "cardTitle": "Atención personalizada",
+    "cardText": "Cada proyecto es único. Nuestro equipo está listo para crear soluciones a tu medida."
   },
   "categories": {
     "residential": "Residencial",
