@@ -15,6 +15,23 @@ export interface SiteSettingsDoc {
   behance?: string;
   /** Foto da Sami exibida na seção Sobre (upload via painel). */
   aboutPhoto?: string;
+  /** Fotos da seção "Nossa essência" (página Sobre). */
+  essencePhoto1?: string;
+  essencePhoto2?: string;
+  /** Foto ao lado do formulário (página Contato). */
+  contactPhoto?: string;
+  /** Horário de atendimento e complemento da localização (página Contato). */
+  businessHours?: string;
+  locationNote?: string;
+  /** Assinatura e números da seção Sobre (editáveis no painel). */
+  founderName?: string;
+  founderRole?: string;
+  stat1Value?: string;
+  stat1Label?: string;
+  stat2Value?: string;
+  stat2Label?: string;
+  stat3Value?: string;
+  stat3Label?: string;
   seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: string };
   analytics?: { gaMeasurementId?: string };
   heroProject?: string;
@@ -39,6 +56,19 @@ const siteSettingsSchema = new Schema<SiteSettingsDoc>(
     youtube: String,
     behance: String,
     aboutPhoto: String,
+    essencePhoto1: String,
+    essencePhoto2: String,
+    contactPhoto: String,
+    businessHours: String,
+    locationNote: String,
+    founderName: String,
+    founderRole: String,
+    stat1Value: String,
+    stat1Label: String,
+    stat2Value: String,
+    stat2Label: String,
+    stat3Value: String,
+    stat3Label: String,
     seo: { title: String, description: String, keywords: [String], ogImage: String },
     analytics: { gaMeasurementId: String },
     heroProject: String,
