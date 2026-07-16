@@ -114,6 +114,21 @@ export const testimonialCreateSchema = z.object({
 });
 export const testimonialUpdateSchema = testimonialCreateSchema.partial();
 
+/** Formulário público de contato. `website` é honeypot: preenchido = bot. */
+export const messageCreateSchema = z.object({
+  name: z.string().min(2, "Informe seu nome.").max(120),
+  email: z.string().email("E-mail inválido."),
+  phone: z.string().max(40).optional(),
+  subject: z.string().max(160).optional(),
+  message: z.string().min(10, "Conte um pouco mais sobre o projeto.").max(5000),
+  // Aceito aqui e recusado no handler: a rota devolve um erro genérico em vez
+  // de um "website deve ser vazio", que só ensinaria o bot a contornar.
+  website: z.string().max(200).optional(),
+});
+
+/** No painel só se marca lida/não lida. */
+export const messageUpdateSchema = z.object({ read: z.boolean() });
+
 export const settingsUpdateSchema = z.object({
   siteName: z.string().max(120).optional(),
   logo: z.string().url().optional(),
@@ -128,6 +143,19 @@ export const settingsUpdateSchema = z.object({
   youtube: z.string().url().optional(),
   behance: z.string().url().optional(),
   aboutPhoto: uploadedImage.optional(),
+  essencePhoto1: uploadedImage.optional(),
+  essencePhoto2: uploadedImage.optional(),
+  contactPhoto: uploadedImage.optional(),
+  businessHours: z.string().max(120).optional(),
+  locationNote: z.string().max(120).optional(),
+  founderName: z.string().max(120).optional(),
+  founderRole: z.string().max(120).optional(),
+  stat1Value: z.string().max(20).optional(),
+  stat1Label: z.string().max(60).optional(),
+  stat2Value: z.string().max(20).optional(),
+  stat2Label: z.string().max(60).optional(),
+  stat3Value: z.string().max(20).optional(),
+  stat3Label: z.string().max(60).optional(),
   seo: seoSchema,
   analytics: z.object({ gaMeasurementId: z.string().max(40).optional() }).optional(),
   heroProject: z.string().max(120).optional(),
