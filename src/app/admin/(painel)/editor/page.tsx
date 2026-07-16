@@ -185,7 +185,13 @@ export default function AdminEditorPage() {
             onSaved={(ref, value) => {
               // Foto e dado de contato não têm o valor como texto na tela:
               // recarrega a prévia em vez de escrever por cima do que aparece.
-              if (parseRef(ref)?.kind !== "text") {
+              //
+              // "Voltar ao padrão" (value === "") também recarrega, em vez de
+              // aplicar o patch otimista: o edit-overlay faria textContent = ""
+              // e o título sumiria da prévia até a próxima navegação — o
+              // servidor volta a renderizar o texto padrão (deepMerge ignora
+              // ""), mas só depois de recarregar é que a prévia mostra isso.
+              if (parseRef(ref)?.kind !== "text" || value === "") {
                 iframeRef.current?.contentWindow?.location.reload();
                 return;
               }
