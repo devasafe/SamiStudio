@@ -46,6 +46,11 @@ export function Navbar() {
     exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
   const solid = scrolled || menuOpen;
+  // Transparente sobre fundos escuros (hero dark da home, conteúdo dark do
+  // portfólio): usa tons claros até o scroll.
+  const isDarkPage =
+    pathname === localePath(locale, "/") || pathname === localePath(locale, "/portfolio");
+  const onDark = isDarkPage && !solid;
 
   return (
     <header
@@ -59,10 +64,13 @@ export function Navbar() {
       <Container className="flex h-22 items-center justify-between gap-8">
         <Link
           href={localePath(locale, "/")}
-          className="font-heading text-body-lg tracking-tight whitespace-nowrap"
+          className={cn(
+            "font-heading text-body-lg tracking-tight whitespace-nowrap transition-colors",
+            onDark && "text-[#f2ece0]"
+          )}
         >
           Sami da Silva
-          <span className="text-muted-foreground"> Studio</span>
+          <span className={onDark ? "text-[#f2ece0]/55" : "text-muted-foreground"}> Studio</span>
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -73,9 +81,13 @@ export function Navbar() {
               aria-current={isActive(link.href, link.exact) ? "page" : undefined}
               className={cn(
                 "text-small transition-colors",
-                isActive(link.href, link.exact)
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                onDark
+                  ? isActive(link.href, link.exact)
+                    ? "text-[#f2ece0]"
+                    : "text-[#f2ece0]/65 hover:text-[#f2ece0]"
+                  : isActive(link.href, link.exact)
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
               )}
             >
               {link.label}
@@ -84,10 +96,14 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-8 lg:flex">
-          <LanguageSwitcher />
+          <LanguageSwitcher onDark={onDark} />
           <Link
             href={localePath(locale, "/contato")}
-            className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-5")}
+            className={cn(
+              buttonVariants({ variant: onDark ? "outline" : "default", size: "lg" }),
+              "px-5",
+              onDark && "border-[#f2ece0]/40 text-[#f2ece0] hover:bg-[#f2ece0] hover:text-[#141009]"
+            )}
           >
             {dictionary.common.requestQuote}
           </Link>
@@ -95,7 +111,7 @@ export function Navbar() {
 
         <button
           type="button"
-          className="text-foreground -mr-2 p-2 lg:hidden"
+          className={cn("-mr-2 p-2 lg:hidden", onDark ? "text-[#f2ece0]" : "text-foreground")}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label={menuOpen ? dictionary.common.closeMenu : dictionary.common.openMenu}

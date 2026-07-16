@@ -48,20 +48,20 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
   ];
 
   return (
-    <footer className="bg-foreground text-background">
+    <footer className="bg-[#141009] text-[#f2ece0]">
       <Container className="py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <p className="font-heading text-body-lg tracking-tight">
-              Sami da Silva <span className="text-background/60">Studio</span>
+              Sami da Silva <span className="text-[#f2ece0]/60">Studio</span>
             </p>
-            <p className="text-small text-background/60 mt-4 max-w-sm">
+            <p className="text-small mt-4 max-w-sm text-[#f2ece0]/60">
               {dictionary.footer.tagline}
             </p>
           </div>
 
           <nav aria-label={dictionary.footer.navigation}>
-            <p className="text-caption text-background/50 font-medium tracking-widest uppercase">
+            <p className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase">
               {dictionary.footer.navigation}
             </p>
             <ul className="mt-4 space-y-3">
@@ -69,7 +69,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-small text-background/80 hover:text-background transition-colors"
+                    className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                   >
                     {link.label}
                   </Link>
@@ -81,7 +81,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
           <div className="space-y-10">
             {contactLinks.length > 0 || socialLinks.length > 0 ? (
               <nav aria-label={dictionary.footer.contact}>
-                <p className="text-caption text-background/50 font-medium tracking-widest uppercase">
+                <p className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase">
                   {dictionary.footer.contact}
                 </p>
                 <ul className="mt-4 space-y-3">
@@ -89,7 +89,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="text-small text-background/80 hover:text-background transition-colors"
+                        className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                       >
                         {link.label}
                       </a>
@@ -101,7 +101,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-small text-background/80 hover:text-background transition-colors"
+                        className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                       >
                         {link.label}
                       </a>
@@ -112,7 +112,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
             ) : null}
 
             <nav aria-label={dictionary.footer.languages}>
-              <p className="text-caption text-background/50 font-medium tracking-widest uppercase">
+              <p className="text-caption font-medium tracking-widest text-[#f2ece0]/50 uppercase">
                 {dictionary.footer.languages}
               </p>
               <ul className="mt-4 space-y-3">
@@ -120,7 +120,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                   <li key={l}>
                     <Link
                       href={localePath(l, "/")}
-                      className="text-small text-background/80 hover:text-background transition-colors"
+                      className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                       aria-current={l === locale ? "true" : undefined}
                     >
                       {localeNames[l]}
@@ -132,8 +132,8 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
           </div>
         </div>
 
-        <div className="border-background/10 mt-16 border-t pt-8">
-          <p className="text-caption text-background/50">
+        <div className="mt-16 border-t border-[#f2ece0]/10 pt-8">
+          <p className="text-caption text-[#f2ece0]/50">
             © {year} {dictionary.meta.siteName}. {dictionary.footer.rights}
           </p>
         </div>

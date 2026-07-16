@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/typography";
 import { localePath, type Locale } from "@/i18n/config";
@@ -11,17 +11,28 @@ interface CTASectionProps {
   dictionary: Dictionary;
 }
 
-/** CTA final (Docs/06): uma única ação, continuação natural da navegação. */
+/** Foto de fundo de um projeto real, no mesmo mood dark quente da hero. */
+const CTA_BG_SRC = "/images/cta-bg.webp";
+
+/**
+ * CTA final (Docs/06): uma única ação. Foto de projeto ao fundo, escurecida
+ * como na hero, para "tirar o projeto do papel" virar realidade.
+ */
 export function CTASection({ locale, dictionary }: CTASectionProps) {
   const cta = dictionary.sections.cta;
 
   return (
-    <Section className="bg-surface">
-      <Container className="flex flex-col items-center text-center">
-        <Heading level={2} className="max-w-2xl">
+    <section className="relative overflow-hidden bg-[#141009] py-24 text-[#f2ece0] lg:py-32">
+      <Image src={CTA_BG_SRC} alt="" fill sizes="100vw" quality={85} className="object-cover" />
+      {/* Escurecimento + gradiente para a legenda respirar, igual à hero. */}
+      <div className="absolute inset-0 bg-[#141009]/70" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#141009] via-[#141009]/55 to-[#141009]/35" />
+
+      <Container className="relative flex flex-col items-center text-center">
+        <Heading level={2} className="max-w-2xl text-balance">
           {cta.title}
         </Heading>
-        <p className="text-body-lg text-muted-foreground mt-6 max-w-xl">{cta.subtitle}</p>
+        <p className="text-body-lg mt-6 max-w-xl text-[#d8cdba]">{cta.subtitle}</p>
         <Link
           href={localePath(locale, "/contato")}
           className={`${buttonVariants({ variant: "default", size: "xl" })} mt-10`}
@@ -29,6 +40,6 @@ export function CTASection({ locale, dictionary }: CTASectionProps) {
           {cta.button}
         </Link>
       </Container>
-    </Section>
+    </section>
   );
 }

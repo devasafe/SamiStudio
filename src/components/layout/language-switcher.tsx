@@ -30,9 +30,11 @@ function stripLocale(pathname: string): string {
 
 interface LanguageSwitcherProps {
   className?: string;
+  /** Sobre um fundo escuro (hero): usa tons claros em vez dos tokens. */
+  onDark?: boolean;
 }
 
-export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
+export function LanguageSwitcher({ className, onDark = false }: LanguageSwitcherProps) {
   const pathname = usePathname() ?? "/";
   const { locale: currentLocale, dictionary } = useLanguage();
   const basePath = stripLocale(pathname);
@@ -42,21 +44,28 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
       aria-label={dictionary.common.language}
       className={cn("flex items-center gap-4", className)}
     >
-      {locales.map((locale) => (
-        <Link
-          key={locale}
-          href={localePath(locale, basePath)}
-          aria-current={locale === currentLocale ? "true" : undefined}
-          className={cn(
-            "text-caption font-medium tracking-widest uppercase transition-colors",
-            locale === currentLocale
-              ? "text-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          {localeLabels[locale]}
-        </Link>
-      ))}
+      {locales.map((locale) => {
+        const active = locale === currentLocale;
+        return (
+          <Link
+            key={locale}
+            href={localePath(locale, basePath)}
+            aria-current={active ? "true" : undefined}
+            className={cn(
+              "text-caption font-medium tracking-widest uppercase transition-colors",
+              onDark
+                ? active
+                  ? "text-[#f2ece0]"
+                  : "text-[#f2ece0]/55 hover:text-[#f2ece0]"
+                : active
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {localeLabels[locale]}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

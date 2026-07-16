@@ -1,41 +1,90 @@
+import Link from "next/link";
+import { ArrowUpRight } from "@/components/icons";
 import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { SectionTitle } from "@/components/ui/typography";
-import type { FaqItem } from "@/lib/content";
+import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import type { FaqItem } from "@/lib/content";
 
 interface FAQSectionProps {
+  locale: Locale;
   dictionary: Dictionary;
   items: FaqItem[];
 }
 
-/** FAQ em accordion (Docs/03): eliminar dúvidas antes do CTA. */
-export function FAQSection({ dictionary, items }: FAQSectionProps) {
+/**
+ * FAQ (Docs/03): eliminar dúvidas antes do CTA. Editorial dark, em acordeão
+ * nativo (`details`/`summary`) — abre sem JS e já vem acessível.
+ */
+export function FAQSection({ locale, dictionary, items }: FAQSectionProps) {
   const faq = dictionary.sections.faq;
 
   return (
-    <Section>
-      <Container className="max-w-4xl">
-        <SectionTitle eyebrow={faq.eyebrow} title={faq.title} align="center" />
-        <Accordion className="mt-16">
-          {items.map((item) => (
-            <AccordionItem key={item.question} value={item.question}>
-              <AccordionTrigger className="text-body font-heading py-6">
-                {item.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-small text-muted-foreground pb-6">
+    <section className="bg-[#0f0c09] text-[#f2ece0]">
+      <Container className="py-24 lg:py-28">
+        {/* Cabeçalho: título à esquerda, subtítulo à direita separado por um fio */}
+        <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-16">
+          <div>
+            <p className="text-caption flex items-center gap-3 tracking-[0.22em] text-[#cf5a18] uppercase">
+              <span className="h-px w-8 bg-[#cf5a18]" aria-hidden />
+              {faq.eyebrow}
+            </p>
+            <h2 className="font-heading mt-5 text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.02] tracking-tight">
+              {faq.title}
+            </h2>
+          </div>
+          <div className="flex items-center lg:border-l lg:border-[#f2ece0]/12 lg:pl-16">
+            <p className="text-small max-w-sm leading-relaxed text-[#d8cdba]">{faq.subtitle}</p>
+          </div>
+        </div>
+
+        {/* Perguntas */}
+        <div className="mt-16 border-t border-[#f2ece0]/10">
+          {items.map((item, index) => (
+            <details key={item.question} className="group border-b border-[#f2ece0]/10">
+              <summary className="flex cursor-pointer list-none items-center gap-5 py-6 [&::-webkit-details-marker]:hidden">
+                <span className="text-caption w-8 shrink-0 text-[#f2ece0]/35 transition-colors group-open:text-[#cf5a18]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="h-6 w-px shrink-0 bg-[#f2ece0]/15" aria-hidden />
+                <h3 className="font-heading flex-1 text-lg leading-snug sm:text-xl">
+                  {item.question}
+                </h3>
+                <span
+                  className="shrink-0 text-xl leading-none text-[#cf5a18] transition-colors"
+                  aria-hidden
+                >
+                  <span className="group-open:hidden">+</span>
+                  <span className="hidden group-open:inline">−</span>
+                </span>
+              </summary>
+              <p className="text-small max-w-3xl pr-10 pb-6 pl-[3.25rem] leading-relaxed text-[#d8cdba]/75">
                 {item.answer}
-              </AccordionContent>
-            </AccordionItem>
+              </p>
+            </details>
           ))}
-        </Accordion>
+        </div>
+
+        {/* Fecho: ainda tem dúvidas? */}
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-5 gap-y-4">
+          <span
+            className="text-caption flex size-9 shrink-0 items-center justify-center rounded-full border border-[#cf5a18]/50 text-[#cf5a18]"
+            aria-hidden
+          >
+            ?
+          </span>
+          <p className="text-small text-[#d8cdba]/80">{faq.footerText}</p>
+          <Link
+            href={localePath(locale, "/contato")}
+            className="text-caption group inline-flex items-center gap-2 border-b border-[#cf5a18]/50 pb-1 tracking-[0.18em] text-[#cf5a18] uppercase transition-colors hover:border-[#cf5a18]"
+          >
+            {faq.footerCta}
+            <ArrowUpRight
+              className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          </Link>
+        </div>
       </Container>
-    </Section>
+    </section>
   );
 }

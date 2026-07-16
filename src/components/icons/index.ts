@@ -7,16 +7,28 @@
  * quando necessários, criar SVGs próprios neste diretório.
  */
 export {
+  ArrowDown,
   ArrowLeft,
   ArrowRight,
+  ArrowUpRight,
   Box,
   Building2,
   Camera,
   ChevronDown,
+  Clock,
+  Eye,
   Globe,
+  Lock,
+  Mail,
+  MapPin,
   Menu,
   MessageCircle,
   PencilRuler,
+  Phone,
+  Quote,
   Sparkles,
+  Star,
   X,
 } from "lucide-react";
+
+export { Instagram } from "./instagram";
