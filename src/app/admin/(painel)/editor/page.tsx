@@ -32,6 +32,13 @@ export default function AdminEditorPage() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   /** O laço de retry não enxerga o state: lê o ref. */
   const readyRef = useRef(false);
+  /**
+   * Guarda o intervalo em andamento fora do closure de enableEditing: assim
+   * uma nova chamada (troca de página/idioma) ou o unmount conseguem
+   * cancelar um retry de uma rodada anterior antes que ele mexa em estado
+   * que já não é mais dele.
+   */
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
@@ -61,17 +68,27 @@ export default function AdminEditorPage() {
    * chegar antes disso e se perder, deixando a prévia muda para sempre.
    */
   const enableEditing = useCallback(() => {
+    // Uma rodada anterior (página/idioma trocados antes do handshake acabar)
+    // não pode sobreviver: sem isso, dois intervalos correm ao mesmo tempo e
+    // o mais velho pode marcar "failed" sobre o estado da rodada nova.
+    if (timerRef.current !== null) {
+      window.clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
     readyRef.current = false;
     setStatus("loading");
     const startedAt = Date.now();
 
-    const timer = window.setInterval(() => {
+    timerRef.current = window.setInterval(() => {
       if (readyRef.current) {
-        window.clearInterval(timer);
+        window.clearInterval(timerRef.current!);
+        timerRef.current = null;
         return;
       }
       if (Date.now() - startedAt > HANDSHAKE_TIMEOUT_MS) {
-        window.clearInterval(timer);
+        window.clearInterval(timerRef.current!);
+        timerRef.current = null;
         // Sem "cms:ready" a tempo, a prévia ficaria muda e sem explicação.
         setStatus("failed");
         return;
@@ -81,6 +98,18 @@ export default function AdminEditorPage() {
         window.location.origin
       );
     }, HANDSHAKE_RETRY_MS);
+  }, []);
+
+  useEffect(() => {
+    // Ao desmontar (sair de /admin/editor), um retry pendente não pode
+    // continuar chamando postMessage/setStatus contra um componente que já
+    // não existe mais.
+    return () => {
+      if (timerRef.current !== null) {
+        window.clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
   }, []);
 
   return (
