@@ -79,6 +79,35 @@ export const getPublishedProjects = cache(
   }
 );
 
+/**
+ * Projetos marcados como "destaque" no admin (checkbox em `project-form.tsx`),
+ * usados no carrossel do banner da página Portfólio. Sem nenhum marcado, cai
+ * nos publicados mais recentes — o banner nunca fica vazio.
+ */
+export const getFeaturedProjects = cache(
+  async (locale: Locale, dictionary: Dictionary): Promise<PortfolioItem[]> => {
+    try {
+      await connectDb();
+      const [projects, categories] = await Promise.all([
+        Project.find({ status: "published", featured: true, deletedAt: null })
+          .sort({ createdAt: -1 })
+          .lean(),
+        Category.find({ deletedAt: null }).lean(),
+      ]);
+      if (projects.length > 0) {
+        const categoryNames = new Map(categories.map((c) => [String(c._id), c.name]));
+        return projects.map((doc) =>
+          toPortfolioItem(doc, locale, categoryNames.get(String(doc.categoryId)))
+        );
+      }
+    } catch {
+      // fallback
+    }
+    const fallback = await getPublishedProjects(locale, dictionary);
+    return fallback.slice(0, 3);
+  }
+);
+
 export const getProjectBySlug = cache(
   async (slug: string, locale: Locale, dictionary: Dictionary): Promise<PortfolioItem | null> => {
     try {
