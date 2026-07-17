@@ -1,6 +1,6 @@
 import { Box, Clock, Eye, PencilRuler, Sparkles } from "@/components/icons";
 import { Container } from "@/components/layout/container";
-import { CircuitBoard } from "@/components/ui/circuit-board";
+import { ProcessCircuit } from "@/components/shared/process-circuit";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
 interface ProcessSectionProps {
@@ -10,58 +10,17 @@ interface ProcessSectionProps {
 /** Ícone de cada etapa, na ordem do processo (briefing → entrega). */
 const STEP_ICONS = [PencilRuler, Box, Eye, Sparkles];
 
-/** Trilhas decorativas ao fundo: nós discretos ligados por caminhos em ângulo
- * reto (o CircuitBoard desenha as curvas e os pulsos correndo por elas). */
-const CIRCUIT_NODES = [
-  { id: "a", x: 60, y: 40, size: "sm" as const },
-  { id: "b", x: 320, y: 120, size: "sm" as const },
-  { id: "c", x: 640, y: 40, size: "sm" as const },
-  { id: "d", x: 900, y: 150, size: "sm" as const },
-  { id: "e", x: 1180, y: 60, size: "sm" as const },
-  { id: "f", x: 1480, y: 140, size: "sm" as const },
-  { id: "g", x: 480, y: 235, size: "sm" as const },
-  { id: "h", x: 1040, y: 240, size: "sm" as const },
-];
-
-const CIRCUIT_CONNECTIONS = [
-  { from: "a", to: "b", animated: true },
-  { from: "b", to: "c", animated: true },
-  { from: "c", to: "d", animated: true },
-  { from: "d", to: "e", animated: true },
-  { from: "e", to: "f", animated: true },
-  { from: "b", to: "g", animated: true },
-  { from: "d", to: "h", animated: true },
-];
-
 /**
  * Timeline do processo (Docs/03): Briefing → Modelagem → Prévia → Entrega.
- * Numeração usada porque o conteúdo é de fato uma sequência. Editorial dark,
- * com as trilhas de circuito correndo ao fundo.
+ * Numeração usada porque o conteúdo é de fato uma sequência. Editorial dark:
+ * as trilhas de circuito ligam as próprias bolinhas numeradas, com a luz
+ * correndo de uma etapa à seguinte.
  */
 export function ProcessSection({ dictionary }: ProcessSectionProps) {
   const process = dictionary.sections.process;
 
   return (
     <section className="relative overflow-hidden bg-[#141009] text-[#f2ece0]">
-      <div
-        className="pointer-events-none absolute inset-x-0 top-[38%] flex justify-center"
-        aria-hidden
-      >
-        <CircuitBoard
-          nodes={CIRCUIT_NODES}
-          connections={CIRCUIT_CONNECTIONS}
-          width={1600}
-          height={300}
-          variant="dark"
-          showGrid={false}
-          traceWidth={1}
-          pulseSpeed={4}
-          traceColor="rgba(207, 90, 24, 0.2)"
-          pulseColor="rgba(207, 90, 24, 0.5)"
-          nodeColor="rgba(207, 90, 24, 0.28)"
-        />
-      </div>
-
       <Container className="relative py-24 lg:py-28">
         {/* Cabeçalho */}
         <div className="text-center">
@@ -88,6 +47,11 @@ export function ProcessSection({ dictionary }: ProcessSectionProps) {
 
         {/* Etapas */}
         <ol className="relative mt-20 grid grid-cols-1 gap-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          {/* Circuito ligando as bolinhas numeradas (só no layout lado a lado). */}
+          <ProcessCircuit
+            steps={process.steps.length}
+            className="pointer-events-none absolute inset-x-0 top-0 hidden h-[60px] w-full lg:block"
+          />
           {process.steps.map((step, index) => {
             const Icon = STEP_ICONS[index % STEP_ICONS.length];
             return (
