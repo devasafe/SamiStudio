@@ -22,6 +22,7 @@ export {
   Eye,
   FolderOpen,
   Globe,
+  GripVertical,
   LayoutDashboard,
   Lock,
   Mail,
