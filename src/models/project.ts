@@ -8,6 +8,15 @@ export interface GalleryItem {
   order?: number;
 }
 
+/** Um par de fotos da transformação, no comparador de arrastar. */
+export interface BeforeAfterItem {
+  before: string;
+  after: string;
+  /** Legenda opcional do par (ex.: "Fachada"). */
+  label?: string;
+  order?: number;
+}
+
 export interface ProjectSeo {
   title?: string;
   description?: string;
@@ -28,9 +37,9 @@ export interface ProjectDoc {
   coverImage?: string;
   gallery: GalleryItem[];
   video?: { url?: string; thumbnail?: string; provider?: string };
-  beforeImage?: string;
-  afterImage?: string;
+  /** Liga a aba "Antes e Depois" no site e revela os pares no painel. */
   checkpoint?: boolean;
+  beforeAfter?: BeforeAfterItem[];
   featured: boolean;
   status: "draft" | "published" | "archived";
   seo?: ProjectSeo;
@@ -62,9 +71,16 @@ const projectSchema = new Schema<ProjectDoc>(
       },
     ],
     video: { url: String, thumbnail: String, provider: String },
-    beforeImage: { type: String },
-    afterImage: { type: String },
     checkpoint: { type: Boolean, default: false },
+    beforeAfter: [
+      {
+        before: { type: String, required: true },
+        after: { type: String, required: true },
+        label: { type: String },
+        order: { type: Number, default: 0 },
+        _id: false,
+      },
+    ],
     featured: { type: Boolean, default: false },
     status: { type: String, enum: ["draft", "published", "archived"], default: "draft" },
     seo: {

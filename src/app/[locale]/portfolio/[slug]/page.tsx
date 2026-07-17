@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "@/components/icons";
 import { Container } from "@/components/layout/container";
 import { CTASection } from "@/components/shared/cta-section";
+import { BeforeAfter } from "@/components/portfolio/before-after";
 import { ProjectGallery } from "@/components/portfolio/project-gallery";
 import { localePath } from "@/i18n/config";
 import { resolveLocale } from "@/i18n/resolve-locale";
@@ -135,6 +136,28 @@ export default async function ProjectPage({ params }: PageProps) {
             </div>
           ))}
         </dl>
+
+        {/* Antes e Depois só existe se o projeto marcou o checkpoint e tem par. */}
+        {project.beforeAfter && project.beforeAfter.length > 0 ? (
+          <section className="py-12">
+            <h2
+              className="font-heading text-[clamp(1.6rem,2.6vw,2.1rem)] tracking-tight"
+              data-cms="text:projectPage.beforeAfterTitle"
+            >
+              {labels.beforeAfterTitle}
+            </h2>
+            <div className="mt-6">
+              <BeforeAfter
+                items={project.beforeAfter}
+                labels={{
+                  before: labels.before,
+                  after: labels.after,
+                  hint: labels.dragHint,
+                }}
+              />
+            </div>
+          </section>
+        ) : null}
 
         {project.gallery && project.gallery.length > 0 ? (
           <div className="py-12">

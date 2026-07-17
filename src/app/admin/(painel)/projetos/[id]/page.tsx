@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { ProjectForm, type ProjectFormValues } from "@/components/admin/projects/project-form";
-import type { GalleryItem } from "@/models/project";
+import type { BeforeAfterItem, GalleryItem } from "@/models/project";
 
 interface ProjectResponse {
   title?: string;
@@ -18,8 +18,7 @@ interface ProjectResponse {
   featured?: boolean;
   gallery?: GalleryItem[];
   checkpoint?: boolean;
-  beforeImage?: string;
-  afterImage?: string;
+  beforeAfter?: BeforeAfterItem[];
 }
 
 export default function EditarProjetoPage({ params }: { params: Promise<{ id: string }> }) {
@@ -44,8 +43,7 @@ export default function EditarProjetoPage({ params }: { params: Promise<{ id: st
           featured: data.featured ?? false,
           gallery: data.gallery ?? [],
           checkpoint: data.checkpoint ?? false,
-          beforeImage: data.beforeImage ?? "",
-          afterImage: data.afterImage ?? "",
+          beforeAfter: data.beforeAfter ?? [],
         });
       } catch (err) {
         setError(err instanceof AdminApiError ? err.message : "Falha ao carregar.");

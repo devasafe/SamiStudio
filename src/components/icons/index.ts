@@ -17,6 +17,7 @@ export {
   Building2,
   Camera,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   CircleHelp,
   Clock,

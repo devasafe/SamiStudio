@@ -69,9 +69,22 @@ export const projectCreateSchema = z.object({
       provider: z.string().optional(),
     })
     .optional(),
-  beforeImage: z.string().url().optional(),
-  afterImage: z.string().url().optional(),
   checkpoint: z.boolean().optional(),
+  /**
+   * Pares da transformação. Teto de cinco: é o que cabe na tira do site sem
+   * virar rolagem, e o pedido do estúdio.
+   */
+  beforeAfter: z
+    .array(
+      z.object({
+        before: uploadedImage,
+        after: uploadedImage,
+        label: z.string().max(80).optional(),
+        order: z.number().optional(),
+      })
+    )
+    .max(5, "No máximo 5 pares de antes e depois.")
+    .optional(),
   featured: z.boolean().optional(),
   status: z.enum(["draft", "published", "archived"]).optional(),
   seo: seoSchema,

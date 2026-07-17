@@ -241,7 +241,11 @@
       "close": "Fechar",
       "prev": "Foto anterior",
       "next": "Próxima foto"
-    }
+    },
+    "beforeAfterTitle": "Antes e Depois",
+    "before": "Antes",
+    "after": "Depois",
+    "dragHint": "Arraste para ver a transformação"
   },
   "contactPage": {
     "heroEyebrow": "Contato",

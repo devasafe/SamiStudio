@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
+import { BeforeAfterEditor } from "@/components/admin/projects/before-after-editor";
 import { GalleryUploader } from "@/components/admin/projects/gallery-uploader";
 import { coverFromGallery } from "@/components/admin/projects/gallery-utils";
-import { ImageUploader } from "@/components/admin/projects/image-uploader";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import type { GalleryItem } from "@/models/project";
+import type { BeforeAfterItem, GalleryItem } from "@/models/project";
 
 export interface ProjectFormValues {
   title: string;
@@ -23,8 +23,7 @@ export interface ProjectFormValues {
   featured: boolean;
   gallery: GalleryItem[];
   checkpoint: boolean;
-  beforeImage: string;
-  afterImage: string;
+  beforeAfter: BeforeAfterItem[];
 }
 
 const EMPTY: ProjectFormValues = {
@@ -40,8 +39,7 @@ const EMPTY: ProjectFormValues = {
   featured: false,
   gallery: [],
   checkpoint: false,
-  beforeImage: "",
-  afterImage: "",
+  beforeAfter: [],
 };
 
 interface CategoryOption {
@@ -96,8 +94,13 @@ export function ProjectForm({ initial, projectId }: ProjectFormProps) {
       gallery: values.gallery,
       coverImage: coverFromGallery(values.gallery),
       checkpoint: values.checkpoint,
-      beforeImage: values.checkpoint ? values.beforeImage || undefined : undefined,
-      afterImage: values.checkpoint ? values.afterImage || undefined : undefined,
+      // Só vai o par completo: meio par não compara nada, e a validação da API
+      // exige as duas fotos. Sem o checkpoint, nada é enviado.
+      beforeAfter: values.checkpoint
+        ? values.beforeAfter
+            .filter((item) => item.before && item.after)
+            .map((item, index) => ({ ...item, order: index }))
+        : [],
     };
     try {
       if (projectId) {
@@ -242,19 +245,14 @@ export function ProjectForm({ initial, projectId }: ProjectFormProps) {
           />
           Checkpoint (comparação Antes / Depois)
         </label>
+        <p className="text-muted-foreground text-xs">
+          Liga a aba &quot;Antes e Depois&quot; na página do projeto, com o comparador de arrastar.
+        </p>
         {values.checkpoint ? (
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ImageUploader
-              label="Antes"
-              value={values.beforeImage}
-              onChange={(url) => set("beforeImage", url)}
-            />
-            <ImageUploader
-              label="Depois"
-              value={values.afterImage}
-              onChange={(url) => set("afterImage", url)}
-            />
-          </div>
+          <BeforeAfterEditor
+            value={values.beforeAfter}
+            onChange={(items) => set("beforeAfter", items)}
+          />
         ) : null}
       </div>
 
