@@ -220,6 +220,35 @@
 }
 
 /*
+ * Entrada de página: o conteúdo surge num fade curto com uma subida discreta,
+ * enquanto a navbar e o rodapé ficam parados — a troca fica calma em vez de a
+ * tela inteira piscar.
+ *
+ * O transform termina em `none` de propósito: um transform vivo tornaria este
+ * elemento o containing block de qualquer `position: fixed` interno (lightbox).
+ */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.6rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-in {
+  animation: page-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-in {
+    animation: none;
+  }
+}
+
+/*
  * Campo de telefone com seletor de país (react-phone-number-input) no visual
  * do formulário escuro. A lib expõe estas variáveis — encaixar por elas evita
  * brigar com o CSS dela a cada atualização.

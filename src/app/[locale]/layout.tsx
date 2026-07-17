@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { EditBridge } from "@/components/cms/edit-bridge";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
+import { PageTransition } from "@/components/providers/page-transition";
 import { Providers } from "@/components/providers/providers";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { AmbientBackground } from "@/components/shared/ambient-background";
@@ -115,7 +116,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
         <AmbientBackground />
         <Providers locale={locale} dictionary={dictionary}>
           <Navbar />
-          {children}
+          <PageTransition>{children}</PageTransition>
           <Footer locale={locale} dictionary={dictionary} settings={settings} />
           {whatsappNumber ? <FloatingWhatsApp number={whatsappNumber} /> : null}
         </Providers>
