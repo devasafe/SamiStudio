@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { whatsappUrl } from "@/lib/phone";
 import { cn } from "@/lib/utils";
@@ -60,22 +60,31 @@ interface MessageRow {
   createdAt: string;
 }
 
+type Tab = "inbox" | "archived";
+
 export default function AdminMessagesPage() {
+  const [tab, setTab] = useState<Tab>("inbox");
   const [messages, setMessages] = useState<MessageRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
-  useEffect(() => {
-    void (async () => {
-      try {
-        const { data } = await api<MessageRow[]>("/messages");
-        setMessages(data);
-      } catch (err) {
-        setError(err instanceof AdminApiError ? err.message : "Falha ao carregar as mensagens.");
-        setMessages([]);
-      }
-    })();
+  const load = useCallback(async (which: Tab) => {
+    setMessages(null);
+    try {
+      const { data } = await api<MessageRow[]>(
+        which === "archived" ? "/messages?archived=true" : "/messages"
+      );
+      setMessages(data);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof AdminApiError ? err.message : "Falha ao carregar as mensagens.");
+      setMessages([]);
+    }
   }, []);
+
+  useEffect(() => {
+    void Promise.resolve().then(() => load(tab));
+  }, [load, tab]);
 
   async function toggleRead(row: MessageRow) {
     setBusyId(row._id);
@@ -93,7 +102,12 @@ export default function AdminMessagesPage() {
     }
   }
 
-  async function remove(row: MessageRow) {
+  /** Tira da lista atual sem recarregar: a mensagem mudou de aba. */
+  function drop(id: string) {
+    setMessages((current) => current?.filter((m) => m._id !== id) ?? null);
+  }
+
+  async function archive(row: MessageRow) {
     if (!window.confirm(`Arquivar a mensagem de ${row.name}?`)) {
       return;
     }
@@ -101,9 +115,46 @@ export default function AdminMessagesPage() {
     setError(null);
     try {
       await api(`/messages/${row._id}`, { method: "DELETE" });
-      setMessages((current) => current?.filter((m) => m._id !== row._id) ?? null);
+      drop(row._id);
     } catch (err) {
       setError(err instanceof AdminApiError ? err.message : "Falha ao arquivar.");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function restore(row: MessageRow) {
+    setBusyId(row._id);
+    setError(null);
+    try {
+      await api(`/messages/${row._id}`, { method: "PATCH", json: { archived: false } });
+      drop(row._id);
+    } catch (err) {
+      setError(err instanceof AdminApiError ? err.message : "Falha ao restaurar.");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function destroy(row: MessageRow) {
+    // Não tem volta: o aviso diz isso com todas as letras, e o nome de quem
+    // escreveu aparece para não apagar a mensagem errada.
+    if (
+      !window.confirm(
+        `Apagar de vez a mensagem de ${row.name}?
+
+Isto não pode ser desfeito — o contato dela se perde.`
+      )
+    ) {
+      return;
+    }
+    setBusyId(row._id);
+    setError(null);
+    try {
+      await api(`/messages/${row._id}?permanent=true`, { method: "DELETE" });
+      drop(row._id);
+    } catch (err) {
+      setError(err instanceof AdminApiError ? err.message : "Falha ao apagar.");
     } finally {
       setBusyId(null);
     }
@@ -115,22 +166,50 @@ export default function AdminMessagesPage() {
     <div className="space-y-6">
       <div className="flex items-baseline gap-3">
         <h1 className="font-heading text-2xl tracking-tight">Mensagens</h1>
-        {unread > 0 ? (
+        {unread > 0 && tab === "inbox" ? (
           <span className="bg-foreground text-background rounded-full px-2.5 py-0.5 text-xs">
             {unread} não {unread === 1 ? "lida" : "lidas"}
           </span>
         ) : null}
       </div>
 
+      <nav className="border-border flex gap-1 border-b">
+        {(
+          [
+            { id: "inbox", label: "Recebidas" },
+            { id: "archived", label: "Arquivadas" },
+          ] as const
+        ).map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => setTab(item.id)}
+            aria-current={tab === item.id ? "page" : undefined}
+            className={cn(
+              "-mb-px border-b-2 px-4 py-2 text-sm transition-colors",
+              tab === item.id
+                ? "border-foreground text-foreground"
+                : "text-muted-foreground hover:text-foreground border-transparent"
+            )}
+          >
+            {item.label}
+          </button>
+        ))}
+      </nav>
+
       {error ? (
-        <p className="border-error/30 text-error rounded-md border px-4 py-3 text-sm">{error}</p>
+        <p className="border-destructive/30 text-destructive rounded-md border px-4 py-3 text-sm">
+          {error}
+        </p>
       ) : null}
 
       {messages === null ? (
         <p className="text-muted-foreground text-sm">Carregando...</p>
       ) : messages.length === 0 ? (
         <p className="text-muted-foreground text-sm">
-          Nenhuma mensagem ainda. As que chegarem pelo formulário de contato aparecem aqui.
+          {tab === "archived"
+            ? "Nenhuma mensagem arquivada."
+            : "Nenhuma mensagem ainda. As que chegarem pelo formulário de contato aparecem aqui."}
         </p>
       ) : (
         <ul className="space-y-3">
@@ -170,23 +249,48 @@ export default function AdminMessagesPage() {
                 {row.message}
               </p>
 
+              {/* O apagar definitivo só existe no arquivo: na caixa de entrada,
+                  um clique errado destruiria o contato de um cliente. */}
               <div className="mt-4 flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => void toggleRead(row)}
-                  disabled={busyId === row._id}
-                  className="border-border hover:border-foreground/30 rounded-md border px-3 py-1.5 text-xs transition-colors disabled:opacity-50"
-                >
-                  {row.read ? "Marcar como não lida" : "Marcar como lida"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void remove(row)}
-                  disabled={busyId === row._id}
-                  className="text-muted-foreground hover:text-error rounded-md px-3 py-1.5 text-xs transition-colors disabled:opacity-50"
-                >
-                  Arquivar
-                </button>
+                {tab === "inbox" ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => void toggleRead(row)}
+                      disabled={busyId === row._id}
+                      className="border-border hover:border-foreground/30 rounded-md border px-3 py-1.5 text-xs transition-colors disabled:opacity-50"
+                    >
+                      {row.read ? "Marcar como não lida" : "Marcar como lida"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => void archive(row)}
+                      disabled={busyId === row._id}
+                      className="text-muted-foreground hover:text-foreground rounded-md px-3 py-1.5 text-xs transition-colors disabled:opacity-50"
+                    >
+                      Arquivar
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => void restore(row)}
+                      disabled={busyId === row._id}
+                      className="border-border hover:border-foreground/30 rounded-md border px-3 py-1.5 text-xs transition-colors disabled:opacity-50"
+                    >
+                      Restaurar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => void destroy(row)}
+                      disabled={busyId === row._id}
+                      className="text-muted-foreground hover:text-destructive rounded-md px-3 py-1.5 text-xs transition-colors disabled:opacity-50"
+                    >
+                      Apagar de vez
+                    </button>
+                  </>
+                )}
               </div>
             </li>
           ))}

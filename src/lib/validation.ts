@@ -128,8 +128,12 @@ export const messageCreateSchema = z.object({
   website: z.string().max(200).optional(),
 });
 
-/** No painel só se marca lida/não lida. */
-export const messageUpdateSchema = z.object({ read: z.boolean() });
+/** No painel: marcar lida/não lida e arquivar/desarquivar. */
+export const messageUpdateSchema = z.object({
+  read: z.boolean().optional(),
+  /** false = tirar do arquivo e devolver para a caixa. */
+  archived: z.boolean().optional(),
+});
 
 export const settingsUpdateSchema = z.object({
   siteName: z.string().max(120).optional(),

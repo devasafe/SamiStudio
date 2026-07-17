@@ -15,7 +15,11 @@ export async function GET(request: NextRequest) {
   return withErrorHandling(async () => {
     await requireAuth(request);
     await connectDb();
-    const docs = await Message.find({ deletedAt: null }).sort({ createdAt: -1 });
+    // ?archived=true lista o arquivo; sem o parâmetro, a caixa de entrada.
+    const archived = request.nextUrl.searchParams.get("archived") === "true";
+    const docs = await Message.find(
+      archived ? { deletedAt: { $ne: null } } : { deletedAt: null }
+    ).sort({ createdAt: -1 });
     return ok(docs);
   });
 }
