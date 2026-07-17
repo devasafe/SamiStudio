@@ -10,8 +10,8 @@ const crud = createCrud({
   updateSchema: faqUpdateSchema,
 });
 
-export async function GET() {
-  return crud.list();
+export async function GET(request: NextRequest) {
+  return crud.list(request);
 }
 
 export async function POST(request: NextRequest) {

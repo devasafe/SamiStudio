@@ -24,6 +24,19 @@ interface CrudConfig<T extends SoftDeletable> {
  * CRUD padrão (Docs/11): listagem pública, mutações autenticadas,
  * soft delete (Docs/10) e log administrativo (Docs/12).
  */
+/** Sessão opcional: só para decidir se a lixeira pode ser mostrada. */
+async function hasSession(request?: NextRequest): Promise<boolean> {
+  if (!request) {
+    return false;
+  }
+  try {
+    await requireAuth(request);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function createCrud<T extends SoftDeletable>({
   entity,
   model,
@@ -33,10 +46,18 @@ export function createCrud<T extends SoftDeletable>({
 }: CrudConfig<T>) {
   const active = { deletedAt: null } as QueryFilter<T>;
 
-  async function list(): Promise<NextResponse> {
+  /**
+   * Lista os registros ativos. Com `?deleted=true` **e** sessão, lista a
+   * lixeira — o site público nunca pode enxergar o que foi removido, então o
+   * parâmetro sozinho não basta.
+   */
+  async function list(request?: NextRequest): Promise<NextResponse> {
     return withErrorHandling(async () => {
       await connectDb();
-      const docs = await model.find(active).sort(sort ?? { order: 1, createdAt: -1 });
+      const wantsTrash = request?.nextUrl.searchParams.get("deleted") === "true";
+      const authorized = wantsTrash && (await hasSession(request));
+      const filter = authorized ? ({ deletedAt: { $ne: null } } as QueryFilter<T>) : active;
+      const docs = await model.find(filter).sort(sort ?? { order: 1, createdAt: -1 });
       return ok(docs);
     });
   }
@@ -93,5 +114,39 @@ export function createCrud<T extends SoftDeletable>({
     });
   }
 
-  return { list, create, update, softDelete };
+  /** Tira da lixeira. Precisa achar um registro removido — daí não reusar update. */
+  async function restore(request: NextRequest, id: string): Promise<NextResponse> {
+    return withErrorHandling(async () => {
+      const session = await requireAuth(request);
+      await connectDb();
+      const doc = await model.findOneAndUpdate(
+        { _id: id, deletedAt: { $ne: null } } as QueryFilter<T>,
+        { deletedAt: null } as UpdateQuery<T>,
+        { new: true }
+      );
+      if (!doc) {
+        throw new ApiError(404, "Registro não encontrado na lixeira.");
+      }
+      await logAction(session, "update", entity, id);
+      revalidatePath("/", "layout");
+      return ok(doc, "Restaurado com sucesso.");
+    });
+  }
+
+  /** Apaga de vez. Sem volta: as telas só oferecem isto de dentro da lixeira. */
+  async function destroy(request: NextRequest, id: string): Promise<NextResponse> {
+    return withErrorHandling(async () => {
+      const session = await requireAuth(request);
+      await connectDb();
+      const doc = await model.findByIdAndDelete(id);
+      if (!doc) {
+        throw new ApiError(404, "Registro não encontrado.");
+      }
+      await logAction(session, "delete", entity, id);
+      revalidatePath("/", "layout");
+      return ok(null, "Apagado definitivamente.");
+    });
+  }
+
+  return { list, create, update, softDelete, restore, destroy };
 }

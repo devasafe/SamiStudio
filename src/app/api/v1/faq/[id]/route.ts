@@ -37,10 +37,18 @@ export async function GET(_request: NextRequest, context: RouteContext) {
 
 export async function PATCH(request: NextRequest, context: RouteContext) {
   const { id } = await context.params;
+  // Corpo só com `deleted: false` = tirar da lixeira; o resto é edição normal.
+  if (request.nextUrl.searchParams.get("restore") === "true") {
+    return crud.restore(request, id);
+  }
   return crud.update(request, id);
 }
 
 export async function DELETE(request: NextRequest, context: RouteContext) {
   const { id } = await context.params;
+  // Sem ?permanent, vai para a lixeira e dá para voltar.
+  if (request.nextUrl.searchParams.get("permanent") === "true") {
+    return crud.destroy(request, id);
+  }
   return crud.softDelete(request, id);
 }
