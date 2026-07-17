@@ -224,12 +224,23 @@ Isto não pode ser desfeito — o contato dela se perde.`
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="min-w-0">
                   <p className="flex items-center gap-2 font-medium">
-                    {!row.read ? (
+                    {/* Amarelo pulsando = não lida, verde = lida. O aria-label
+                        diz o mesmo: a cor sozinha não informa quem não a vê. */}
+                    <span
+                      className="relative flex size-2 shrink-0"
+                      role="img"
+                      aria-label={row.read ? "Lida" : "Não lida"}
+                    >
+                      {!row.read ? (
+                        <span className="bg-warning absolute inline-flex size-full animate-ping rounded-full opacity-75 motion-reduce:animate-none" />
+                      ) : null}
                       <span
-                        className="bg-foreground size-2 shrink-0 rounded-full"
-                        aria-label="Não lida"
+                        className={cn(
+                          "relative inline-flex size-2 rounded-full",
+                          row.read ? "bg-success" : "bg-warning"
+                        )}
                       />
-                    ) : null}
+                    </span>
                     {row.name}
                   </p>
                   <p className="text-muted-foreground mt-1 flex flex-wrap items-center gap-x-2 text-sm">
