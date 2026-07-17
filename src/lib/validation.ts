@@ -105,7 +105,9 @@ export const testimonialCreateSchema = z.object({
   name: z.string().min(1).max(120),
   company: z.string().max(120).optional(),
   role: z.string().max(120).optional(),
-  photo: z.string().url().optional(),
+  // Upload obrigatório como nas demais imagens: URL de fora quebra o
+  // next/image com "Invalid src prop" e derruba a página.
+  photo: uploadedImage.optional(),
   text: z.string().min(1).max(2000),
   rating: z.number().int().min(1).max(5).optional(),
   order: z.number().int().min(0).optional(),
