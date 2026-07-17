@@ -160,12 +160,12 @@
 }
 
 /*
- * Tema dark quente do portfólio (escopo local — aplicado no <main> de
- * /portfolio). Mesma família do hero escuro da marca (#141009 / creme
- * #f2ece0) com acento terracota; redefine os tokens, então os componentes
- * que usam bg-background/text-foreground/border-border herdam sozinhos.
+ * Tema dark quente da marca (#141009 / creme #f2ece0, acento terracota), em
+ * escopo local: aplicado no <main> de /portfolio e no shell do painel. Redefine
+ * os tokens, então tudo que usa bg-background/text-foreground/border-border
+ * herda sozinho — é o que deixa o painel inteiro escuro sem tocar tela por tela.
  */
-.theme-portfolio-dark {
+.theme-dark-warm {
   --background: #141009;
   --foreground: #f2ece0;
   --surface: #221a13;

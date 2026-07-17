@@ -26,7 +26,7 @@ export default async function PortfolioPage({ params }: PageProps) {
   const page = dictionary.portfolioPage;
 
   return (
-    <main className="theme-portfolio-dark bg-background text-foreground flex-1 pt-22">
+    <main className="theme-dark-warm bg-background text-foreground flex-1 pt-22">
       <Container>
         {/* Hero: título à esquerda, texto de apoio à direita separado por um fio */}
         <section className="py-16 lg:py-24">
