@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { coverFromGallery } from "@/components/admin/projects/gallery-utils";
+import { Archive, Eye } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { safeImageUrl } from "@/lib/images";
 import { cn } from "@/lib/utils";
@@ -67,6 +68,26 @@ export function ProjectList() {
       drop(row._id);
     } catch (err) {
       setError(err instanceof AdminApiError ? err.message : "Falha ao remover.");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  /**
+   * Arquivar tira do site sem excluir — é decisão editorial, não remoção. Um
+   * projeto arquivado continua na lista, editável, e volta com um clique.
+   */
+  async function toggleArchive(row: ProjectRow) {
+    const next = row.status === "published" ? "archived" : "published";
+    setBusyId(row._id);
+    try {
+      await api(`/projects/${row._id}`, { method: "PATCH", json: { status: next } });
+      setRows(
+        (current) =>
+          current?.map((item) => (item._id === row._id ? { ...item, status: next } : item)) ?? null
+      );
+    } catch (err) {
+      setError(err instanceof AdminApiError ? err.message : "Falha ao mudar o status.");
     } finally {
       setBusyId(null);
     }
@@ -155,59 +176,75 @@ Isto não pode ser desfeito: o projeto e a ordem da galeria se perdem.`
           {tab === "trash" ? "A lixeira está vazia." : "Nenhum projeto ainda."}
         </p>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
+          {/* Cinco colunas: são dezenas de projetos, e cartão grande vira rolagem. */}
           {rows.map((row) => {
             // Só imagens do upload vão para o next/image (dado antigo/inválido
             // no banco não pode derrubar a listagem).
             const cover = safeImageUrl(coverFromGallery(row.gallery ?? []) ?? row.coverImage);
+            const published = row.status === "published";
             return (
-              <li
-                key={row._id}
-                className="border-border bg-background overflow-hidden rounded-lg border"
-              >
+              <li key={row._id} className="border-border overflow-hidden rounded-lg border">
                 <div className="bg-muted relative aspect-[4/3]">
                   {cover ? (
-                    <Image
-                      src={cover}
-                      alt={row.title}
-                      fill
-                      sizes="360px"
-                      className="object-cover"
-                    />
+                    <Image src={cover} alt="" fill sizes="220px" className="object-cover" />
                   ) : (
                     <span className="text-muted-foreground absolute inset-0 flex items-center justify-center text-xs">
                       Sem foto
                     </span>
                   )}
+                  <span
+                    className={cn(
+                      "bg-background/85 absolute top-1.5 right-1.5 rounded px-1.5 py-0.5 text-xs",
+                      published ? "text-primary" : "text-muted-foreground"
+                    )}
+                  >
+                    {STATUS_LABEL[row.status] ?? row.status}
+                  </span>
                 </div>
-                <div className="space-y-2 p-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <h2 className="font-medium">{row.title}</h2>
-                    <span className="text-muted-foreground text-xs whitespace-nowrap">
-                      {STATUS_LABEL[row.status] ?? row.status}
-                    </span>
+
+                <div className="space-y-2 p-3">
+                  <div>
+                    <h2 className="truncate text-sm font-medium">{row.title}</h2>
+                    <p className="text-muted-foreground truncate text-xs">
+                      {[row.city, row.year].filter(Boolean).join(" · ") || "—"}
+                    </p>
                   </div>
-                  <p className="text-muted-foreground text-sm">
-                    {[row.city, row.year].filter(Boolean).join(" · ") || "—"}
-                  </p>
-                  {/* O apagar definitivo só existe na lixeira: na lista
-                      principal, um clique errado destruiria o projeto. */}
-                  <div className="flex gap-2">
+
+                  {/* Arquivar é editorial (tira do site); excluir manda para a
+                      lixeira. O apagar definitivo só existe lá dentro. */}
+                  <div className="flex gap-1">
                     {tab === "active" ? (
                       <>
-                        <Link href={`/admin/projetos/${row._id}`}>
-                          <Button variant="outline" size="sm">
+                        <Link href={`/admin/projetos/${row._id}`} className="flex-1">
+                          <Button variant="outline" size="sm" className="w-full">
                             Editar
                           </Button>
                         </Link>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-muted-foreground"
+                          disabled={busyId === row._id}
+                          onClick={() => toggleArchive(row)}
+                          title={published ? "Arquivar (tira do site)" : "Publicar no site"}
+                          aria-label={published ? `Arquivar ${row.title}` : `Publicar ${row.title}`}
+                        >
+                          {published ? (
+                            <Archive className="size-4" aria-hidden />
+                          ) : (
+                            <Eye className="size-4" aria-hidden />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-muted-foreground hover:text-destructive"
                           disabled={busyId === row._id}
                           onClick={() => handleDelete(row)}
+                          title="Mandar para a lixeira"
+                          aria-label={`Excluir ${row.title}`}
                         >
-                          Excluir
+                          ✕
                         </Button>
                       </>
                     ) : (
@@ -215,6 +252,7 @@ Isto não pode ser desfeito: o projeto e a ordem da galeria se perdem.`
                         <Button
                           variant="outline"
                           size="sm"
+                          className="flex-1"
                           disabled={busyId === row._id}
                           onClick={() => handleRestore(row)}
                         >
@@ -226,8 +264,10 @@ Isto não pode ser desfeito: o projeto e a ordem da galeria se perdem.`
                           className="text-destructive"
                           disabled={busyId === row._id}
                           onClick={() => handleDestroy(row)}
+                          title="Apagar de vez"
+                          aria-label={`Apagar ${row.title} de vez`}
                         >
-                          Apagar de vez
+                          ✕
                         </Button>
                       </>
                     )}

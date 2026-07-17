@@ -7,6 +7,7 @@
  * quando necessários, criar SVGs próprios neste diretório.
  */
 export {
+  Archive,
   ArrowDown,
   ArrowLeft,
   ArrowRight,
