@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { ImageUploader } from "@/components/admin/projects/image-uploader";
+import { TranslatableField, useTranslations } from "@/components/admin/translatable-field";
+import { translationsPayload, type Lang, type Translations } from "@/components/admin/translations";
 import { Star } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 export interface TestimonialFormValues {
@@ -20,6 +21,7 @@ export interface TestimonialFormValues {
   rating: string;
   order: string;
   featured: boolean;
+  translations?: Translations;
 }
 
 const EMPTY: TestimonialFormValues = {
@@ -42,12 +44,28 @@ interface TestimonialFormProps {
 export function TestimonialForm({ initial, testimonialId }: TestimonialFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<TestimonialFormValues>({ ...EMPTY, ...initial });
+  const { translations, setTranslation } = useTranslations(initial?.translations);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   function set<K extends keyof TestimonialFormValues>(key: K, value: TestimonialFormValues[K]) {
     setValues((current) => ({ ...current, [key]: value }));
   }
+
+  /** Só o texto do depoimento é traduzido (o site mostra nome/cargo no original). */
+  function changeText(lang: Lang, value: string) {
+    if (lang === "pt-BR") {
+      set("text", value);
+    } else {
+      setTranslation(lang, "text", value);
+    }
+  }
+
+  const textValues: Record<Lang, string> = {
+    "pt-BR": values.text,
+    en: translations.en.text ?? "",
+    es: translations.es.text ?? "",
+  };
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -63,6 +81,7 @@ export function TestimonialForm({ initial, testimonialId }: TestimonialFormProps
         rating: values.rating ? Number(values.rating) : undefined,
         order: values.order ? Number(values.order) : undefined,
         featured: values.featured,
+        translations: translationsPayload(translations),
       };
       if (testimonialId) {
         await api(`/testimonials/${testimonialId}`, { method: "PATCH", json: payload });
@@ -121,17 +140,14 @@ export function TestimonialForm({ initial, testimonialId }: TestimonialFormProps
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="text">Depoimento</Label>
-        <Textarea
-          id="text"
-          value={values.text}
-          required
-          onChange={(event) => set("text", event.target.value)}
-          className="min-h-32"
-          placeholder="O que o cliente falou, nas palavras dele."
-        />
-      </div>
+      <TranslatableField
+        label="Depoimento"
+        multiline
+        required
+        values={textValues}
+        onChange={changeText}
+        placeholder="O que o cliente falou, nas palavras dele."
+      />
 
       {/* Upload, não link: o site só aceita imagem do Cloudinary, e uma URL de
           fora quebra a página com "Invalid src prop". */}

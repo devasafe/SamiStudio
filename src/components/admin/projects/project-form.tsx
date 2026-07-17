@@ -6,6 +6,8 @@ import { api, AdminApiError } from "@/components/admin/api-client";
 import { BeforeAfterEditor } from "@/components/admin/projects/before-after-editor";
 import { GalleryUploader } from "@/components/admin/projects/gallery-uploader";
 import { coverFromGallery } from "@/components/admin/projects/gallery-utils";
+import { TranslatableField, useTranslations } from "@/components/admin/translatable-field";
+import { translationsPayload, type Lang, type Translations } from "@/components/admin/translations";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import type { BeforeAfterItem, GalleryItem, ProjectStage } from "@/models/project";
@@ -14,6 +16,7 @@ export interface ProjectFormValues {
   title: string;
   slug: string;
   description: string;
+  translations?: Translations;
   client: string;
   city: string;
   country: string;
@@ -61,9 +64,25 @@ const inputClass = "border-border w-full rounded-md border px-3 py-2 text-sm";
 export function ProjectForm({ initial, projectId }: ProjectFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<ProjectFormValues>({ ...EMPTY, ...initial });
+  const { translations, setTranslation } = useTranslations(initial?.translations);
   const [categories, setCategories] = useState<CategoryOption[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  /** Português é o campo base; en/es vão para `translations`. */
+  function changeField(field: "title" | "description", lang: Lang, value: string) {
+    if (lang === "pt-BR") {
+      setValues((prev) => ({ ...prev, [field]: value }));
+    } else {
+      setTranslation(lang, field, value);
+    }
+  }
+
+  const fieldValues = (field: "title" | "description"): Record<Lang, string> => ({
+    "pt-BR": values[field],
+    en: translations.en[field] ?? "",
+    es: translations.es[field] ?? "",
+  });
 
   useEffect(() => {
     void (async () => {
@@ -88,6 +107,7 @@ export function ProjectForm({ initial, projectId }: ProjectFormProps) {
       title: values.title,
       slug: values.slug,
       description: values.description || undefined,
+      translations: translationsPayload(translations),
       client: values.client || undefined,
       city: values.city || undefined,
       country: values.country || undefined,
@@ -127,40 +147,31 @@ export function ProjectForm({ initial, projectId }: ProjectFormProps) {
         <p className="border-error/30 text-error rounded-md border px-4 py-3 text-sm">{error}</p>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-1">
-          <Label htmlFor="title">Título</Label>
-          <input
-            id="title"
-            required
-            value={values.title}
-            onChange={(e) => set("title", e.target.value)}
-            className={inputClass}
-          />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="slug">Slug (URL)</Label>
-          <input
-            id="slug"
-            required
-            value={values.slug}
-            placeholder="ex.: interior-miraflores"
-            onChange={(e) => set("slug", e.target.value)}
-            className={inputClass}
-          />
-        </div>
-      </div>
+      <TranslatableField
+        label="Título"
+        required
+        values={fieldValues("title")}
+        onChange={(lang, value) => changeField("title", lang, value)}
+      />
 
       <div className="space-y-1">
-        <Label htmlFor="description">Descrição</Label>
-        <textarea
-          id="description"
-          rows={4}
-          value={values.description}
-          onChange={(e) => set("description", e.target.value)}
+        <Label htmlFor="slug">Slug (URL)</Label>
+        <input
+          id="slug"
+          required
+          value={values.slug}
+          placeholder="ex.: interior-miraflores"
+          onChange={(e) => set("slug", e.target.value)}
           className={inputClass}
         />
       </div>
+
+      <TranslatableField
+        label="Descrição"
+        multiline
+        values={fieldValues("description")}
+        onChange={(lang, value) => changeField("description", lang, value)}
+      />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-1">

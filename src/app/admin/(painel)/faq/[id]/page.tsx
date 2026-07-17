@@ -3,11 +3,13 @@
 import { use, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { FaqForm, type FaqFormValues } from "@/components/admin/faq/faq-form";
+import type { Translations } from "@/components/admin/translations";
 
 interface FaqResponse {
   question?: string;
   answer?: string;
   order?: number;
+  translations?: Translations;
 }
 
 export default function EditarPerguntaPage({ params }: { params: Promise<{ id: string }> }) {
@@ -23,6 +25,9 @@ export default function EditarPerguntaPage({ params }: { params: Promise<{ id: s
           question: data.question ?? "",
           answer: data.answer ?? "",
           order: data.order !== undefined ? String(data.order) : "",
+          translations: data.translations
+            ? { en: data.translations.en ?? {}, es: data.translations.es ?? {} }
+            : undefined,
         });
       } catch (err) {
         setError(err instanceof AdminApiError ? err.message : "Falha ao carregar.");

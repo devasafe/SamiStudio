@@ -3,12 +3,14 @@
 import { use, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { ProjectForm, type ProjectFormValues } from "@/components/admin/projects/project-form";
+import type { Translations } from "@/components/admin/translations";
 import type { BeforeAfterItem, GalleryItem, ProjectStage } from "@/models/project";
 
 interface ProjectResponse {
   title?: string;
   slug?: string;
   description?: string;
+  translations?: Translations;
   client?: string;
   city?: string;
   country?: string;
@@ -36,6 +38,9 @@ export default function EditarProjetoPage({ params }: { params: Promise<{ id: st
           title: data.title ?? "",
           slug: data.slug ?? "",
           description: data.description ?? "",
+          translations: data.translations
+            ? { en: data.translations.en ?? {}, es: data.translations.es ?? {} }
+            : undefined,
           client: data.client ?? "",
           city: data.city ?? "",
           country: data.country ?? "",

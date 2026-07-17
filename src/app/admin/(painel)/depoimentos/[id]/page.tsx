@@ -6,6 +6,7 @@ import {
   TestimonialForm,
   type TestimonialFormValues,
 } from "@/components/admin/testimonials/testimonial-form";
+import type { Translations } from "@/components/admin/translations";
 
 interface TestimonialResponse {
   name?: string;
@@ -16,6 +17,7 @@ interface TestimonialResponse {
   rating?: number;
   order?: number;
   featured?: boolean;
+  translations?: Translations;
 }
 
 export default function EditarDepoimentoPage({ params }: { params: Promise<{ id: string }> }) {
@@ -36,6 +38,9 @@ export default function EditarDepoimentoPage({ params }: { params: Promise<{ id:
           rating: data.rating !== undefined ? String(data.rating) : "",
           order: data.order !== undefined ? String(data.order) : "",
           featured: data.featured ?? false,
+          translations: data.translations
+            ? { en: data.translations.en ?? {}, es: data.translations.es ?? {} }
+            : undefined,
         });
       } catch (err) {
         setError(err instanceof AdminApiError ? err.message : "Falha ao carregar.");

@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { ServiceForm, type ServiceFormValues } from "@/components/admin/services/service-form";
+import type { Translations } from "@/components/admin/translations";
 
 interface ServiceResponse {
   title?: string;
@@ -11,6 +12,7 @@ interface ServiceResponse {
   icon?: string;
   coverImage?: string;
   order?: number;
+  translations?: Translations;
 }
 
 export default function EditarServicoPage({ params }: { params: Promise<{ id: string }> }) {
@@ -29,6 +31,9 @@ export default function EditarServicoPage({ params }: { params: Promise<{ id: st
           icon: data.icon ?? "",
           coverImage: data.coverImage ?? "",
           order: data.order !== undefined ? String(data.order) : "",
+          translations: data.translations
+            ? { en: data.translations.en ?? {}, es: data.translations.es ?? {} }
+            : undefined,
         });
       } catch (err) {
         setError(err instanceof AdminApiError ? err.message : "Falha ao carregar.");

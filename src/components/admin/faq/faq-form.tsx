@@ -3,15 +3,17 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
+import { TranslatableField, useTranslations } from "@/components/admin/translatable-field";
+import { translationsPayload, type Lang, type Translations } from "@/components/admin/translations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
 export interface FaqFormValues {
   question: string;
   answer: string;
   order: string;
+  translations?: Translations;
 }
 
 const EMPTY: FaqFormValues = { question: "", answer: "", order: "" };
@@ -29,8 +31,24 @@ interface FaqFormProps {
 export function FaqForm({ initial, faqId }: FaqFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<FaqFormValues>({ ...EMPTY, ...initial });
+  const { translations, setTranslation } = useTranslations(initial?.translations);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  /** Português é o campo base; en/es vão para `translations`. */
+  function changeField(field: "question" | "answer", lang: Lang, value: string) {
+    if (lang === "pt-BR") {
+      setValues((current) => ({ ...current, [field]: value }));
+    } else {
+      setTranslation(lang, field, value);
+    }
+  }
+
+  const fieldValues = (field: "question" | "answer"): Record<Lang, string> => ({
+    "pt-BR": values[field],
+    en: translations.en[field] ?? "",
+    es: translations.es[field] ?? "",
+  });
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -41,6 +59,7 @@ export function FaqForm({ initial, faqId }: FaqFormProps) {
         question: values.question.trim(),
         answer: values.answer.trim(),
         order: values.order ? Number(values.order) : undefined,
+        translations: translationsPayload(translations),
       };
       if (faqId) {
         await api(`/faq/${faqId}`, { method: "PATCH", json: payload });
@@ -66,14 +85,11 @@ export function FaqForm({ initial, faqId }: FaqFormProps) {
       ) : null}
 
       <div className="space-y-2">
-        <Label htmlFor="question">Pergunta</Label>
-        <Input
-          id="question"
-          value={values.question}
+        <TranslatableField
+          label="Pergunta"
           required
-          onChange={(event) =>
-            setValues((current) => ({ ...current, question: event.target.value }))
-          }
+          values={fieldValues("question")}
+          onChange={(lang, value) => changeField("question", lang, value)}
           placeholder="ex.: Qual o prazo médio de entrega?"
         />
         <p className="text-muted-foreground text-xs">
@@ -81,17 +97,14 @@ export function FaqForm({ initial, faqId }: FaqFormProps) {
         </p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="answer">Resposta</Label>
-        <Textarea
-          id="answer"
-          value={values.answer}
-          required
-          onChange={(event) => setValues((current) => ({ ...current, answer: event.target.value }))}
-          className="min-h-40"
-          placeholder="Responda direto, em uma ou duas frases."
-        />
-      </div>
+      <TranslatableField
+        label="Resposta"
+        multiline
+        required
+        values={fieldValues("answer")}
+        onChange={(lang, value) => changeField("answer", lang, value)}
+        placeholder="Responda direto, em uma ou duas frases."
+      />
 
       <div className="space-y-2">
         <Label htmlFor="order">Ordem</Label>

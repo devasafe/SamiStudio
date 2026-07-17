@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { ImageUploader } from "@/components/admin/projects/image-uploader";
+import { TranslatableField, useTranslations } from "@/components/admin/translatable-field";
+import { translationsPayload, type Lang, type Translations } from "@/components/admin/translations";
 import { Box, Building2, Camera, PencilRuler, Sparkles } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 export interface ServiceFormValues {
@@ -18,6 +19,7 @@ export interface ServiceFormValues {
   icon: string;
   coverImage: string;
   order: string;
+  translations?: Translations;
 }
 
 const EMPTY: ServiceFormValues = {
@@ -66,6 +68,7 @@ interface ServiceFormProps {
 export function ServiceForm({ initial, serviceId }: ServiceFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<ServiceFormValues>({ ...EMPTY, ...initial });
+  const { translations, setTranslation } = useTranslations(initial?.translations);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Slug editado à mão para de seguir o título: quem mexeu tem um motivo, e
@@ -75,6 +78,25 @@ export function ServiceForm({ initial, serviceId }: ServiceFormProps) {
   function set<K extends keyof ServiceFormValues>(key: K, value: ServiceFormValues[K]) {
     setValues((current) => ({ ...current, [key]: value }));
   }
+
+  /** Português é o campo base; en/es vão para `translations`. O título em
+   * português ainda alimenta o slug (as traduções não mexem no endereço). */
+  function changeField(field: "title" | "description", lang: Lang, value: string) {
+    if (lang !== "pt-BR") {
+      setTranslation(lang, field, value);
+      return;
+    }
+    set(field, value);
+    if (field === "title" && !slugTouched) {
+      set("slug", slugify(value));
+    }
+  }
+
+  const fieldValues = (field: "title" | "description"): Record<Lang, string> => ({
+    "pt-BR": values[field],
+    en: translations.en[field] ?? "",
+    es: translations.es[field] ?? "",
+  });
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -88,6 +110,7 @@ export function ServiceForm({ initial, serviceId }: ServiceFormProps) {
         icon: values.icon || undefined,
         coverImage: values.coverImage || undefined,
         order: values.order ? Number(values.order) : undefined,
+        translations: translationsPayload(translations),
       };
       if (serviceId) {
         await api(`/services/${serviceId}`, { method: "PATCH", json: payload });
@@ -112,22 +135,13 @@ export function ServiceForm({ initial, serviceId }: ServiceFormProps) {
         </p>
       ) : null}
 
-      <div className="space-y-2">
-        <Label htmlFor="title">Título</Label>
-        <Input
-          id="title"
-          value={values.title}
-          required
-          onChange={(event) => {
-            const title = event.target.value;
-            set("title", title);
-            if (!slugTouched) {
-              set("slug", slugify(title));
-            }
-          }}
-          placeholder="ex.: Render Realista"
-        />
-      </div>
+      <TranslatableField
+        label="Título"
+        required
+        values={fieldValues("title")}
+        onChange={(lang, value) => changeField("title", lang, value)}
+        placeholder="ex.: Render Realista"
+      />
 
       <div className="space-y-2">
         <Label htmlFor="slug">Endereço no site</Label>
@@ -146,16 +160,13 @@ export function ServiceForm({ initial, serviceId }: ServiceFormProps) {
         </p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Descrição</Label>
-        <Textarea
-          id="description"
-          value={values.description}
-          onChange={(event) => set("description", event.target.value)}
-          className="min-h-24"
-          placeholder="O que este serviço entrega, em uma ou duas frases."
-        />
-      </div>
+      <TranslatableField
+        label="Descrição"
+        multiline
+        values={fieldValues("description")}
+        onChange={(lang, value) => changeField("description", lang, value)}
+        placeholder="O que este serviço entrega, em uma ou duas frases."
+      />
 
       <div className="space-y-2">
         <Label>Ícone</Label>
