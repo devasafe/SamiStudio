@@ -191,7 +191,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
         {/* Ficha em barra, logo abaixo do conteúdo */}
         {details.length > 0 ? (
-          <dl className="mt-6 grid grid-cols-2 rounded-xl border border-[#f2ece0]/10 sm:grid-cols-4">
+          <dl className="mt-6 grid grid-cols-2 gap-8 rounded-xl border border-[#f2ece0]/10 p-6 sm:grid-cols-3 lg:grid-cols-5">
             {details.map((item) => (
               <DetailItem key={item.label} {...item} />
             ))}
@@ -242,9 +242,7 @@ interface DetailItemProps {
 
 function DetailItem({ icon: Icon, label, value, cms }: DetailItemProps) {
   return (
-    // O fio separa as colunas dentro da barra; a primeira de cada linha não
-    // ganha fio, senão sobraria um risco solto na borda.
-    <div className="flex items-center gap-3 border-[#f2ece0]/10 p-5 not-first:border-l max-sm:even:border-l sm:border-l sm:first:border-l-0">
+    <div className="flex items-center gap-3">
       <Icon className="size-5 shrink-0 text-[#f2ece0]/40" strokeWidth={1.5} aria-hidden />
       <div className="min-w-0">
         <dt className="text-caption tracking-[0.16em] text-[#f2ece0]/45 uppercase" data-cms={cms}>
