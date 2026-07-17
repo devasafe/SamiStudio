@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { FieldConfig } from "@/components/admin/entity-form";
+import { GooglePreview } from "@/components/admin/settings/google-preview";
 import { SettingsForm } from "@/components/admin/settings/settings-form";
 import { TextsForm } from "@/components/admin/settings/texts-form";
 import { cn } from "@/lib/utils";
@@ -44,6 +45,41 @@ const CONTACT_FIELDS: FieldConfig[] = [
 const isSeo = (path: string) => path.startsWith("meta.");
 const isAdvanced = (path: string) => !isSeo(path);
 
+/** Onde cada bloco de SEO aparece no site — usado na prévia do Google. */
+const SEO_PAGES: { key: string; label: string; path: string }[] = [
+  { key: "home", label: "Início", path: "/" },
+  { key: "about", label: "Sobre", path: "/sobre" },
+  { key: "services", label: "Serviços", path: "/servicos" },
+  { key: "portfolio", label: "Portfólio", path: "/portfolio" },
+  { key: "contact", label: "Contato", path: "/contato" },
+];
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samidasilva.studio";
+
+/**
+ * Uma prévia por página do site: os campos de SEO não têm lugar na tela, então
+ * o único jeito honesto de mostrar o efeito deles é desenhar o resultado da
+ * busca com o que está sendo digitado.
+ */
+function renderSeoPreview(group: string, values: Record<string, string>) {
+  if (group !== "meta") {
+    return null;
+  }
+  return (
+    <div className="space-y-3">
+      {SEO_PAGES.map((page) => (
+        <GooglePreview
+          key={page.key}
+          title={values[`meta.${page.key}.title`] ?? ""}
+          description={values[`meta.${page.key}.description`] ?? ""}
+          path={page.path}
+          siteUrl={SITE_URL}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function AdminAjustesPage() {
   const [tab, setTab] = useState<TabId>("site");
 
@@ -82,7 +118,7 @@ export default function AdminAjustesPage() {
 
       {tab === "site" ? <SettingsForm fields={SITE_FIELDS} /> : null}
       {tab === "contato" ? <SettingsForm fields={CONTACT_FIELDS} /> : null}
-      {tab === "seo" ? <TextsForm filter={isSeo} /> : null}
+      {tab === "seo" ? <TextsForm filter={isSeo} renderGroupPreview={renderSeoPreview} /> : null}
       {tab === "textos" ? <TextsForm filter={isAdvanced} /> : null}
     </div>
   );
