@@ -256,6 +256,7 @@
     "formTitle": "Envía un mensaje",
     "fieldName": "Nombre completo",
     "fieldEmail": "Correo",
+    "emailInvalid": "Revisa el correo: parece faltar algo (la @ o el punto final).",
     "fieldPhone": "Teléfono / WhatsApp",
     "fieldSubject": "Asunto",
     "fieldMessage": "Cuéntanos sobre tu proyecto",

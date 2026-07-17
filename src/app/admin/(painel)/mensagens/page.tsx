@@ -2,7 +2,52 @@
 
 import { useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
+import { whatsappUrl } from "@/lib/phone";
 import { cn } from "@/lib/utils";
+
+/** Primeiro nome, para a saudação da mensagem já vir pessoal. */
+function firstName(name: string): string {
+  return name.trim().split(/\s+/)[0] ?? name;
+}
+
+interface WhatsAppLinkProps {
+  phone: string;
+  name: string;
+}
+
+/**
+ * Telefone como atalho para o WhatsApp, com a conversa já aberta e a saudação
+ * pronta.
+ *
+ * Sem DDI não há link: `wa.me` sem código de país abre conversa com o número
+ * errado, e mandar a mensagem para um estranho é pior que copiar à mão.
+ */
+function WhatsAppLink({ phone, name }: WhatsAppLinkProps) {
+  const url = whatsappUrl(phone, `Olá, ${firstName(name)}! Recebi sua mensagem pelo site.`);
+
+  if (!url) {
+    return (
+      <span title="Sem código do país (+55), não dá para abrir o WhatsApp com segurança.">
+        · {phone}
+      </span>
+    );
+  }
+
+  return (
+    <>
+      ·
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-primary inline-flex items-center gap-1.5 underline"
+      >
+        {phone}
+        <span className="text-primary text-xs">WhatsApp</span>
+      </a>
+    </>
+  );
+}
 
 interface MessageRow {
   _id: string;
@@ -108,11 +153,11 @@ export default function AdminMessagesPage() {
                     ) : null}
                     {row.name}
                   </p>
-                  <p className="text-muted-foreground mt-1 text-sm">
+                  <p className="text-muted-foreground mt-1 flex flex-wrap items-center gap-x-2 text-sm">
                     <a href={`mailto:${row.email}`} className="hover:text-foreground underline">
                       {row.email}
                     </a>
-                    {row.phone ? ` · ${row.phone}` : ""}
+                    {row.phone ? <WhatsAppLink phone={row.phone} name={row.name} /> : null}
                   </p>
                 </div>
                 <p className="text-muted-foreground text-xs">

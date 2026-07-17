@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight, Lock } from "@/components/icons";
 import { useLanguage } from "@/components/providers/language-provider";
+import { formatPhone } from "@/lib/phone";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -18,6 +19,11 @@ export function ContactForm() {
   const page = dictionary.contactPage;
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
+  // O telefone é controlado só para poder mascarar enquanto se digita.
+  const [phone, setPhone] = useState("");
+  // O aviso do e-mail só aparece depois que a pessoa sai do campo: apontar erro
+  // enquanto ela ainda está escrevendo o endereço é implicância.
+  const [emailWarning, setEmailWarning] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,6 +44,7 @@ export function ContactForm() {
         throw new Error(body?.message ?? page.error);
       }
       form.reset();
+      setPhone("");
       setStatus("sent");
     } catch (err) {
       setError(err instanceof Error ? err.message : page.error);
@@ -56,21 +63,34 @@ export function ContactForm() {
           aria-label={page.fieldName}
           className={FIELD_CLASS}
         />
-        <input
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          placeholder={page.fieldEmail}
-          aria-label={page.fieldEmail}
-          className={FIELD_CLASS}
-        />
+        <div>
+          <input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder={page.fieldEmail}
+            aria-label={page.fieldEmail}
+            aria-invalid={emailWarning}
+            onBlur={(event) =>
+              setEmailWarning(event.target.value.length > 0 && !event.target.validity.valid)
+            }
+            onChange={() => setEmailWarning(false)}
+            className={FIELD_CLASS}
+          />
+          {emailWarning ? (
+            <p className="text-caption mt-2 text-[#e5674f]">{page.emailInvalid}</p>
+          ) : null}
+        </div>
       </div>
       <input
         name="phone"
         type="tel"
+        inputMode="tel"
         autoComplete="tel"
-        placeholder={page.fieldPhone}
+        value={phone}
+        onChange={(event) => setPhone(formatPhone(event.target.value))}
+        placeholder={`${page.fieldPhone} — +55 (11) 98765-4321`}
         aria-label={page.fieldPhone}
         className={FIELD_CLASS}
       />
