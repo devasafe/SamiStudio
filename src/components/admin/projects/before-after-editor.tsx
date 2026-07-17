@@ -86,13 +86,13 @@ export function BeforeAfterEditor({ value, onChange }: BeforeAfterEditorProps) {
             <div className="grid gap-4 sm:grid-cols-2">
               <ImageUploader
                 label="Antes"
-                hint="1600 × 1200 px (4:3)"
+                hint="1400 px no lado maior"
                 value={item.before}
                 onChange={(url) => update(index, { before: url })}
               />
               <ImageUploader
                 label="Depois"
-                hint="1600 × 1200 px (4:3)"
+                hint="1400 px no lado maior"
                 value={item.after}
                 onChange={(url) => update(index, { after: url })}
               />

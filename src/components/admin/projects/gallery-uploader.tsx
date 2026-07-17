@@ -72,7 +72,7 @@ export function GalleryUploader({ value, onChange }: GalleryUploaderProps) {
       <div className="flex items-center justify-between">
         <div>
           <Label>Fotos do projeto (a 1ª é a capa)</Label>
-          <p className="text-muted-foreground text-xs">Recomendado: lado maior 1600 px</p>
+          <p className="text-muted-foreground text-xs">Recomendado: 1400 px no lado maior</p>
         </div>
         <Button
           type="button"

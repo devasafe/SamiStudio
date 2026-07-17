@@ -137,7 +137,7 @@ export function TestimonialForm({ initial, testimonialId }: TestimonialFormProps
           fora quebra a página com "Invalid src prop". */}
       <ImageUploader
         label="Foto do cliente"
-        hint="400 × 400 px (1:1)"
+        hint="160 × 160 px (1:1)"
         value={values.photo}
         onChange={(url) => set("photo", url)}
       />

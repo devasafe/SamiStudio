@@ -20,12 +20,17 @@ const IMAGE_ASPECTS: Record<string, number> = {
   contactPhoto: 4 / 5,
 };
 
-/** Dimensão recomendada por foto, mostrada sob o campo de upload. */
+/**
+ * Dimensão recomendada por foto, mostrada sob o campo de upload. Os valores
+ * seguem o tamanho real de exibição no site (medido em desktop) com uma folga
+ * pequena para telas de maior densidade — não muito acima, para o upload não
+ * pedir imagens bem maiores do que o frontend mostra.
+ */
 const IMAGE_HINTS: Record<string, string> = {
-  aboutPhoto: "1200 × 1500 px (4:5)",
-  essencePhoto1: "1200 × 1600 px (3:4)",
-  essencePhoto2: "1200 × 1600 px (3:4)",
-  contactPhoto: "1200 × 1500 px (4:5)",
+  aboutPhoto: "800 × 1000 px (4:5)",
+  essencePhoto1: "600 × 800 px (3:4)",
+  essencePhoto2: "600 × 800 px (3:4)",
+  contactPhoto: "640 × 800 px (4:5)",
 };
 
 interface EditPanelProps {
