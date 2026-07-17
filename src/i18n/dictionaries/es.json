@@ -227,7 +227,20 @@
     "sortOldest": "Más antiguos",
     "prevPage": "Página anterior",
     "nextPage": "Página siguiente",
-    "pageStatus": "Página {current} de {total}"
+    "pageStatus": "Página {current} de {total}",
+    "heroCta": "Ver todos los proyectos",
+    "heroPrev": "Destacado anterior",
+    "heroNext": "Próximo destacado",
+    "featuredBadge": "Destacado",
+    "featuredCta": "Ver proyecto",
+    "statsEyebrow": "Números que reflejan nuestro camino",
+    "stats": [
+      { "value": "48", "label": "Proyectos realizados" },
+      { "value": "23", "label": "Clientes atendidos" },
+      { "value": "6", "label": "Años de experiencia" },
+      { "value": "12", "label": "Estados atendidos" },
+      { "value": "98%", "label": "Clientes satisfechos" }
+    ]
   },
   "projectPage": {
     "back": "Volver al portafolio",

@@ -227,7 +227,20 @@
     "sortOldest": "Oldest first",
     "prevPage": "Previous page",
     "nextPage": "Next page",
-    "pageStatus": "Page {current} of {total}"
+    "pageStatus": "Page {current} of {total}",
+    "heroCta": "View all projects",
+    "heroPrev": "Previous highlight",
+    "heroNext": "Next highlight",
+    "featuredBadge": "Featured",
+    "featuredCta": "View project",
+    "statsEyebrow": "Numbers that reflect our journey",
+    "stats": [
+      { "value": "48", "label": "Projects delivered" },
+      { "value": "23", "label": "Clients served" },
+      { "value": "6", "label": "Years of experience" },
+      { "value": "12", "label": "States served" },
+      { "value": "98%", "label": "Satisfied clients" }
+    ]
   },
   "projectPage": {
     "back": "Back to portfolio",
