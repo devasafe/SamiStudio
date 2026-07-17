@@ -181,8 +181,15 @@ export default function AdminEditorPage() {
         <iframe
           ref={iframeRef}
           // localePath e não `/${locale}${page}`: o idioma padrão não leva
-          // prefixo, e a URL prefixada dele só cairia num redirect.
-          src={isLocale(locale) ? localePath(locale, page || "/") : "/"}
+          // prefixo, e a URL prefixada dele só cairia num redirect. A query
+          // cmsPreview blinda a prévia do cache de redirecionamento do
+          // navegador: o cache é por URL exata, então um 308 antigo gravado
+          // para "/pt-BR/servicos" (de quando o pt-BR era o idioma padrão)
+          // fica brigando com o 307 atual e trava a prévia em "redirecionamento
+          // em excesso". Com a query, o navegador pede uma URL que nenhum
+          // redirect velho intercepta — basta ser constante e diferente da
+          // URL crua, já que o redirect só foi cacheado sem query.
+          src={`${isLocale(locale) ? localePath(locale, page || "/") : "/"}?cmsPreview=1`}
           onLoad={enableEditing}
           title="Prévia do site"
           className="min-w-0 flex-1"
