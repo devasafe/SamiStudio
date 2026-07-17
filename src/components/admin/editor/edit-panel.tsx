@@ -2,11 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
+import { TextFields } from "@/components/admin/editor/text-fields";
 import { ImageField } from "@/components/admin/image-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { deleteByPath, getByPath, parseRef, setByPath, type CmsSelection } from "@/lib/cms/refs";
+import { parseRef, type CmsSelection } from "@/lib/cms/refs";
 
 /**
  * Proporção do recorte por foto — a mesma que as Configurações usavam. Recortar
@@ -24,10 +25,6 @@ interface EditPanelProps {
   locale: string;
   /** Avisa a prévia para trocar o texto na hora. */
   onSaved: (ref: string, value: string) => void;
-}
-
-interface TranslationDoc {
-  content: Record<string, unknown>;
 }
 
 type Settings = Record<string, string | undefined>;
@@ -63,23 +60,12 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
     void (async () => {
       setError(null);
       setSaved(false);
-      if (!selection || !ref) {
+      // Texto é tratado pelo <TextFields> (os três idiomas); aqui só set/img.
+      if (!selection || !ref || ref.kind === "text") {
         setValue("");
         return;
       }
       try {
-        if (ref.kind === "text") {
-          const { data } = await api<TranslationDoc | null>(`/translations?locale=${locale}`);
-          if (ignore) {
-            return;
-          }
-          // "" cai no valor padrão, não vira campo em branco: pode ser um
-          // override "" gravado por uma versão anterior do painel (que
-          // persistia "" em vez de remover ao voltar ao padrão) — ler isso
-          // como override de verdade reproduziria o mesmo bug a cada carga.
-          setValue(getByPath(data?.content, ref.path) || selection.value);
-          return;
-        }
         const { data } = await api<Settings | null>("/settings");
         if (ignore) {
           return;
@@ -105,22 +91,7 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
     setBusy(true);
     setError(null);
     try {
-      if (ref.kind === "text") {
-        // A rota substitui o content inteiro: parte do salvo para não apagar
-        // os outros overrides do mesmo idioma.
-        const { data } = await api<TranslationDoc | null>(`/translations?locale=${locale}`);
-        // Vazio (voltar ao padrão) remove o override em vez de gravar "": um ""
-        // persistido seria lido de volta como override (deepMerge do servidor
-        // ignora string vazia, mas a leitura acima do painel não), reproduzindo
-        // o mesmo campo em branco marcado como alterado.
-        const content =
-          next === ""
-            ? deleteByPath(data?.content ?? {}, ref.path)
-            : setByPath(data?.content ?? {}, ref.path, next);
-        await api("/translations", { method: "PATCH", json: { locale, content } });
-      } else {
-        await api("/settings", { method: "PATCH", json: { [ref.path]: next } });
-      }
+      await api("/settings", { method: "PATCH", json: { [ref.path]: next } });
       setSaved(true);
       onSaved(selection!.ref, next);
     } catch (err) {
@@ -150,9 +121,6 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
           {ref.kind === "img" ? "Foto" : ref.kind === "set" ? "Dado de contato" : "Texto"}
         </h2>
         <p className="text-muted-foreground mt-1 font-mono text-xs break-all">{ref.path}</p>
-        {ref.kind === "text" ? (
-          <p className="text-muted-foreground mt-1 text-xs">Idioma: {locale}</p>
-        ) : null}
         {selection.count > 1 ? (
           <p className="text-muted-foreground mt-2 text-xs">
             Este texto aparece em {selection.count} lugares desta página e muda em todos.
@@ -160,7 +128,15 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
         ) : null}
       </div>
 
-      {ref.kind === "img" ? (
+      {ref.kind === "text" ? (
+        <TextFields
+          selectionRef={selection.ref}
+          path={ref.path}
+          previewLocale={locale}
+          baseValue={selection.value}
+          onSaved={onSaved}
+        />
+      ) : ref.kind === "img" ? (
         <ImageField
           label="Foto"
           value={value}
