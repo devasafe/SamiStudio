@@ -92,7 +92,7 @@ export default async function ProjectPage({ params }: PageProps) {
   ].filter((item) => item.value);
 
   const cover = project.coverImage ? (
-    <div className={cn("relative aspect-[21/9] overflow-hidden rounded-lg", project.coverClass)}>
+    <div className={cn("relative aspect-[21/9] overflow-hidden", project.coverClass)}>
       <Image
         src={project.coverImage}
         alt={project.title}
@@ -191,7 +191,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
         {/* Ficha em barra, logo abaixo do conteúdo */}
         {details.length > 0 ? (
-          <dl className="mt-6 grid grid-cols-2 gap-8 rounded-xl border border-[#f2ece0]/10 p-6 sm:grid-cols-3 lg:grid-cols-5">
+          <dl className="mt-10 grid grid-cols-2 gap-8 border-t border-[#f2ece0]/10 pt-8 sm:grid-cols-3 lg:grid-cols-5">
             {details.map((item) => (
               <DetailItem key={item.label} {...item} />
             ))}
@@ -200,7 +200,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
         {/* Anterior e próximo na mesma barra, com a capa de cada um */}
         {previous || next ? (
-          <nav className="mt-4 flex items-center gap-4 rounded-xl border border-[#f2ece0]/10 p-3">
+          <nav className="mt-10 flex items-center gap-4 border-t border-[#f2ece0]/10 py-8">
             {previous ? (
               <NeighborLink
                 project={previous}
@@ -270,7 +270,7 @@ function NeighborLink({ project, locale, label, cms, direction }: NeighborLinkPr
     <Link
       href={localePath(locale, `/portfolio/${project.slug}`)}
       className={cn(
-        "group flex min-w-0 flex-1 items-center gap-4 rounded-lg p-2 transition-colors hover:bg-[#f2ece0]/5",
+        "group flex min-w-0 flex-1 items-center gap-4 transition-colors",
         isNext && "flex-row-reverse text-right"
       )}
     >
@@ -281,7 +281,7 @@ function NeighborLink({ project, locale, label, cms, direction }: NeighborLinkPr
         )}
         aria-hidden
       />
-      <span className="relative hidden size-14 shrink-0 overflow-hidden rounded bg-[#221a13] sm:block">
+      <span className="relative hidden size-14 shrink-0 overflow-hidden bg-[#221a13] sm:block">
         {project.coverImage ? (
           <Image src={project.coverImage} alt="" fill sizes="56px" className="object-cover" />
         ) : null}
