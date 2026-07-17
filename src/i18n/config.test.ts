@@ -24,9 +24,15 @@ describe("localePath", () => {
   it("prefixa os demais idiomas", () => {
     expect(localePath("en", "/")).toBe("/en");
     expect(localePath("en", "/sobre")).toBe("/en/sobre");
-    expect(localePath("es", "/portfolio/interior-miraflores")).toBe(
-      "/es/portfolio/interior-miraflores"
+    expect(localePath("pt-BR", "/portfolio/interior-miraflores")).toBe(
+      "/pt-BR/portfolio/interior-miraflores"
     );
+  });
+
+  it("o espanhol é o idioma sem prefixo", () => {
+    // Quem chega sem uma preferência reconhecível cai aqui.
+    expect(defaultLocale).toBe("es");
+    expect(localePath("es", "/sobre")).toBe("/sobre");
   });
 
   it("normaliza caminhos sem barra inicial", () => {

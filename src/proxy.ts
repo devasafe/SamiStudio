@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { defaultLocale, locales } from "@/i18n/config";
+import { defaultLocale, locales, LOCALE_COOKIE } from "@/i18n/config";
+import { negotiateLocale } from "@/i18n/negotiate";
 import { SESSION_COOKIE, verifySession } from "@/lib/auth/jwt";
 
 const prefixedLocales = locales.filter((locale) => locale !== defaultLocale);
@@ -40,8 +41,8 @@ async function handleAdmin(request: NextRequest): Promise<NextResponse> {
 }
 
 /**
- * Estratégia de URLs (Docs/13): pt-BR sem prefixo (/, /sobre, ...),
- * demais idiomas com prefixo (/en/..., /es/...).
+ * Estratégia de URLs (Docs/13): o idioma padrão (es) fica sem prefixo
+ * (/, /sobre, ...) e os demais com prefixo (/pt-BR/..., /en/...).
  * Internamente todas as rotas do site vivem em app/[locale];
  * /admin fica fora do sistema de locales.
  */
@@ -67,8 +68,30 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
     return NextResponse.next();
   }
 
-  // Sem prefixo: reescreve internamente para o idioma padrão.
+  // Sem prefixo: o idioma sai da escolha da pessoa (cookie) ou do navegador.
+  const preferred = negotiateLocale(
+    request.headers.get("accept-language"),
+    request.cookies.get(LOCALE_COOKIE)?.value
+  );
+
   const url = request.nextUrl.clone();
+
+  // Quem prefere outro idioma vai para a URL prefixada dele. 307 e não 308: a
+  // escolha depende de quem pede, e um permanente ficaria gravado no navegador
+  // — a pessoa nunca mais alcançaria o espanhol nesta URL.
+  //
+  // O Vary diz aos caches que esta resposta depende de quem pediu. Só vale para
+  // o redirect: o Next reescreve o Vary das respostas de rewrite, e nem o
+  // headers() do next.config sobrevive a isso. Na Vercel o proxy roda antes do
+  // cache em toda requisição, então a negociação acontece de qualquer forma;
+  // um cache intermediário próprio precisaria ser configurado à mão.
+  if (preferred !== defaultLocale) {
+    url.pathname = pathname === "/" ? `/${preferred}` : `/${preferred}${pathname}`;
+    const redirect = NextResponse.redirect(url, 307);
+    redirect.headers.set("Vary", "Accept-Language, Cookie");
+    return redirect;
+  }
+
   url.pathname = `/${defaultLocale}${pathname}`;
   return NextResponse.rewrite(url);
 }
