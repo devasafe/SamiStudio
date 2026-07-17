@@ -42,6 +42,8 @@ function toPortfolioItem(doc: ProjectDoc, locale: Locale, categoryName?: string)
     // Só com o checkpoint ligado: as fotos podem ter ficado no banco de uma
     // marcação anterior, e não devem reaparecer sozinhas no site.
     beforeAfter: doc.checkpoint ? (doc.beforeAfter ?? []) : [],
+    area: doc.area,
+    stage: doc.stage,
   };
 }
 

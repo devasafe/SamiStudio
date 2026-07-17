@@ -50,6 +50,10 @@ export const projectCreateSchema = z.object({
   country: z.string().max(120).optional(),
   categoryId: z.string().length(24).optional(),
   year: z.number().int().min(2000).max(2100).optional(),
+  /** Área construída em m². */
+  area: z.number().min(1).max(1_000_000).optional(),
+  /** Etapa da obra — não confundir com `status`, que é a publicação. */
+  stage: z.enum(["concept", "inProgress", "done"]).optional(),
   coverImage: uploadedImage.optional(),
   gallery: z
     .array(

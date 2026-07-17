@@ -25,6 +25,9 @@ export interface ProjectSeo {
   canonical?: string;
 }
 
+/** Etapa da obra — diferente de `status`, que é a publicação no site. */
+export type ProjectStage = "concept" | "inProgress" | "done";
+
 export interface ProjectDoc {
   slug: string;
   title: string;
@@ -34,6 +37,9 @@ export interface ProjectDoc {
   country?: string;
   categoryId?: Types.ObjectId;
   year?: number;
+  /** Área construída em m². */
+  area?: number;
+  stage?: ProjectStage;
   coverImage?: string;
   gallery: GalleryItem[];
   video?: { url?: string; thumbnail?: string; provider?: string };
@@ -60,6 +66,8 @@ const projectSchema = new Schema<ProjectDoc>(
     country: { type: String },
     categoryId: { type: Schema.Types.ObjectId, ref: "Category" },
     year: { type: Number },
+    area: { type: Number },
+    stage: { type: String, enum: ["concept", "inProgress", "done"] },
     coverImage: { type: String },
     gallery: [
       {

@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { api, AdminApiError } from "@/components/admin/api-client";
 import { ProjectForm, type ProjectFormValues } from "@/components/admin/projects/project-form";
-import type { BeforeAfterItem, GalleryItem } from "@/models/project";
+import type { BeforeAfterItem, GalleryItem, ProjectStage } from "@/models/project";
 
 interface ProjectResponse {
   title?: string;
@@ -13,6 +13,8 @@ interface ProjectResponse {
   city?: string;
   country?: string;
   year?: number;
+  area?: number;
+  stage?: ProjectStage;
   categoryId?: string;
   status?: "draft" | "published" | "archived";
   featured?: boolean;
@@ -38,6 +40,8 @@ export default function EditarProjetoPage({ params }: { params: Promise<{ id: st
           city: data.city ?? "",
           country: data.country ?? "",
           year: data.year ? String(data.year) : "",
+          area: data.area ? String(data.area) : "",
+          stage: data.stage ?? "",
           categoryId: data.categoryId ?? "",
           status: data.status ?? "draft",
           featured: data.featured ?? false,

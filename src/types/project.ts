@@ -1,4 +1,4 @@
-import type { BeforeAfterItem } from "@/models/project";
+import type { BeforeAfterItem, ProjectStage } from "@/models/project";
 
 export type ProjectCategory = "residential" | "commercial" | "interior" | "exterior" | "concept";
 
@@ -45,4 +45,8 @@ export interface PortfolioItem {
   gallery?: MasonryPhoto[];
   /** Pares da transformação; só vêm quando o projeto marcou o checkpoint. */
   beforeAfter?: BeforeAfterItem[];
+  /** Área construída em m². */
+  area?: number;
+  /** Etapa da obra (conceito/em andamento/finalizado). */
+  stage?: ProjectStage;
 }

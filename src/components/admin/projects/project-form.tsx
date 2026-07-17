@@ -8,7 +8,7 @@ import { GalleryUploader } from "@/components/admin/projects/gallery-uploader";
 import { coverFromGallery } from "@/components/admin/projects/gallery-utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import type { BeforeAfterItem, GalleryItem } from "@/models/project";
+import type { BeforeAfterItem, GalleryItem, ProjectStage } from "@/models/project";
 
 export interface ProjectFormValues {
   title: string;
@@ -18,6 +18,8 @@ export interface ProjectFormValues {
   city: string;
   country: string;
   year: string;
+  area: string;
+  stage: "" | ProjectStage;
   categoryId: string;
   status: "draft" | "published" | "archived";
   featured: boolean;
@@ -34,6 +36,8 @@ const EMPTY: ProjectFormValues = {
   city: "",
   country: "",
   year: "",
+  area: "",
+  stage: "",
   categoryId: "",
   status: "draft",
   featured: false,
@@ -88,6 +92,8 @@ export function ProjectForm({ initial, projectId }: ProjectFormProps) {
       city: values.city || undefined,
       country: values.country || undefined,
       year: values.year ? Number(values.year) : undefined,
+      area: values.area ? Number(values.area) : undefined,
+      stage: values.stage || undefined,
       categoryId: values.categoryId || undefined,
       status: values.status,
       featured: values.featured,
@@ -193,6 +199,32 @@ export function ProjectForm({ initial, projectId }: ProjectFormProps) {
             onChange={(e) => set("year", e.target.value)}
             className={inputClass}
           />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="area">Área (m²)</Label>
+          <input
+            id="area"
+            type="number"
+            value={values.area}
+            onChange={(e) => set("area", e.target.value)}
+            className={inputClass}
+            placeholder="ex.: 620"
+          />
+        </div>
+        <div className="space-y-1">
+          {/* Etapa da obra — nada a ver com o status de publicação abaixo. */}
+          <Label htmlFor="stage">Etapa da obra</Label>
+          <select
+            id="stage"
+            value={values.stage}
+            onChange={(e) => set("stage", e.target.value as ProjectStage | "")}
+            className={inputClass}
+          >
+            <option value="">Não informar</option>
+            <option value="concept">Conceito</option>
+            <option value="inProgress">Em andamento</option>
+            <option value="done">Finalizado</option>
+          </select>
         </div>
         <div className="space-y-1">
           <Label htmlFor="category">Categoria</Label>

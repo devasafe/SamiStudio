@@ -245,7 +245,18 @@
     "beforeAfterTitle": "Before and After",
     "before": "Before",
     "after": "After",
-    "dragHint": "Drag to see the transformation"
+    "dragHint": "Drag to see the transformation",
+    "area": "Area",
+    "stage": "Status",
+    "stageConcept": "Concept",
+    "stageInProgress": "In progress",
+    "stageDone": "Completed",
+    "tabOverview": "Overview",
+    "tabImages": "Images",
+    "tabInfo": "Details",
+    "aboutTitle": "About the project",
+    "morePhotos": "photos",
+    "previous": "Previous project"
   },
   "contactPage": {
     "heroEyebrow": "Contact",
