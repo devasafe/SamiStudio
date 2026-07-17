@@ -103,9 +103,13 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
   return (
     <html
       lang={locale}
-      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} ${allura.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} ${allura.variable} antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      {/* Sem altura no <html>: a Lenis mede o documento pelo scrollHeight e só
+          re-mede quando a caixa do html muda — com height:100% ela nunca muda,
+          e o scroll congela na altura medida antes das imagens carregarem.
+          O rodapé continua no fim da tela via min-h-svh, que não é percentual. */}
+      <body className="flex min-h-svh flex-col">
         <SmoothScroll />
         <EditBridge />
         <AmbientBackground />

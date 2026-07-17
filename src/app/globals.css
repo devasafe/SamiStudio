@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* CSS oficial da Lenis: força height:auto no html/body enquanto ela está ativa.
+   Sem ele, uma altura fixa no html congela o limite de scroll da lib. */
+@import "lenis/dist/lenis.css";
 
 @custom-variant dark (&:is(.dark *));
 
