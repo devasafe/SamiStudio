@@ -116,19 +116,23 @@
       "steps": [
         {
           "title": "Briefing",
-          "description": "You send the project, references and goals. We align scope and timeline."
+          "description": "You send the project, references and goals. We align scope and timeline.",
+          "duration": "1 to 2 days"
         },
         {
           "title": "Modeling",
-          "description": "We build the 3D model true to the project, with materials and lighting."
+          "description": "We build the 3D model true to the project, with materials and lighting.",
+          "duration": "5 to 7 days"
         },
         {
           "title": "Preview",
-          "description": "You receive previews to adjust camera, light and finishes."
+          "description": "You receive previews to adjust camera, light and finishes.",
+          "duration": "2 to 3 days"
         },
         {
           "title": "Delivery",
-          "description": "Final render in high resolution, ready to present and publish."
+          "description": "Final render in high resolution, ready to present and publish.",
+          "duration": "1 to 2 days"
         }
       ],
       "subtitle": "A clear, collaborative process to turn your project into images that impress.",

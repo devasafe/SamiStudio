@@ -1,4 +1,4 @@
-import { Box, Eye, PencilRuler, Sparkles } from "@/components/icons";
+import { Box, Clock, Eye, PencilRuler, Sparkles } from "@/components/icons";
 import { Container } from "@/components/layout/container";
 import { CircuitBoard } from "@/components/ui/circuit-board";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -103,6 +103,16 @@ export function ProcessSection({ dictionary }: ProcessSectionProps) {
                 >
                   {step.title}
                 </h3>
+                {/* Duração da etapa (editável); vazia não aparece. */}
+                {step.duration ? (
+                  <span
+                    className="text-caption mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#cf5a18]/30 px-3 py-1 tracking-[0.14em] text-[#cf5a18] uppercase"
+                    data-cms={`text:sections.process.steps.${index}.duration`}
+                  >
+                    <Clock className="size-3" strokeWidth={1.5} aria-hidden />
+                    {step.duration}
+                  </span>
+                ) : null}
                 <span className="mt-3 h-px w-8 bg-[#cf5a18]/50" aria-hidden />
                 <p
                   className="text-small mt-4 max-w-[15rem] leading-relaxed text-[#d8cdba]/80"

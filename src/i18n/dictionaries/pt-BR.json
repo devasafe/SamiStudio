@@ -116,19 +116,23 @@
       "steps": [
         {
           "title": "Briefing",
-          "description": "Você envia o projeto, referências e objetivos. Alinhamos escopo e prazo."
+          "description": "Você envia o projeto, referências e objetivos. Alinhamos escopo e prazo.",
+          "duration": "1 a 2 dias"
         },
         {
           "title": "Modelagem",
-          "description": "Construímos o modelo 3D fiel ao projeto, com materiais e iluminação."
+          "description": "Construímos o modelo 3D fiel ao projeto, com materiais e iluminação.",
+          "duration": "5 a 7 dias"
         },
         {
           "title": "Prévia",
-          "description": "Você recebe prévias para ajustar câmera, luz e acabamentos."
+          "description": "Você recebe prévias para ajustar câmera, luz e acabamentos.",
+          "duration": "2 a 3 dias"
         },
         {
           "title": "Entrega",
-          "description": "Render final em alta resolução, pronto para apresentar e divulgar."
+          "description": "Render final em alta resolução, pronto para apresentar e divulgar.",
+          "duration": "1 a 2 dias"
         }
       ],
       "subtitle": "Um processo claro e colaborativo para transformar seu projeto em imagens que impressionam.",
