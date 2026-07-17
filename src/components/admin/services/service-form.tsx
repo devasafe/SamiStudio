@@ -196,7 +196,7 @@ export function ServiceForm({ initial, serviceId }: ServiceFormProps) {
 
       <ImageUploader
         label="Imagem de capa"
-        hint="1000 × 630 px (16:10)"
+        hint="600 × 450 px (4:3)"
         value={values.coverImage}
         onChange={(url) => set("coverImage", url)}
       />
