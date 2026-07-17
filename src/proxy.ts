@@ -53,11 +53,19 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
     return handleAdmin(request);
   }
 
-  // /pt-BR/... redireciona para a versão sem prefixo (URL canônica única).
+  // O prefixo do idioma padrão redireciona para a versão sem prefixo (URL
+  // canônica única). 307 (temporário) e NÃO 308: qual idioma é o padrão é
+  // configuração mutável — quando ele muda (ex.: pt-BR → es), um 308 já
+  // cacheado no navegador de "/pt-BR/x → /x" passa a brigar com o 307 abaixo,
+  // que agora manda "/x → /pt-BR/x", e o par entra em laço de redirecionamento
+  // ("localhost redirecionou você muitas vezes"). O no-store impede que este
+  // redirect volte a ser gravado.
   if (pathname === `/${defaultLocale}` || pathname.startsWith(`/${defaultLocale}/`)) {
     const url = request.nextUrl.clone();
     url.pathname = pathname.slice(`/${defaultLocale}`.length) || "/";
-    return NextResponse.redirect(url, 308);
+    const redirect = NextResponse.redirect(url, 307);
+    redirect.headers.set("Cache-Control", "no-store");
+    return redirect;
   }
 
   // Idiomas prefixados já casam com app/[locale].
@@ -89,6 +97,9 @@ export default async function proxy(request: NextRequest): Promise<NextResponse>
     url.pathname = pathname === "/" ? `/${preferred}` : `/${preferred}${pathname}`;
     const redirect = NextResponse.redirect(url, 307);
     redirect.headers.set("Vary", "Accept-Language, Cookie");
+    // Depende de quem pede (idioma) e de qual é o padrão — não pode ser
+    // gravado por nenhum cache; ver a nota do redirect do prefixo padrão acima.
+    redirect.headers.set("Cache-Control", "no-store");
     return redirect;
   }
 
