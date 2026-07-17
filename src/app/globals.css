@@ -215,3 +215,33 @@
     transform: translateX(-50%);
   }
 }
+
+/*
+ * Campo de telefone com seletor de país (react-phone-number-input) no visual
+ * do formulário escuro. A lib expõe estas variáveis — encaixar por elas evita
+ * brigar com o CSS dela a cada atualização.
+ */
+.cms-phone {
+  --PhoneInputCountryFlag-height: 1em;
+  --PhoneInputCountrySelectArrow-color: #d8cdba;
+  --PhoneInputCountrySelectArrow-opacity: 0.8;
+  --PhoneInput-color--focus: #cf5a18;
+  --PhoneInputCountryFlag-borderColor: rgba(242, 236, 224, 0.25);
+  gap: 0.75rem;
+}
+
+.cms-phone .PhoneInputCountry {
+  padding: 0 1rem;
+  border: 1px solid rgba(242, 236, 224, 0.15);
+  transition: border-color 300ms;
+}
+
+.cms-phone .PhoneInputCountry:focus-within {
+  border-color: #cf5a18;
+}
+
+/* A lista nativa herda o fundo do sistema: sem isso, texto claro em fundo claro. */
+.cms-phone .PhoneInputCountrySelect option {
+  background: #141009;
+  color: #f2ece0;
+}

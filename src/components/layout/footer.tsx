@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { localePath, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { phoneDigits, whatsappUrl } from "@/lib/phone";
 import type { SiteSettingsDoc } from "@/models/site-settings";
 
 const localeNames: Record<Locale, string> = {
@@ -25,20 +26,23 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
   // `cms` identifica o campo de Configurações por trás de cada link — o
   // rótulo social é texto fixo ("Instagram"), então a marcação vai no campo
   // real (a URL), não no rótulo exibido.
-  const whatsappDigits = (settings?.whatsapp ?? "").replace(/\D/g, "");
+  // O telefone leva ao WhatsApp em vez do discador: é por lá que o contato
+  // acontece, e no computador o `tel:` não faz nada.
+  const phoneLink = whatsappUrl(settings?.phone ?? "");
+  const whatsappLink = whatsappUrl(settings?.whatsapp ?? "");
+  // Telefone e WhatsApp costumam ser o mesmo número: repetir a mesma linha
+  // duas vezes no rodapé só ocupa espaço.
+  const sameNumber = phoneDigits(settings?.phone ?? "") === phoneDigits(settings?.whatsapp ?? "");
+
   const contactLinks = [
     settings?.email
       ? { href: `mailto:${settings.email}`, label: settings.email, cms: "set:email" }
       : null,
-    settings?.phone
-      ? {
-          href: `tel:${settings.phone.replace(/\s/g, "")}`,
-          label: settings.phone,
-          cms: "set:phone",
-        }
+    settings?.phone && phoneLink
+      ? { href: phoneLink, label: settings.phone, cms: "set:phone" }
       : null,
-    whatsappDigits
-      ? { href: `https://wa.me/${whatsappDigits}`, label: "WhatsApp", cms: "set:whatsapp" }
+    whatsappLink && !sameNumber
+      ? { href: whatsappLink, label: "WhatsApp", cms: "set:whatsapp" }
       : null,
   ].filter((link): link is { href: string; label: string; cms: string } => link !== null);
 

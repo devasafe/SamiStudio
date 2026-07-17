@@ -8,6 +8,7 @@ import { FAQSection } from "@/components/shared/faq-section";
 import { resolveLocale } from "@/i18n/resolve-locale";
 import { getFaqs } from "@/lib/content";
 import { safeImageUrl } from "@/lib/images";
+import { whatsappUrl } from "@/lib/phone";
 import { buildPageMetadata } from "@/lib/metadata";
 import { getSiteSettings } from "@/lib/settings";
 
@@ -49,12 +50,16 @@ export default async function ContactPage({ params }: PageProps) {
       label: page.emailLabel,
       labelRef: "contactPage.emailLabel",
       lines: [{ value: settings?.email, field: "email" }],
+      href: settings?.email ? `mailto:${settings.email}` : undefined,
     },
     {
       icon: Phone,
       label: page.phoneLabel,
       labelRef: "contactPage.phoneLabel",
       lines: [{ value: settings?.phone, field: "phone" }],
+      // Clicar no número abre a conversa no WhatsApp; sem DDI o link não sai e
+      // o número fica como texto, para não abrir conversa com outra pessoa.
+      href: whatsappUrl(settings?.phone ?? "") ?? undefined,
     },
     {
       icon: Instagram,

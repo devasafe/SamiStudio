@@ -1,40 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatPhone, phoneDigits, whatsappUrl } from "./phone";
-
-describe("formatPhone", () => {
-  it("formata celular brasileiro enquanto digita", () => {
-    expect(formatPhone("5")).toBe("+5");
-    expect(formatPhone("55")).toBe("+55");
-    expect(formatPhone("5511")).toBe("+55 (11)");
-    expect(formatPhone("5511987")).toBe("+55 (11) 987");
-    expect(formatPhone("5511987654321")).toBe("+55 (11) 98765-4321");
-  });
-
-  it("formata fixo brasileiro (8 dígitos)", () => {
-    expect(formatPhone("551133334444")).toBe("+55 (11) 3333-4444");
-  });
-
-  it("agrupa número estrangeiro sem inventar formato de país", () => {
-    // O número da própria Sami é peruano: uma máscara fixa brasileira o
-    // rejeitaria, e sem uma base de formatos por país o honesto é só agrupar.
-    expect(formatPhone("51937588295")).toBe("+51 937 588 295");
-  });
-
-  it("ignora o que não é dígito", () => {
-    expect(formatPhone("+55 (11) 98765-4321")).toBe("+55 (11) 98765-4321");
-    expect(formatPhone("abc55def11")).toBe("+55 (11)");
-  });
-
-  it("não passa dos 15 dígitos do padrão internacional", () => {
-    // E.164: 15 dígitos é o teto de um número no mundo todo.
-    expect(formatPhone("5511987654321999999")).toBe("+55 (11) 98765-432199");
-    expect(phoneDigits(formatPhone("5511987654321999999"))).toHaveLength(15);
-  });
-
-  it("string vazia continua vazia (não vira um '+' solto)", () => {
-    expect(formatPhone("")).toBe("");
-  });
-});
+import { phoneDigits, whatsappUrl } from "./phone";
 
 describe("phoneDigits", () => {
   it("devolve só os dígitos", () => {

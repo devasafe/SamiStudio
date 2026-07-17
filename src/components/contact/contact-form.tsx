@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import { ArrowRight, Lock } from "@/components/icons";
 import { useLanguage } from "@/components/providers/language-provider";
-import { formatPhone } from "@/lib/phone";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -19,8 +20,9 @@ export function ContactForm() {
   const page = dictionary.contactPage;
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
-  // O telefone é controlado só para poder mascarar enquanto se digita.
-  const [phone, setPhone] = useState("");
+  // Telefone controlado: o seletor de país devolve o número já em E.164
+  // (+5511987654321), que é o formato de que o link do WhatsApp precisa.
+  const [phone, setPhone] = useState<string | undefined>();
   // O aviso do e-mail só aparece depois que a pessoa sai do campo: apontar erro
   // enquanto ela ainda está escrevendo o endereço é implicância.
   const [emailWarning, setEmailWarning] = useState(false);
@@ -28,7 +30,9 @@ export function ContactForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const values = Object.fromEntries(new FormData(form));
+    // O telefone vem do state: o campo da lib é controlado e o FormData
+    // devolveria o texto formatado da tela, não o E.164 que o link precisa.
+    const values = { ...Object.fromEntries(new FormData(form)), phone: phone ?? "" };
 
     setStatus("sending");
     setError(null);
@@ -44,7 +48,7 @@ export function ContactForm() {
         throw new Error(body?.message ?? page.error);
       }
       form.reset();
-      setPhone("");
+      setPhone(undefined);
       setStatus("sent");
     } catch (err) {
       setError(err instanceof Error ? err.message : page.error);
@@ -83,16 +87,18 @@ export function ContactForm() {
           ) : null}
         </div>
       </div>
-      <input
-        name="phone"
-        type="tel"
-        inputMode="tel"
-        autoComplete="tel"
+      {/* Seletor de país + máscara do país escolhido, pela lib: cada país tem
+          seu formato, e o DDI é o que faz o WhatsApp abrir a conversa certa. */}
+      <PhoneInput
+        international
+        defaultCountry="BR"
         value={phone}
-        onChange={(event) => setPhone(formatPhone(event.target.value))}
-        placeholder={`${page.fieldPhone} — +55 (11) 98765-4321`}
+        onChange={setPhone}
+        name="phone"
+        placeholder={page.fieldPhone}
         aria-label={page.fieldPhone}
-        className={FIELD_CLASS}
+        className="cms-phone"
+        numberInputProps={{ className: FIELD_CLASS }}
       />
       <input
         name="subject"
