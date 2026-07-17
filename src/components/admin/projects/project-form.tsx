@@ -257,14 +257,19 @@ export function ProjectForm({ initial, projectId }: ProjectFormProps) {
         </div>
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={values.featured}
-          onChange={(e) => set("featured", e.target.checked)}
-        />
-        Projeto em destaque
-      </label>
+      <div>
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={values.featured}
+            onChange={(e) => set("featured", e.target.checked)}
+          />
+          Projeto em destaque
+        </label>
+        <p className="text-muted-foreground mt-1 text-xs">
+          Aparece no carrossel do banner da página Portfólio.
+        </p>
+      </div>
 
       <GalleryUploader value={values.gallery} onChange={(gallery) => set("gallery", gallery)} />
 
