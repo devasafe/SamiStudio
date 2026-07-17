@@ -103,7 +103,11 @@ export function ContactForm() {
         disabled={status === "sending"}
         className="text-caption group flex w-full items-center justify-center gap-3 bg-[#cf5a18] px-8 py-4 tracking-[0.18em] text-[#0f0c09] uppercase transition-colors duration-300 hover:bg-[#e06a24] disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {status === "sending" ? page.sending : page.submit}
+        {/* "Enviando..." é estado passageiro e não tem como ser clicado: a
+            marcação fica no rótulo em repouso. */}
+        <span data-cms="text:contactPage.submit">
+          {status === "sending" ? page.sending : page.submit}
+        </span>
         <ArrowRight
           className="size-4 transition-transform duration-300 group-hover:translate-x-1"
           aria-hidden
@@ -120,7 +124,7 @@ export function ContactForm() {
 
       <p className="text-caption flex items-center gap-2 text-[#d8cdba]/50">
         <Lock className="size-3.5" strokeWidth={1.5} aria-hidden />
-        {page.privacy}
+        <span data-cms="text:contactPage.privacy">{page.privacy}</span>
       </p>
     </form>
   );

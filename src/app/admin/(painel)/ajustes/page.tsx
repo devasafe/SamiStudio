@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import type { FieldConfig } from "@/components/admin/entity-form";
 import { GooglePreview } from "@/components/admin/settings/google-preview";
-import { SettingsForm } from "@/components/admin/settings/settings-form";
+import { SettingsForm, type SettingsGroup } from "@/components/admin/settings/settings-form";
 import { TextsForm } from "@/components/admin/settings/texts-form";
 import { cn } from "@/lib/utils";
 
@@ -17,28 +16,58 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
-const SITE_FIELDS: FieldConfig[] = [
-  { name: "siteName", label: "Nome do site", type: "text" },
-  { name: "logo", label: "Logo (URL)", type: "url" },
-  { name: "favicon", label: "Favicon (URL)", type: "url" },
+const SITE_GROUPS: SettingsGroup[] = [
+  {
+    label: "Identidade",
+    hint: "O nome e o logo que aparecem no topo do site e no rodapé.",
+    region: "nav",
+    fields: [
+      { name: "siteName", label: "Nome do site", type: "text" },
+      { name: "logo", label: "Logo (URL)", type: "url" },
+    ],
+  },
+  {
+    label: "Ícone da aba",
+    hint: "O quadradinho que aparece na aba do navegador e nos favoritos.",
+    region: "browser",
+    fields: [{ name: "favicon", label: "Favicon (URL)", type: "url" }],
+  },
 ];
 
-const CONTACT_FIELDS: FieldConfig[] = [
-  { name: "email", label: "E-mail de contato", type: "email" },
-  { name: "phone", label: "Telefone", type: "text" },
-  { name: "whatsapp", label: "WhatsApp (com DDI, ex.: 5511999999999)", type: "text" },
-  { name: "address", label: "Endereço", type: "text" },
+const CONTACT_GROUPS: SettingsGroup[] = [
   {
-    name: "locationNote",
-    label: "Nota da localização (ex.: Atendimento online para todo o Brasil)",
-    type: "text",
+    label: "Dados de contato",
+    hint: "Aparecem na página Contato e no rodapé. Campo vazio não aparece no site.",
+    region: "content",
+    fields: [
+      { name: "email", label: "E-mail de contato", type: "email" },
+      { name: "phone", label: "Telefone", type: "text" },
+      { name: "whatsapp", label: "WhatsApp (com DDI, ex.: 5511999999999)", type: "text" },
+      { name: "address", label: "Endereço", type: "text" },
+      {
+        name: "locationNote",
+        label: "Nota da localização (ex.: Atendimento online para todo o Brasil)",
+        type: "text",
+      },
+      {
+        name: "businessHours",
+        label: "Horário (ex.: Segunda a Sexta das 9h às 18h)",
+        type: "text",
+      },
+    ],
   },
-  { name: "businessHours", label: "Horário (ex.: Segunda a Sexta das 9h às 18h)", type: "text" },
-  { name: "instagram", label: "Instagram (URL)", type: "url" },
-  { name: "linkedin", label: "LinkedIn (URL)", type: "url" },
-  { name: "facebook", label: "Facebook (URL)", type: "url" },
-  { name: "youtube", label: "YouTube (URL)", type: "url" },
-  { name: "behance", label: "Behance (URL)", type: "url" },
+  {
+    label: "Redes sociais",
+    hint: "Viram links no rodapé. Rede sem endereço não aparece lá.",
+    region: "footer",
+    fields: [
+      { name: "instagram", label: "Instagram (URL)", type: "url" },
+      { name: "linkedin", label: "LinkedIn (URL)", type: "url" },
+      { name: "facebook", label: "Facebook (URL)", type: "url" },
+      { name: "youtube", label: "YouTube (URL)", type: "url" },
+      { name: "behance", label: "Behance (URL)", type: "url" },
+    ],
+  },
 ];
 
 /** SEO é tudo sob `meta.`; "avançados" é o resto sem lugar na tela. */
@@ -116,8 +145,8 @@ export default function AdminAjustesPage() {
         ))}
       </nav>
 
-      {tab === "site" ? <SettingsForm fields={SITE_FIELDS} /> : null}
-      {tab === "contato" ? <SettingsForm fields={CONTACT_FIELDS} /> : null}
+      {tab === "site" ? <SettingsForm groups={SITE_GROUPS} /> : null}
+      {tab === "contato" ? <SettingsForm groups={CONTACT_GROUPS} /> : null}
       {tab === "seo" ? <TextsForm filter={isSeo} renderGroupPreview={renderSeoPreview} /> : null}
       {tab === "textos" ? <TextsForm filter={isAdvanced} /> : null}
     </div>

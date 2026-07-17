@@ -51,19 +51,27 @@ export function HomeExperience({ children }: HomeExperienceProps) {
                 <span className="inline-block size-1.5 rounded-full bg-current" aria-hidden />
                 Sami da Silva Studio
               </p>
-              <h1 className="font-heading mt-5 text-[clamp(2.75rem,7.5vw,7rem)] leading-[0.95] tracking-tight text-balance">
+              <h1
+                className="font-heading mt-5 text-[clamp(2.75rem,7.5vw,7rem)] leading-[0.95] tracking-tight text-balance"
+                data-cms="text:hero.headline"
+              >
                 {hero.headline}
               </h1>
             </div>
 
             {/* Descrição curta + ação, alinhadas à base como numa ficha técnica */}
             <div className="flex max-w-sm flex-col items-start gap-6 lg:items-end lg:text-right">
-              <p className="text-small leading-relaxed text-[#d8cdba]">{hero.subheadline}</p>
+              <p
+                className="text-small leading-relaxed text-[#d8cdba]"
+                data-cms="text:hero.subheadline"
+              >
+                {hero.subheadline}
+              </p>
               <Link
                 href={localePath(locale, "/portfolio")}
                 className="group text-small inline-flex items-center gap-3 rounded-full border border-[#f2ece0]/35 px-6 py-3 tracking-wide transition-colors duration-300 hover:bg-[#f2ece0] hover:text-[#141009]"
               >
-                {dictionary.common.viewPortfolio}
+                <span data-cms="text:common.viewPortfolio">{dictionary.common.viewPortfolio}</span>
                 <span
                   className="transition-transform duration-300 group-hover:translate-x-1"
                   aria-hidden
@@ -76,7 +84,10 @@ export function HomeExperience({ children }: HomeExperienceProps) {
 
           {/* Fio editorial + cue de rolagem */}
           <div className="mt-12 flex items-center gap-4 border-t border-[#f2ece0]/15 pt-6">
-            <span className="text-caption tracking-[0.22em] text-[#e7dccb]/60 uppercase">
+            <span
+              className="text-caption tracking-[0.22em] text-[#e7dccb]/60 uppercase"
+              data-cms="text:hero.scroll"
+            >
               {hero.scroll}
             </span>
             <span className="h-px flex-1 bg-[#f2ece0]/15" aria-hidden />

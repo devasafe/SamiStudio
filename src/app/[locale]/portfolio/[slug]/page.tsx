@@ -46,11 +46,21 @@ export default async function ProjectPage({ params }: PageProps) {
   const index = all.findIndex((item) => item.slug === project.slug);
   const next = all.length > 1 ? all[(index + 1) % all.length] : null;
 
+  // O `cms` acompanha o rótulo: o <dt> abaixo é montado em laço e precisa saber
+  // qual campo do dicionário está exibindo.
   const info = [
-    { label: labels.category, value: project.categoryLabel ?? "—" },
-    { label: labels.city, value: project.city ?? "—" },
-    { label: labels.year, value: project.year ? String(project.year) : "—" },
-    { label: labels.client, value: project.client ?? "—" },
+    {
+      label: labels.category,
+      cms: "text:projectPage.category",
+      value: project.categoryLabel ?? "—",
+    },
+    { label: labels.city, cms: "text:projectPage.city", value: project.city ?? "—" },
+    {
+      label: labels.year,
+      cms: "text:projectPage.year",
+      value: project.year ? String(project.year) : "—",
+    },
+    { label: labels.client, cms: "text:projectPage.client", value: project.client ?? "—" },
   ];
 
   return (
@@ -62,7 +72,7 @@ export default async function ProjectPage({ params }: PageProps) {
             className="text-small text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
           >
             <ArrowLeft className="size-4" aria-hidden />
-            {labels.back}
+            <span data-cms="text:projectPage.back">{labels.back}</span>
           </Link>
           <Heading level={1} className="mt-8">
             {project.title}
@@ -89,7 +99,10 @@ export default async function ProjectPage({ params }: PageProps) {
                 priority
               />
             ) : (
-              <span className="text-caption text-foreground/50 tracking-widest uppercase">
+              <span
+                className="text-caption text-foreground/50 tracking-widest uppercase"
+                data-cms="text:projectPage.galleryComingSoon"
+              >
                 {labels.galleryComingSoon}
               </span>
             )}
@@ -104,7 +117,10 @@ export default async function ProjectPage({ params }: PageProps) {
           <dl className="border-border mt-12 grid grid-cols-2 gap-8 border-t pt-8 lg:grid-cols-4">
             {info.map((item) => (
               <div key={item.label}>
-                <dt className="text-caption text-muted-foreground tracking-widest uppercase">
+                <dt
+                  className="text-caption text-muted-foreground tracking-widest uppercase"
+                  data-cms={item.cms}
+                >
                   {item.label}
                 </dt>
                 <dd className="text-body mt-2">{item.value}</dd>
@@ -118,7 +134,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={localePath(locale, `/portfolio/${next.slug}`)}
                 className="text-small hover:text-muted-foreground inline-flex items-center gap-2 transition-colors"
               >
-                {labels.next}
+                <span data-cms="text:projectPage.next">{labels.next}</span>
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </div>
