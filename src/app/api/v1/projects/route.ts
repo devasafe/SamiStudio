@@ -30,6 +30,11 @@ export async function GET(request: NextRequest) {
 
     const filter: QueryFilter<ProjectDoc> = { deletedAt: null };
     if (session) {
+      // ?deleted=true abre a lixeira — só para quem está no painel: o site
+      // público nunca deve enxergar o que foi excluído.
+      if (params.get("deleted") === "true") {
+        filter.deletedAt = { $ne: null };
+      }
       const status = params.get("status");
       if (status === "draft" || status === "published" || status === "archived") {
         filter.status = status;

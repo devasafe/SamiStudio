@@ -39,7 +39,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     if (await optionalSession(request)) {
       const filter = isValidObjectId(idOrSlug) ? { _id: idOrSlug } : { slug: idOrSlug };
-      const project = await Project.findOne({ ...filter, deletedAt: null }).lean();
+      const project = await Project.findOne(filter).lean();
       if (!project) {
         throw new ApiError(404, "Projeto não encontrado.");
       }
@@ -67,10 +67,14 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     }
     const session = await requireAuth(request);
     await connectDb();
-    const data = projectUpdateSchema.parse(await request.json());
-    const project = await Project.findOneAndUpdate({ _id: idOrSlug, deletedAt: null }, data, {
-      new: true,
-    });
+    const { deleted, ...data } = projectUpdateSchema.parse(await request.json());
+
+    // Restaurar precisa achar um projeto já excluído — por isso o filtro só
+    // exige deletedAt: null quando não é uma restauração.
+    const filter = deleted === false ? { _id: idOrSlug } : { _id: idOrSlug, deletedAt: null };
+    const update = deleted === false ? { ...data, deletedAt: null } : data;
+
+    const project = await Project.findOneAndUpdate(filter, update, { new: true });
     if (!project) {
       throw new ApiError(404, "Projeto não encontrado.");
     }
@@ -81,7 +85,14 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   });
 }
 
-/** DELETE por id — soft delete (Docs/10). */
+/**
+ * Manda para a lixeira (padrão) ou apaga de vez (`?permanent=true`).
+ *
+ * A exclusão não mexe mais no `status`: ele é a decisão editorial (rascunho,
+ * publicado, arquivado) e antes era sobrescrito por "archived" ao excluir —
+ * um projeto publicado, excluído por engano, voltaria despublicado da lixeira
+ * sem ninguém entender por quê.
+ */
 export async function DELETE(request: NextRequest, context: RouteContext) {
   return withErrorHandling(async () => {
     const { idOrSlug } = await context.params;
@@ -90,9 +101,20 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     }
     const session = await requireAuth(request);
     await connectDb();
+
+    if (request.nextUrl.searchParams.get("permanent") === "true") {
+      const project = await Project.findByIdAndDelete(idOrSlug);
+      if (!project) {
+        throw new ApiError(404, "Projeto não encontrado.");
+      }
+      await logAction(session, "delete", "Project", idOrSlug);
+      revalidatePath("/", "layout");
+      return ok(null, "Projeto apagado definitivamente.");
+    }
+
     const project = await Project.findOneAndUpdate(
       { _id: idOrSlug, deletedAt: null },
-      { deletedAt: new Date(), status: "archived" },
+      { deletedAt: new Date() },
       { new: true }
     );
     if (!project) {
@@ -101,6 +123,6 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     await logAction(session, "delete", "Project", idOrSlug);
     // Conteúdo mudou: regenera as páginas do site.
     revalidatePath("/", "layout");
-    return ok(null, "Projeto removido.");
+    return ok(null, "Projeto movido para a lixeira.");
   });
 }

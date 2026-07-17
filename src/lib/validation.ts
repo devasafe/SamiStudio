@@ -77,7 +77,10 @@ export const projectCreateSchema = z.object({
   seo: seoSchema,
   translations,
 });
-export const projectUpdateSchema = projectCreateSchema.partial();
+export const projectUpdateSchema = projectCreateSchema.partial().extend({
+  /** false = tirar da lixeira. Só a restauração usa isto. */
+  deleted: z.boolean().optional(),
+});
 
 export const serviceCreateSchema = z.object({
   title: z.string().min(1).max(120),
