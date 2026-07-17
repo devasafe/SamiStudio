@@ -5,10 +5,17 @@ import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/typography";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { cn } from "@/lib/utils";
 
 interface CTASectionProps {
   locale: Locale;
   dictionary: Dictionary;
+  /**
+   * Para páginas curtas: com `flex-1`, a seção estica e ocupa a sobra que o
+   * <main> ganha ao esticar até o rodapé — sem isso, fica um vazio liso entre
+   * a foto do CTA e o rodapé.
+   */
+  className?: string;
 }
 
 /** Foto de fundo de um projeto real, no mesmo mood dark quente da hero. */
@@ -18,11 +25,16 @@ const CTA_BG_SRC = "/images/cta-bg.webp";
  * CTA final (Docs/06): uma única ação. Foto de projeto ao fundo, escurecida
  * como na hero, para "tirar o projeto do papel" virar realidade.
  */
-export function CTASection({ locale, dictionary }: CTASectionProps) {
+export function CTASection({ locale, dictionary, className }: CTASectionProps) {
   const cta = dictionary.sections.cta;
 
   return (
-    <section className="relative overflow-hidden bg-[#141009] py-24 text-[#f2ece0] lg:py-32">
+    <section
+      className={cn(
+        "relative flex flex-col justify-center overflow-hidden bg-[#141009] py-24 text-[#f2ece0] lg:py-32",
+        className
+      )}
+    >
       <Image src={CTA_BG_SRC} alt="" fill sizes="100vw" quality={85} className="object-cover" />
       {/* Escurecimento + gradiente para a legenda respirar, igual à hero. */}
       <div className="absolute inset-0 bg-[#141009]/70" />
