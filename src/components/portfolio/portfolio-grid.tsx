@@ -61,103 +61,119 @@ export function PortfolioGrid({ projects }: PortfolioGridProps) {
 
   return (
     <div>
-      {/* Âncora do topo da lista (compensa o cabeçalho fixo) */}
-      <div ref={topRef} className="scroll-mt-28" />
+      {/* Âncora do topo da lista (compensa o cabeçalho fixo) — também alvo do
+          link "Ver todos os projetos" do banner da hero. */}
+      <div ref={topRef} id="grade" className="scroll-mt-28" />
 
-      {/* Filtros + ordenação */}
-      <div className="flex flex-col gap-6 border-b border-[#f2ece0]/10 lg:flex-row lg:items-end lg:justify-between">
-        <div className="flex flex-wrap gap-x-8 gap-y-3">
-          {tabs.map(({ value, label }) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => {
-                setFilter(value);
-                setPageIndex(1);
-              }}
-              aria-pressed={filter === value}
-              className={cn(
-                "text-caption -mb-px border-b-2 pb-4 tracking-[0.18em] uppercase transition-colors duration-300",
-                filter === value
-                  ? "border-[#cf5a18] text-[#cf5a18]"
-                  : "border-transparent text-[#f2ece0]/55 hover:text-[#f2ece0]"
-              )}
-              // A aba "Todos" é o único texto de dicionário aqui; as demais vêm das categorias do banco.
-              data-cms={value === "all" ? "text:portfolioPage.all" : undefined}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        <label className="mb-4 inline-flex shrink-0 items-center gap-2 border border-[#f2ece0]/15 px-4 py-3">
-          <span className="sr-only">{page.sortLabel}</span>
-          <select
-            value={sort}
-            onChange={(event) => {
-              setSort(event.target.value as SortOrder);
-              setPageIndex(1);
-            }}
-            className="text-caption cursor-pointer appearance-none bg-transparent tracking-[0.14em] text-[#f2ece0] outline-none"
-          >
-            <option value="recent" className="bg-[#141009]">
-              {page.sortRecent}
-            </option>
-            <option value="oldest" className="bg-[#141009]">
-              {page.sortOldest}
-            </option>
-          </select>
-          <span className="text-[#f2ece0]/50" aria-hidden>
-            ▾
-          </span>
-        </label>
-      </div>
-
-      {visible.length === 0 ? (
-        <p className="text-small mt-16 text-[#d8cdba]" data-cms="text:portfolioPage.empty">
-          {page.empty}
-        </p>
-      ) : (
-        <>
-          <div className="mt-10 gap-4 sm:columns-2 lg:columns-3">
-            {pageItems.map((project, index) => (
-              <ProjectCard
-                key={project.slug}
-                project={project}
-                aspect={ASPECTS[index % ASPECTS.length]}
-                href={localePath(locale, `/portfolio/${project.slug}`)}
-              />
+      {/* Filtro em coluna vertical (desktop) + grade. Sem categorias
+          cadastradas, `tabs` vem vazio e a coluna lateral some — a grade
+          ocupa a largura toda. */}
+      <div
+        className={cn(
+          tabs.length > 0 && "lg:grid lg:grid-cols-[13rem_1fr] lg:items-start lg:gap-12"
+        )}
+      >
+        {tabs.length > 0 ? (
+          <div className="flex flex-wrap gap-x-8 gap-y-3 border-b border-[#f2ece0]/10 pb-6 lg:sticky lg:top-28 lg:flex-col lg:items-start lg:gap-y-4 lg:border-r lg:border-b-0 lg:pr-8 lg:pb-0">
+            {tabs.map(({ value, label }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => {
+                  setFilter(value);
+                  setPageIndex(1);
+                }}
+                aria-pressed={filter === value}
+                className={cn(
+                  "text-caption -mb-px border-b-2 pb-4 tracking-[0.18em] uppercase transition-colors duration-300 lg:mb-0 lg:border-b-0 lg:border-l-2 lg:pb-1 lg:pl-4",
+                  filter === value
+                    ? "border-[#cf5a18] text-[#cf5a18]"
+                    : "border-transparent text-[#f2ece0]/55 hover:text-[#f2ece0]"
+                )}
+                // A aba "Todos" é o único texto de dicionário aqui; as demais vêm das categorias do banco.
+                data-cms={value === "all" ? "text:portfolioPage.all" : undefined}
+              >
+                {label}
+              </button>
             ))}
           </div>
+        ) : null}
 
-          {pageCount > 1 ? (
-            <nav
-              aria-label={page.pageStatus
-                .replace("{current}", String(current))
-                .replace("{total}", String(pageCount))}
-              className="mt-12 flex items-center justify-center gap-8 border-t border-[#f2ece0]/10 pt-10"
-            >
-              <PagerButton
-                label={page.prevPage}
-                disabled={current === 1}
-                onClick={() => goToPage(current - 1)}
-                icon="prev"
-              />
-              <p aria-live="polite" className="text-caption tracking-[0.18em] text-[#f2ece0]/55">
-                <span className="text-[#cf5a18]">{String(current).padStart(2, "0")}</span>
-                {" / "}
-                {String(pageCount).padStart(2, "0")}
-              </p>
-              <PagerButton
-                label={page.nextPage}
-                disabled={current === pageCount}
-                onClick={() => goToPage(current + 1)}
-                icon="next"
-              />
-            </nav>
-          ) : null}
-        </>
-      )}
+        <div>
+          <div className="flex justify-end border-b border-[#f2ece0]/10 pb-6">
+            <label className="mb-4 inline-flex shrink-0 items-center gap-2 border border-[#f2ece0]/15 px-4 py-3">
+              <span className="sr-only">{page.sortLabel}</span>
+              <select
+                value={sort}
+                onChange={(event) => {
+                  setSort(event.target.value as SortOrder);
+                  setPageIndex(1);
+                }}
+                className="text-caption cursor-pointer appearance-none bg-transparent tracking-[0.14em] text-[#f2ece0] outline-none"
+              >
+                <option value="recent" className="bg-[#141009]">
+                  {page.sortRecent}
+                </option>
+                <option value="oldest" className="bg-[#141009]">
+                  {page.sortOldest}
+                </option>
+              </select>
+              <span className="text-[#f2ece0]/50" aria-hidden>
+                ▾
+              </span>
+            </label>
+          </div>
+
+          {visible.length === 0 ? (
+            <p className="text-small mt-16 text-[#d8cdba]" data-cms="text:portfolioPage.empty">
+              {page.empty}
+            </p>
+          ) : (
+            <>
+              <div className="mt-10 gap-4 sm:columns-2 xl:columns-3">
+                {pageItems.map((project, index) => (
+                  <ProjectCard
+                    key={project.slug}
+                    project={project}
+                    aspect={ASPECTS[index % ASPECTS.length]}
+                    href={localePath(locale, `/portfolio/${project.slug}`)}
+                  />
+                ))}
+              </div>
+
+              {pageCount > 1 ? (
+                <nav
+                  aria-label={page.pageStatus
+                    .replace("{current}", String(current))
+                    .replace("{total}", String(pageCount))}
+                  className="mt-12 flex items-center justify-center gap-8 border-t border-[#f2ece0]/10 pt-10"
+                >
+                  <PagerButton
+                    label={page.prevPage}
+                    disabled={current === 1}
+                    onClick={() => goToPage(current - 1)}
+                    icon="prev"
+                  />
+                  <p
+                    aria-live="polite"
+                    className="text-caption tracking-[0.18em] text-[#f2ece0]/55"
+                  >
+                    <span className="text-[#cf5a18]">{String(current).padStart(2, "0")}</span>
+                    {" / "}
+                    {String(pageCount).padStart(2, "0")}
+                  </p>
+                  <PagerButton
+                    label={page.nextPage}
+                    disabled={current === pageCount}
+                    onClick={() => goToPage(current + 1)}
+                    icon="next"
+                  />
+                </nav>
+              ) : null}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -222,6 +238,11 @@ function ProjectCard({ project, aspect, href }: ProjectCardProps) {
       className="group mb-4 block break-inside-avoid border border-[#f2ece0]/10 transition-colors duration-300 hover:border-[#cf5a18]/40"
     >
       <div className="relative overflow-hidden" style={{ aspectRatio: aspect }}>
+        {project.categoryLabel ? (
+          <span className="absolute top-3 left-3 z-10 bg-[#0f0c09]/75 px-3 py-1 text-[10px] tracking-[0.14em] text-[#f2ece0] uppercase backdrop-blur-sm">
+            {project.categoryLabel}
+          </span>
+        ) : null}
         {project.coverImage ? (
           <Image
             src={project.coverImage}
