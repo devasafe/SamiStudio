@@ -120,14 +120,16 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-8 lg:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <LanguageSwitcher onDark={onDark} />
           <Link
             href={localePath(locale, "/contato")}
             className={cn(
               buttonVariants({ variant: onDark ? "outline" : "default", size: "lg" }),
-              "px-5",
-              onDark && "border-[#f2ece0]/40 text-[#f2ece0] hover:bg-[#f2ece0] hover:text-[#141009]"
+              // Cápsula, para formar um par com o seletor de idioma ao lado.
+              "rounded-full px-5",
+              onDark &&
+                "border-transparent bg-[#f2ece0] text-[#141009] hover:bg-[#f2ece0]/85 hover:text-[#141009]"
             )}
             data-cms="text:common.requestQuote"
           >

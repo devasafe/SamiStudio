@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EditPanel } from "@/components/admin/editor/edit-panel";
+import { isLocale, localePath } from "@/i18n/config";
+import { rememberLocale } from "@/i18n/remember-locale";
 import { parseRef, type CmsSelection } from "@/lib/cms/refs";
 import { isTrustedEditMessage, type CmsMessage } from "@/lib/cms/protocol";
 import { cn } from "@/lib/utils";
@@ -143,6 +145,11 @@ export default function AdminEditorPage() {
         <select
           value={locale}
           onChange={(event) => {
+            // Grava a escolha antes de trocar o src. O espanhol mora na URL sem
+            // prefixo, onde o proxy negocia pelo Accept-Language: sem o cookie,
+            // pedir "Español" num navegador em português traria a prévia em
+            // português. O cookie é o que vence a detecção.
+            rememberLocale(event.target.value);
             setLocale(event.target.value);
             setSelected(null);
             setStatus("loading");
@@ -173,7 +180,9 @@ export default function AdminEditorPage() {
       <div className="flex min-h-0 flex-1">
         <iframe
           ref={iframeRef}
-          src={`/${locale}${page}`}
+          // localePath e não `/${locale}${page}`: o idioma padrão não leva
+          // prefixo, e a URL prefixada dele só cairia num redirect.
+          src={isLocale(locale) ? localePath(locale, page || "/") : "/"}
           onLoad={enableEditing}
           title="Prévia do site"
           className="min-w-0 flex-1"

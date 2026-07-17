@@ -110,7 +110,11 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           re-mede quando a caixa do html muda — com height:100% ela nunca muda,
           e o scroll congela na altura medida antes das imagens carregarem.
           O rodapé continua no fim da tela via min-h-svh, que não é percentual. */}
-      <body className="flex min-h-svh flex-col">
+      {/* O fundo é o tom mais claro das seções da home (#141009): é ele que
+          aparece atrás durante a troca de página e no overscroll. O bege do
+          token --background piscava a cada navegação. O admin tem body próprio
+          e não é afetado. */}
+      <body className="flex min-h-svh flex-col bg-[#141009]">
         <SmoothScroll />
         <EditBridge />
         <AmbientBackground />

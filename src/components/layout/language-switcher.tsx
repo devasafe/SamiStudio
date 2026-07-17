@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/components/providers/language-provider";
 import { defaultLocale, localePath, locales, type Locale } from "@/i18n/config";
+import { rememberLocale } from "@/i18n/remember-locale";
 import { cn } from "@/lib/utils";
 
 const localeLabels: Record<Locale, string> = {
@@ -34,6 +35,10 @@ interface LanguageSwitcherProps {
   onDark?: boolean;
 }
 
+/**
+ * Troca de idioma como controle segmentado: os três ficam à vista numa cápsula
+ * e o atual aparece preenchido.
+ */
 export function LanguageSwitcher({ className, onDark = false }: LanguageSwitcherProps) {
   const pathname = usePathname() ?? "/";
   const { locale: currentLocale, dictionary } = useLanguage();
@@ -42,7 +47,11 @@ export function LanguageSwitcher({ className, onDark = false }: LanguageSwitcher
   return (
     <nav
       aria-label={dictionary.common.language}
-      className={cn("flex items-center gap-4", className)}
+      className={cn(
+        "flex items-center gap-0.5 rounded-full border p-1",
+        onDark ? "border-[#f2ece0]/15 bg-[#f2ece0]/8 backdrop-blur-sm" : "border-border bg-muted",
+        className
+      )}
     >
       {locales.map((locale) => {
         const active = locale === currentLocale;
@@ -50,15 +59,16 @@ export function LanguageSwitcher({ className, onDark = false }: LanguageSwitcher
           <Link
             key={locale}
             href={localePath(locale, basePath)}
+            onClick={() => rememberLocale(locale)}
             aria-current={active ? "true" : undefined}
             className={cn(
-              "text-caption font-medium tracking-widest uppercase transition-colors",
+              "text-caption rounded-full px-2.5 py-1 font-medium tracking-widest uppercase transition-colors",
               onDark
                 ? active
-                  ? "text-[#f2ece0]"
-                  : "text-[#f2ece0]/55 hover:text-[#f2ece0]"
+                  ? "bg-[#f2ece0] text-[#141009]"
+                  : "text-[#f2ece0]/60 hover:text-[#f2ece0]"
                 : active
-                  ? "text-foreground"
+                  ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
             )}
           >
