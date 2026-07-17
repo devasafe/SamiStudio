@@ -29,7 +29,7 @@ export function ProjectTabs({ tabs }: ProjectTabsProps) {
 
   return (
     <div>
-      <div role="tablist" className="flex gap-6 border-b border-[#f2ece0]/10">
+      <div role="tablist" className="flex flex-wrap gap-8 border-b border-[#f2ece0]/10">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -40,7 +40,7 @@ export function ProjectTabs({ tabs }: ProjectTabsProps) {
             aria-controls={`painel-${tab.id}`}
             onClick={() => setActive(tab.id)}
             className={cn(
-              "text-small -mb-px border-b-2 pb-4 transition-colors",
+              "text-caption -mb-px border-b-2 pb-4 tracking-[0.18em] uppercase transition-colors",
               tab.id === current.id
                 ? "border-[#cf5a18] text-[#cf5a18]"
                 : "border-transparent text-[#f2ece0]/55 hover:text-[#f2ece0]"

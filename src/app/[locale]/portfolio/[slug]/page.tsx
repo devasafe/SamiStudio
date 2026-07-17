@@ -68,20 +68,14 @@ export default async function ProjectPage({ params }: PageProps) {
   // A linha do topo mostra só o que o projeto tem — campo vazio não vira "—".
   const meta = [
     { icon: Building2, value: project.categoryLabel },
-    { icon: MapPin, value: project.city },
     { icon: Calendar, value: project.year ? String(project.year) : undefined },
-    { icon: Frame, value: project.area ? `${project.area} m²` : undefined },
   ].filter((item): item is { icon: typeof Building2; value: string } => Boolean(item.value));
 
+  // A barra da ficha, abaixo do conteúdo. A categoria não entra: já está na
+  // linha do topo, e repetir gastaria uma coluna à toa.
   const details = [
     { icon: User, label: labels.client, value: project.client, cms: "text:projectPage.client" },
     { icon: MapPin, label: labels.city, value: project.city, cms: "text:projectPage.city" },
-    {
-      icon: Building2,
-      label: labels.category,
-      value: project.categoryLabel,
-      cms: "text:projectPage.category",
-    },
     {
       icon: Frame,
       label: labels.area,
@@ -132,21 +126,6 @@ export default async function ProjectPage({ params }: PageProps) {
                 items={project.beforeAfter}
                 labels={{ before: labels.before, after: labels.after, hint: labels.dragHint }}
               />
-            ),
-          },
-        ]
-      : []),
-    ...(details.length > 0
-      ? [
-          {
-            id: "info",
-            label: labels.tabInfo,
-            content: (
-              <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {details.map((item) => (
-                  <DetailItem key={item.label} {...item} />
-                ))}
-              </dl>
             ),
           },
         ]
@@ -210,36 +189,18 @@ export default async function ProjectPage({ params }: PageProps) {
 
         <ProjectTabs tabs={tabs} />
 
-        {/* Sobre o projeto: texto à esquerda, ficha à direita */}
-        {project.description || details.length > 0 ? (
-          <section className="mt-12 rounded-xl border border-[#f2ece0]/10 p-6 lg:p-8">
-            <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
-              <div>
-                <h2
-                  className="font-heading text-2xl tracking-tight"
-                  data-cms="text:projectPage.aboutTitle"
-                >
-                  {labels.aboutTitle}
-                </h2>
-                {project.description ? (
-                  <p className="text-small mt-4 leading-relaxed text-[#d8cdba]">
-                    {project.description}
-                  </p>
-                ) : null}
-              </div>
-
-              <dl className="grid grid-cols-2 gap-6 sm:grid-cols-3">
-                {details.map((item) => (
-                  <DetailItem key={item.label} {...item} />
-                ))}
-              </dl>
-            </div>
-          </section>
+        {/* Ficha em barra, logo abaixo do conteúdo */}
+        {details.length > 0 ? (
+          <dl className="mt-6 grid grid-cols-2 rounded-xl border border-[#f2ece0]/10 sm:grid-cols-4">
+            {details.map((item) => (
+              <DetailItem key={item.label} {...item} />
+            ))}
+          </dl>
         ) : null}
 
-        {/* Anterior / próximo, com a capa de cada um */}
+        {/* Anterior e próximo na mesma barra, com a capa de cada um */}
         {previous || next ? (
-          <nav className="mt-6 grid gap-4 border-t border-[#f2ece0]/10 py-8 sm:grid-cols-2">
+          <nav className="mt-4 flex items-center gap-4 rounded-xl border border-[#f2ece0]/10 p-3">
             {previous ? (
               <NeighborLink
                 project={previous}
@@ -249,8 +210,9 @@ export default async function ProjectPage({ params }: PageProps) {
                 direction="prev"
               />
             ) : (
-              <span />
+              <span className="flex-1" />
             )}
+            <span className="h-10 w-px shrink-0 bg-[#f2ece0]/10" aria-hidden />
             {next ? (
               <NeighborLink
                 project={next}
@@ -259,7 +221,9 @@ export default async function ProjectPage({ params }: PageProps) {
                 cms="text:projectPage.next"
                 direction="next"
               />
-            ) : null}
+            ) : (
+              <span className="flex-1" />
+            )}
           </nav>
         ) : null}
       </Container>
@@ -278,12 +242,16 @@ interface DetailItemProps {
 
 function DetailItem({ icon: Icon, label, value, cms }: DetailItemProps) {
   return (
-    <div>
-      <dt className="flex items-center gap-2" data-cms={cms}>
-        <Icon className="size-4 text-[#f2ece0]/40" strokeWidth={1.5} aria-hidden />
-        <span className="text-caption tracking-[0.14em] text-[#f2ece0]/45 uppercase">{label}</span>
-      </dt>
-      <dd className="text-small mt-2 text-[#f2ece0]">{value}</dd>
+    // O fio separa as colunas dentro da barra; a primeira de cada linha não
+    // ganha fio, senão sobraria um risco solto na borda.
+    <div className="flex items-center gap-3 border-[#f2ece0]/10 p-5 not-first:border-l max-sm:even:border-l sm:border-l sm:first:border-l-0">
+      <Icon className="size-5 shrink-0 text-[#f2ece0]/40" strokeWidth={1.5} aria-hidden />
+      <div className="min-w-0">
+        <dt className="text-caption tracking-[0.16em] text-[#f2ece0]/45 uppercase" data-cms={cms}>
+          {label}
+        </dt>
+        <dd className="text-small mt-1 truncate text-[#f2ece0]">{value}</dd>
+      </div>
     </div>
   );
 }
@@ -299,17 +267,25 @@ interface NeighborLinkProps {
 /** Vizinho na lista, com a capa: só o nome não diz para onde se vai. */
 function NeighborLink({ project, locale, label, cms, direction }: NeighborLinkProps) {
   const isNext = direction === "next";
+  const Arrow = isNext ? ArrowRight : ArrowLeft;
   return (
     <Link
       href={localePath(locale, `/portfolio/${project.slug}`)}
       className={cn(
-        "group flex items-center gap-4 rounded-lg border border-[#f2ece0]/10 p-3 transition-colors hover:border-[#cf5a18]/40",
-        isNext && "sm:flex-row-reverse sm:text-right"
+        "group flex min-w-0 flex-1 items-center gap-4 rounded-lg p-2 transition-colors hover:bg-[#f2ece0]/5",
+        isNext && "flex-row-reverse text-right"
       )}
     >
-      <span className="relative size-16 shrink-0 overflow-hidden rounded bg-[#221a13]">
+      <Arrow
+        className={cn(
+          "size-4 shrink-0 text-[#f2ece0]/45 transition-transform duration-300",
+          isNext ? "group-hover:translate-x-1" : "group-hover:-translate-x-1"
+        )}
+        aria-hidden
+      />
+      <span className="relative hidden size-14 shrink-0 overflow-hidden rounded bg-[#221a13] sm:block">
         {project.coverImage ? (
-          <Image src={project.coverImage} alt="" fill sizes="64px" className="object-cover" />
+          <Image src={project.coverImage} alt="" fill sizes="56px" className="object-cover" />
         ) : null}
       </span>
       <span className="min-w-0 flex-1">
@@ -320,17 +296,6 @@ function NeighborLink({ project, locale, label, cms, direction }: NeighborLinkPr
           {project.title}
         </span>
       </span>
-      {isNext ? (
-        <ArrowRight
-          className="size-5 shrink-0 text-[#f2ece0]/45 transition-transform duration-300 group-hover:translate-x-1"
-          aria-hidden
-        />
-      ) : (
-        <ArrowLeft
-          className="size-5 shrink-0 text-[#f2ece0]/45 transition-transform duration-300 group-hover:-translate-x-1"
-          aria-hidden
-        />
-      )}
     </Link>
   );
 }
