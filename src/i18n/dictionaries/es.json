@@ -240,7 +240,8 @@
     "lightbox": {
       "close": "Cerrar",
       "prev": "Foto anterior",
-      "next": "Foto siguiente"
+      "next": "Foto siguiente",
+      "zoom": "Ampliar imagen"
     },
     "beforeAfterTitle": "Antes y Después",
     "before": "Antes",

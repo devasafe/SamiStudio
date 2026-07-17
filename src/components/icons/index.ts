@@ -32,6 +32,7 @@ export {
   Lock,
   Mail,
   MapPin,
+  Maximize2,
   Menu,
   MessageCircle,
   MessageSquare,

@@ -16,6 +16,7 @@ import {
 import { Container } from "@/components/layout/container";
 import { CTASection } from "@/components/shared/cta-section";
 import { BeforeAfter } from "@/components/portfolio/before-after";
+import { ProjectCover } from "@/components/portfolio/project-cover";
 import { ProjectGallery } from "@/components/portfolio/project-gallery";
 import { ProjectTabs, type ProjectTab } from "@/components/portfolio/project-tabs";
 import { localePath, type Locale } from "@/i18n/config";
@@ -91,18 +92,20 @@ export default async function ProjectPage({ params }: PageProps) {
     { icon: CircleCheck, label: labels.stage, value: stageLabel, cms: "text:projectPage.stage" },
   ].filter((item) => item.value);
 
-  const cover = project.coverImage ? (
-    <div className={cn("relative aspect-[21/9] overflow-hidden", project.coverClass)}>
-      <Image
-        src={project.coverImage}
-        alt={project.title}
-        fill
-        sizes="100vw"
-        className="object-cover"
-        priority
+  // A capa abre o lightbox já com a galeria junto: quem ampliou pela capa
+  // segue para as outras fotos sem fechar e trocar de aba.
+  const coverPhotos = project.coverImage
+    ? [{ url: project.coverImage, alt: project.title }, ...(project.gallery ?? [])]
+    : [];
+
+  const cover =
+    coverPhotos.length > 0 ? (
+      <ProjectCover
+        photos={coverPhotos}
+        className={project.coverClass}
+        labels={{ ...labels.lightbox, zoom: labels.lightbox.zoom }}
       />
-    </div>
-  ) : null;
+    ) : null;
 
   // Aba que abriria vazia não entra: a lista é montada com o que existe.
   const tabs: ProjectTab[] = [
