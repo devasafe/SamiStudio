@@ -20,6 +20,14 @@ const IMAGE_ASPECTS: Record<string, number> = {
   contactPhoto: 4 / 5,
 };
 
+/** Dimensão recomendada por foto, mostrada sob o campo de upload. */
+const IMAGE_HINTS: Record<string, string> = {
+  aboutPhoto: "1200 × 1500 px (4:5)",
+  essencePhoto1: "1200 × 1600 px (3:4)",
+  essencePhoto2: "1200 × 1600 px (3:4)",
+  contactPhoto: "1200 × 1500 px (4:5)",
+};
+
 interface EditPanelProps {
   selection: CmsSelection | null;
   locale: string;
@@ -141,6 +149,7 @@ export function EditPanel({ selection, locale, onSaved }: EditPanelProps) {
           label="Foto"
           value={value}
           aspect={IMAGE_ASPECTS[ref.path] ?? 4 / 5}
+          hint={IMAGE_HINTS[ref.path]}
           onChange={(url) => {
             setValue(url);
             void save(url);

@@ -14,6 +14,8 @@ interface ImageFieldProps {
   value: string;
   /** Proporção do frontend (ex.: 4/3 para capas de projeto). */
   aspect: number;
+  /** Dimensão recomendada, mostrada sob o rótulo (ex.: "1200 × 1500 px (4:5)"). */
+  hint?: string;
   onChange: (url: string) => void;
 }
 
@@ -54,7 +56,7 @@ interface MediaResponse {
  * Campo de imagem do painel (Docs/12): upload com recorte na
  * proporção exibida no site, enviado ao Cloudinary via API.
  */
-export function ImageField({ label, value, aspect, onChange }: ImageFieldProps) {
+export function ImageField({ label, value, aspect, hint, onChange }: ImageFieldProps) {
   // Só o que veio do upload (Cloudinary) pode ir para o next/image.
   const preview = safeImageUrl(value);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -107,6 +109,7 @@ export function ImageField({ label, value, aspect, onChange }: ImageFieldProps) 
   return (
     <div className="space-y-2">
       <Label>{label}</Label>
+      {hint ? <p className="text-muted-foreground -mt-1 text-xs">Recomendado: {hint}</p> : null}
 
       {preview ? (
         <div

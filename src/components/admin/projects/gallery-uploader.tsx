@@ -70,7 +70,10 @@ export function GalleryUploader({ value, onChange }: GalleryUploaderProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <Label>Fotos do projeto (a 1ª é a capa)</Label>
+        <div>
+          <Label>Fotos do projeto (a 1ª é a capa)</Label>
+          <p className="text-muted-foreground text-xs">Recomendado: lado maior 1600 px</p>
+        </div>
         <Button
           type="button"
           variant="outline"

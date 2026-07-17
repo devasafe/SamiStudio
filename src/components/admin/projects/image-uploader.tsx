@@ -12,11 +12,13 @@ import { safeImageUrl } from "@/lib/images";
 interface ImageUploaderProps {
   label: string;
   value: string;
+  /** Dimensão recomendada, mostrada sob o rótulo (ex.: "400 × 400 px (1:1)"). */
+  hint?: string;
   onChange: (url: string) => void;
 }
 
 /** Imagem única: envia o original por padrão; "Recortar" abre o CropDialog. */
-export function ImageUploader({ label, value, onChange }: ImageUploaderProps) {
+export function ImageUploader({ label, value, hint, onChange }: ImageUploaderProps) {
   // Só o que veio do upload (Cloudinary) pode ir para o next/image.
   const preview = safeImageUrl(value);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,6 +43,7 @@ export function ImageUploader({ label, value, onChange }: ImageUploaderProps) {
   return (
     <div className="space-y-2">
       <Label>{label}</Label>
+      {hint ? <p className="text-muted-foreground -mt-1 text-xs">Recomendado: {hint}</p> : null}
 
       {preview ? (
         <div className="border-border relative w-full max-w-xs overflow-hidden rounded-md border">
