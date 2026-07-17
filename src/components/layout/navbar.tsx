@@ -71,11 +71,10 @@ export function Navbar() {
     exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
   const solid = scrolled || menuOpen;
-  // Transparente sobre fundos escuros (hero dark da home, conteúdo dark do
-  // portfólio): usa tons claros até o scroll.
-  const isDarkPage =
-    pathname === localePath(locale, "/") || pathname === localePath(locale, "/portfolio");
-  const onDark = isDarkPage && !solid;
+  // O site inteiro é dark editorial, então até o scroll a navbar está sempre
+  // sobre fundo escuro e usa tons claros. Manter uma lista de rotas escuras
+  // aqui só criava navbar ilegível a cada página nova (ver navbar-on-dark.test).
+  const onDark = !solid;
 
   return (
     <header
