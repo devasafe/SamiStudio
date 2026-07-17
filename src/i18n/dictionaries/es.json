@@ -41,7 +41,6 @@
   "common": {
     "requestQuote": "Solicitar cotización",
     "viewPortfolio": "Ver portafolio",
-    "underConstruction": "Página en construcción.",
     "language": "Idioma",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
@@ -50,7 +49,6 @@
   "sections": {
     "about": {
       "eyebrow": "El estudio",
-      "title": "Quienes dan vida a tus proyectos",
       "text": "Sami da Silva Studio transforma proyectos de arquitectura e interiores en imágenes hiperrealistas. Cada render se trata como una pieza única: composición, luz y materiales pensados para valorizar el proyecto y convencer a quien decide.",
       "cta": "Conoce el Studio",
       "titleLead": "Más que renders,",
@@ -75,7 +73,6 @@
     },
     "services": {
       "eyebrow": "Servicios",
-      "title": "Del modelo 3D al render final",
       "subtitle": "Soluciones completas de visualización para arquitectos, diseñadores de interiores y constructoras.",
       "items": [
         {
@@ -111,8 +108,6 @@
       "ctaButton": "Hablemos"
     },
     "latest": {
-      "eyebrow": "Portafolio",
-      "title": "Trabajos recientes",
       "viewProject": "Ver proyecto"
     },
     "process": {
@@ -144,13 +139,6 @@
       "eyebrow": "Testimonios",
       "title": "Lo que dicen nuestros clientes",
       "subtitle": "La confianza de quienes vieron su proyecto salir del papel y volverse imagen."
-    },
-    "portfolio": {
-      "eyebrow": "Portafolio",
-      "title": "Proyectos destacados",
-      "subtitle": "Una selección de lo que pasó del blueprint a la realidad.",
-      "viewAll": "Ver todos los proyectos",
-      "comingSoon": "Proyecto próximamente"
     },
     "faq": {
       "eyebrow": "FAQ",

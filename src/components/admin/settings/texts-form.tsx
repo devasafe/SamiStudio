@@ -60,7 +60,29 @@ const GROUPS: Record<string, { label: string; hint: string; region: PageRegion }
     region: "content",
   },
   footer: { label: "Rodapé", hint: "O rodapé, no fim de todas as páginas.", region: "footer" },
+  reserva: {
+    label: "Textos de reserva",
+    hint: "Só aparecem se o cadastro correspondente ficar vazio. Com serviços, FAQ e configurações preenchidos, editar aqui não muda nada no site.",
+    region: "none",
+  },
 };
+
+/**
+ * Textos que o site só usa quando o cadastro está vazio — os serviços e as
+ * perguntas vêm do banco; a assinatura e os números, das Configurações.
+ *
+ * Ficam num grupo à parte porque, no meio dos outros, a dona editaria e nada
+ * mudaria na tela: pior que confuso, é enganoso.
+ */
+const RESERVE = [
+  /^sections\.services\.items\./,
+  /^sections\.faq\.items\./,
+  /^sections\.about\.(founder|role|stats)/,
+  /^categories\./,
+];
+
+const groupOf = (path: string) =>
+  RESERVE.some((rule) => rule.test(path)) ? "reserva" : (path.split(".")[0] ?? "");
 
 interface Field {
   path: string;
@@ -126,10 +148,13 @@ export function TextsForm({ filter, renderGroupPreview }: TextsFormProps) {
   const groups = useMemo(() => {
     const map = new Map<string, Field[]>();
     for (const field of fields) {
-      const group = field.path.split(".")[0] ?? "";
+      const group = groupOf(field.path);
       map.set(group, [...(map.get(group) ?? []), field]);
     }
-    return map;
+    // A reserva vai para o fim: é o grupo que menos importa no dia a dia.
+    return new Map(
+      [...map.entries()].sort(([a], [b]) => Number(a === "reserva") - Number(b === "reserva"))
+    );
   }, [fields]);
 
   useEffect(() => {
