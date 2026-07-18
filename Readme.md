@@ -42,6 +42,15 @@ O website deve transmitir tecnologia, precisão, confiança e qualidade através
 - Vercel
 - MongoDB Atlas
 
+### Rate limiting
+
+A proteção contra abuso do login e do formulário de contato (`src/lib/auth/rate-limit.ts`)
+é em memória, por instância. Em um deploy serverless com várias instâncias
+(ex.: Vercel), o limite é aplicado por instância, não global — suficiente para o
+tráfego atual, somado ao honeypot do formulário. Se o volume crescer, trocar por
+uma solução distribuída (ex.: Upstash Redis) mantendo a mesma função
+`assertRateLimit`.
+
 ## Ferramentas
 
 - Blender
