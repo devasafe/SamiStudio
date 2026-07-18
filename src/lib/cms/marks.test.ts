@@ -92,10 +92,6 @@ const KNOWN_UNRESOLVABLE = new Set<string>([
   "set:stat${index + 1}Label",
   // sobre/page.tsx — mesma situação para a foto de cada "essência".
   "img:essencePhoto${index + 1}",
-  // portfolio-stats.tsx — faixa de números do fim do Portfólio: "portfolioStat1Value"
-  // etc. são chaves fixas do schema, mas o número vem de `index + 1` interpolado.
-  "set:portfolioStat${index + 1}Value",
-  "set:portfolioStat${index + 1}Label",
 ]);
 
 interface Segment {

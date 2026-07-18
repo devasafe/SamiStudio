@@ -6,9 +6,9 @@ interface PortfolioStatsProps {
 }
 
 /**
- * Faixa de números no fim da página Portfólio — mesmo padrão de `stat1..3`
- * da página Sobre (editável clicando na página via /admin/editor), só que
- * com 5 itens em vez de 3.
+ * Faixa de números no fim da página Portfólio. Valores e rótulos vêm do
+ * dicionário (`portfolioPage.stats`), então são editáveis nos três idiomas
+ * pelo editor visual (clique em cada número em /admin/editor).
  */
 export function PortfolioStats({ eyebrow, stats }: PortfolioStatsProps) {
   return (
@@ -25,13 +25,13 @@ export function PortfolioStats({ eyebrow, stats }: PortfolioStatsProps) {
             <div key={stat.label} className="px-2 lg:px-6">
               <dt
                 className="font-heading text-[clamp(1.8rem,3vw,2.6rem)] leading-none"
-                data-cms={`set:portfolioStat${index + 1}Value`}
+                data-cms={`text:portfolioPage.stats.${index}.value`}
               >
                 {stat.value}
               </dt>
               <dd
                 className="text-caption mt-2 tracking-[0.16em] text-[#f2ece0]/50 uppercase"
-                data-cms={`set:portfolioStat${index + 1}Label`}
+                data-cms={`text:portfolioPage.stats.${index}.label`}
               >
                 {stat.label}
               </dd>

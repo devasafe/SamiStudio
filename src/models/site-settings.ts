@@ -32,17 +32,6 @@ export interface SiteSettingsDoc {
   stat2Label?: string;
   stat3Value?: string;
   stat3Label?: string;
-  /** Faixa de números do fim da página Portfólio (editáveis no painel). */
-  portfolioStat1Value?: string;
-  portfolioStat1Label?: string;
-  portfolioStat2Value?: string;
-  portfolioStat2Label?: string;
-  portfolioStat3Value?: string;
-  portfolioStat3Label?: string;
-  portfolioStat4Value?: string;
-  portfolioStat4Label?: string;
-  portfolioStat5Value?: string;
-  portfolioStat5Label?: string;
   seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: string };
   analytics?: { gaMeasurementId?: string };
   heroProject?: string;
@@ -80,16 +69,6 @@ const siteSettingsSchema = new Schema<SiteSettingsDoc>(
     stat2Label: String,
     stat3Value: String,
     stat3Label: String,
-    portfolioStat1Value: String,
-    portfolioStat1Label: String,
-    portfolioStat2Value: String,
-    portfolioStat2Label: String,
-    portfolioStat3Value: String,
-    portfolioStat3Label: String,
-    portfolioStat4Value: String,
-    portfolioStat4Label: String,
-    portfolioStat5Value: String,
-    portfolioStat5Label: String,
     seo: { title: String, description: String, keywords: [String], ogImage: String },
     analytics: { gaMeasurementId: String },
     heroProject: String,
