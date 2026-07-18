@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/icons";
 import { Container } from "@/components/layout/container";
+import { FaqAccordion } from "@/components/shared/faq-accordion";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { FaqItem } from "@/lib/content";
@@ -13,7 +14,7 @@ interface FAQSectionProps {
 
 /**
  * FAQ (Docs/03): eliminar dúvidas antes do CTA. Editorial dark, em acordeão
- * nativo (`details`/`summary`) — abre sem JS e já vem acessível.
+ * com abertura suave (ver FaqAccordion).
  */
 export function FAQSection({ locale, dictionary, items }: FAQSectionProps) {
   const faq = dictionary.sections.faq;
@@ -49,31 +50,7 @@ export function FAQSection({ locale, dictionary, items }: FAQSectionProps) {
         </div>
 
         {/* Perguntas */}
-        <div className="mt-16 border-t border-[#f2ece0]/10">
-          {items.map((item, index) => (
-            <details key={item.question} className="group border-b border-[#f2ece0]/10">
-              <summary className="flex cursor-pointer list-none items-center gap-5 py-6 [&::-webkit-details-marker]:hidden">
-                <span className="text-caption w-8 shrink-0 text-[#f2ece0]/35 transition-colors group-open:text-[#cf5a18]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="h-6 w-px shrink-0 bg-[#f2ece0]/15" aria-hidden />
-                <h3 className="font-heading flex-1 text-lg leading-snug sm:text-xl">
-                  {item.question}
-                </h3>
-                <span
-                  className="shrink-0 text-xl leading-none text-[#cf5a18] transition-colors"
-                  aria-hidden
-                >
-                  <span className="group-open:hidden">+</span>
-                  <span className="hidden group-open:inline">−</span>
-                </span>
-              </summary>
-              <p className="text-small max-w-3xl pr-10 pb-6 pl-[3.25rem] leading-relaxed text-[#d8cdba]/75">
-                {item.answer}
-              </p>
-            </details>
-          ))}
-        </div>
+        <FaqAccordion items={items} />
 
         {/* Fecho: ainda tem dúvidas? */}
         <div className="mt-12 flex flex-wrap items-center justify-center gap-x-5 gap-y-4">
