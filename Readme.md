@@ -220,6 +220,20 @@ Deploy
 
 ---
 
+## Verificação pós-deploy (RNFs de produção)
+
+Rodar depois de publicar na Vercel:
+
+- [ ] **HTTPS (RNF-23):** o domínio abre em `https://` e redireciona `http→https` (automático na Vercel).
+- [ ] **Desempenho (RNF-01):** Lighthouse mobile e desktop na home e no portfólio — LCP < 3s, sem regressão de score.
+- [ ] **Navegadores (RNF-20):** abrir o site em Chrome, Edge, Firefox e Safari — layout e formulário ok.
+- [ ] **Dispositivos (RNF-22):** abrir em um Android e um iPhone reais — navegação, 3D (ou fallback estático) e formulário ok.
+- [ ] **Compartilhamento (RNF-31):** colar o link no WhatsApp/LinkedIn e ver o preview com título, descrição e a imagem OG.
+- [ ] **Links quebrados (RNF-38):** navegar todas as páginas e checar que nenhuma imagem/rota dá 404.
+- [ ] **Cabeçalhos (segurança):** `curl -I https://<dominio>` mostra CSP, X-Frame-Options, etc., e sem X-Powered-By.
+
+---
+
 # Licença
 
 Projeto proprietário desenvolvido para Sami da Silva Studio.
