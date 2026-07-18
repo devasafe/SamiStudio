@@ -6,7 +6,9 @@ const isDev = process.env.NODE_ENV !== "production";
  * Content-Security-Policy do site. Precisa liberar, de propósito:
  *  - Cloudinary (imagens do CMS) em img-src;
  *  - Google Tag Manager (script do GA) em script-src, e os beacons do GA em
- *    connect-src;
+ *    connect-src — o GA4 manda o beacon `/g/collect` para um endpoint
+ *    regional (`region1..region9.google-analytics.com`) escolhido pelo
+ *    Google conforme a região de quem visita, por isso o wildcard;
  *  - o próprio site em frame-src/frame-ancestors, porque o editor visual
  *    (/admin/editor) mostra a prévia num iframe same-origin.
  * `unsafe-inline` em script/style é exigido pelo Next (styled-jsx, o snippet
@@ -19,15 +21,14 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://res.cloudinary.com https://purecatamphetamine.github.io",
   "font-src 'self' data:",
-  `connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com${isDev ? " ws:" : ""}`,
+  `connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com${isDev ? " ws:" : ""}`,
   "frame-src 'self'",
   "frame-ancestors 'self'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
-]
-  .join("; ")
-  .concat(";");
+  "upgrade-insecure-requests",
+].join("; ");
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },

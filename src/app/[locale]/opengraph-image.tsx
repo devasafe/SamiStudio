@@ -5,12 +5,22 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Sami da Silva Studio";
 
+const EYEBROW: Record<string, string> = {
+  "pt-BR": "Visualização Arquitetônica",
+  en: "Architectural Visualization",
+  es: "Visualización Arquitectónica",
+};
+
 /**
- * Imagem de compartilhamento gerada no build. Mantém a identidade do site
- * (fundo quente escuro + terracota + nome em serifada) sem depender de fonte
- * externa — a fonte do sistema é suficiente para um cartão social.
+ * Imagem de compartilhamento gerada no build. Usa a fonte embutida do
+ * renderizador do next/og (Satori) — sem carregar fonte externa — mantendo
+ * a identidade do site (fundo quente escuro + terracota) só com cor e
+ * layout. O eyebrow varia por idioma; o resto do texto é fixo.
  */
-export default function OpengraphImage() {
+export default async function OpengraphImage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const eyebrow = EYEBROW[locale] ?? EYEBROW["es"];
+
   return new ImageResponse(
     <div
       style={{
@@ -32,7 +42,7 @@ export default function OpengraphImage() {
           color: "#cf5a18",
         }}
       >
-        Visualização Arquitetônica
+        {eyebrow}
       </div>
       {/* O Satori (motor do next/og) exige `display: flex` explícito em
             qualquer elemento com mais de um filho — por isso o flex aqui e os

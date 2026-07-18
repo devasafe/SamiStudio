@@ -229,6 +229,7 @@ Rodar depois de publicar na Vercel:
 - [ ] **Navegadores (RNF-20):** abrir o site em Chrome, Edge, Firefox e Safari — layout e formulário ok.
 - [ ] **Dispositivos (RNF-22):** abrir em um Android e um iPhone reais — navegação, 3D (ou fallback estático) e formulário ok.
 - [ ] **Compartilhamento (RNF-31):** colar o link no WhatsApp/LinkedIn e ver o preview com título, descrição e a imagem OG.
+- [ ] **`NEXT_PUBLIC_SITE_URL`:** confirmar que está setada no ambiente de produção — sem ela `metadataBase` cai para `http://localhost:3000` e a URL do `og:image` aponta pra localhost, quebrando o preview do link.
 - [ ] **Links quebrados (RNF-38):** navegar todas as páginas e checar que nenhuma imagem/rota dá 404.
 - [ ] **Cabeçalhos (segurança):** `curl -I https://<dominio>` mostra CSP, X-Frame-Options, etc., e sem X-Powered-By.
 
