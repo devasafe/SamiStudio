@@ -120,7 +120,7 @@ export function AboutSection({ locale, dictionary, photo, overrides }: AboutSect
         </div>
 
         {/* Barra de números: vêm das Configurações (stat1..3), com fallback ao dicionário. */}
-        <dl className="mt-16 grid grid-cols-1 divide-y divide-[#f2ece0]/12 border-t border-[#f2ece0]/12 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <dl className="mt-16 grid grid-cols-1 divide-y divide-[#f2ece0]/12 border-t border-[#f2ece0]/12 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
           {stats.map((stat, index) => (
             <div key={stat.label} className="px-6 py-8 text-center">
               <dt

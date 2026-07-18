@@ -64,10 +64,6 @@
         {
           "value": "120+",
           "label": "Proyectos entregados"
-        },
-        {
-          "value": "40+",
-          "label": "Clientes satisfechos"
         }
       ]
     },
@@ -239,11 +235,9 @@
     "featuredCta": "Ver proyecto",
     "statsEyebrow": "Números que reflejan nuestro camino",
     "stats": [
-      { "value": "48", "label": "Proyectos realizados" },
-      { "value": "23", "label": "Clientes atendidos" },
+      { "value": "1000+", "label": "Proyectos realizados" },
       { "value": "6", "label": "Años de experiencia" },
-      { "value": "12", "label": "Estados atendidos" },
-      { "value": "98%", "label": "Clientes satisfechos" }
+      { "value": "5", "label": "Países atendidos" }
     ]
   },
   "projectPage": {

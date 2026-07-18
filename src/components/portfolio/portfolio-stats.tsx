@@ -20,7 +20,7 @@ export function PortfolioStats({ eyebrow, stats }: PortfolioStatsProps) {
         >
           {eyebrow}
         </p>
-        <dl className="mt-8 grid grid-cols-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-[#f2ece0]/12">
+        <dl className="mt-8 grid grid-cols-1 gap-y-8 sm:grid-cols-3 lg:divide-x lg:divide-[#f2ece0]/12">
           {stats.map((stat, index) => (
             <div key={stat.label} className="px-2 lg:px-6">
               <dt

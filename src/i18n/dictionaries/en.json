@@ -64,10 +64,6 @@
         {
           "value": "120+",
           "label": "Projects delivered"
-        },
-        {
-          "value": "40+",
-          "label": "Happy clients"
         }
       ]
     },
@@ -239,11 +235,9 @@
     "featuredCta": "View project",
     "statsEyebrow": "Numbers that reflect our journey",
     "stats": [
-      { "value": "48", "label": "Projects delivered" },
-      { "value": "23", "label": "Clients served" },
+      { "value": "1000+", "label": "Projects delivered" },
       { "value": "6", "label": "Years of experience" },
-      { "value": "12", "label": "States served" },
-      { "value": "98%", "label": "Satisfied clients" }
+      { "value": "5", "label": "Countries served" }
     ]
   },
   "projectPage": {
