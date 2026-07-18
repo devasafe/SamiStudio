@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
+import { SatrizSeal } from "@/components/layout/satriz-seal";
 import { localePath, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { phoneDigits, whatsappUrl } from "@/lib/phone";
@@ -176,11 +177,13 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-16 border-t border-[#f2ece0]/10 pt-8">
+        <div className="mt-16 flex flex-col gap-6 border-t border-[#f2ece0]/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-caption text-[#f2ece0]/50">
             © {year} <span data-cms="text:meta.siteName">{dictionary.meta.siteName}</span>.{" "}
             <span data-cms="text:footer.rights">{dictionary.footer.rights}</span>
           </p>
+          {/* Assinatura da Satriz Club — marca registrada que assina o projeto. */}
+          <SatrizSeal />
         </div>
       </Container>
     </footer>
