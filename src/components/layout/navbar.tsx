@@ -171,7 +171,7 @@ export function Navbar({ siteName, logo }: NavbarProps) {
                 onClick={closeMenu}
                 aria-current={isActive(link.href, link.exact) ? "page" : undefined}
                 className={cn(
-                  "text-h4 font-heading transition-colors",
+                  "text-h4 font-heading py-3 transition-colors",
                   isActive(link.href, link.exact) ? "text-foreground" : "text-muted-foreground"
                 )}
                 data-cms={link.cms}

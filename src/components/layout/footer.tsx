@@ -111,7 +111,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
+                    className="text-small inline-block py-1 text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                     data-cms={link.cms}
                   >
                     {link.label}
@@ -135,7 +135,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
+                        className="text-small inline-block py-1 text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                         data-cms={link.cms}
                       >
                         {link.label}
@@ -148,7 +148,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
+                        className="text-small inline-block py-1 text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                         data-cms={link.cms}
                       >
                         {link.label}
@@ -171,7 +171,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
                   <li key={l}>
                     <Link
                       href={localePath(l, "/")}
-                      className="text-small text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
+                      className="text-small inline-block py-1 text-[#f2ece0]/80 transition-colors hover:text-[#f2ece0]"
                       aria-current={l === locale ? "true" : undefined}
                     >
                       {localeNames[l]}
