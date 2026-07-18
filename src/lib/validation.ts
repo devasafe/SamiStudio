@@ -157,8 +157,8 @@ export const messageUpdateSchema = z.object({
 
 export const settingsUpdateSchema = z.object({
   siteName: z.string().max(120).optional(),
-  logo: z.string().url().optional(),
-  favicon: z.string().url().optional(),
+  logo: uploadedImage.optional(),
+  favicon: uploadedImage.optional(),
   phone: z.string().max(40).optional(),
   email: z.string().email().optional(),
   address: z.string().max(300).optional(),

@@ -13,6 +13,7 @@ import { FloatingWhatsApp } from "@/components/shared/floating-whatsapp";
 import { StructuredData } from "@/components/shared/structured-data";
 import { isLocale, localePath, locales, type Locale } from "@/i18n/config";
 import { getMergedDictionary } from "@/lib/dictionary";
+import { safeImageUrl } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
 import "../globals.css";
 
@@ -57,21 +58,29 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
   if (!isLocale(locale)) {
     notFound();
   }
-  const dictionary = await getMergedDictionary(locale);
+  const [dictionary, settings] = await Promise.all([
+    getMergedDictionary(locale),
+    getSiteSettings(),
+  ]);
+  // Nome do site vem das Configurações (aba Site); vazio cai no do dicionário.
+  const siteName = settings?.siteName?.trim() || dictionary.meta.siteName;
+  const favicon = safeImageUrl(settings?.favicon);
 
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: `${dictionary.meta.home.title} | ${dictionary.meta.siteName}`,
-      template: `%s | ${dictionary.meta.siteName}`,
+      default: `${dictionary.meta.home.title} | ${siteName}`,
+      template: `%s | ${siteName}`,
     },
     description: dictionary.meta.home.description,
+    // Favicon enviado no painel sobrepõe o ícone padrão (app/favicon.ico).
+    ...(favicon ? { icons: { icon: favicon } } : {}),
     alternates: {
       canonical: localePath(locale, "/"),
       languages: Object.fromEntries(locales.map((l) => [l, localePath(l, "/")])),
     },
     openGraph: {
-      siteName: dictionary.meta.siteName,
+      siteName,
       locale: locale.replace("-", "_"),
       type: "website",
     },
@@ -119,7 +128,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
         <EditBridge />
         <AmbientBackground />
         <Providers locale={locale} dictionary={dictionary}>
-          <Navbar />
+          <Navbar siteName={settings?.siteName} logo={settings?.logo} />
           <PageTransition>{children}</PageTransition>
           <Footer locale={locale} dictionary={dictionary} settings={settings} />
           {whatsappNumber ? <FloatingWhatsApp number={whatsappNumber} /> : null}

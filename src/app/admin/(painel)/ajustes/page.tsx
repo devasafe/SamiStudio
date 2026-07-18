@@ -19,18 +19,32 @@ type TabId = (typeof TABS)[number]["id"];
 const SITE_GROUPS: SettingsGroup[] = [
   {
     label: "Identidade",
-    hint: "O nome e o logo que aparecem no topo do site e no rodapé.",
+    hint: "O nome e a logo que aparecem no topo do site e no rodapé.",
     region: "nav",
     fields: [
       { name: "siteName", label: "Nome do site", type: "text" },
-      { name: "logo", label: "Logo (URL)", type: "url" },
+      {
+        name: "logo",
+        label: "Logo",
+        type: "image",
+        aspect: 1,
+        hint: "256 × 256 px (quadrada). Aparece ao lado do nome; sem logo, mostra só o nome.",
+      },
     ],
   },
   {
     label: "Ícone da aba",
     hint: "O quadradinho que aparece na aba do navegador e nos favoritos.",
     region: "browser",
-    fields: [{ name: "favicon", label: "Favicon (URL)", type: "url" }],
+    fields: [
+      {
+        name: "favicon",
+        label: "Favicon",
+        type: "image",
+        aspect: 1,
+        hint: "512 × 512 px (quadrada).",
+      },
+    ],
   },
 ];
 

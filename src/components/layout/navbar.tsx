@@ -6,16 +6,25 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "@/components/icons";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { Container } from "@/components/layout/container";
+import { SiteBrand } from "@/components/layout/site-brand";
 import { useLanguage } from "@/components/providers/language-provider";
 import { buttonVariants } from "@/components/ui/button";
 import { localePath } from "@/i18n/config";
+import { DEFAULT_SITE_NAME } from "@/lib/site-name";
 import { cn } from "@/lib/utils";
+
+interface NavbarProps {
+  /** Nome do site (Configurações); vazio cai no nome padrão. */
+  siteName?: string;
+  /** Logo enviada no painel; sem ela, mostra só o nome. */
+  logo?: string;
+}
 
 /**
  * Navbar fixa (Docs/08): 88px de altura, transparente sobre o Hero
  * e sólida após o scroll, com transição suave.
  */
-export function Navbar() {
+export function Navbar({ siteName, logo }: NavbarProps) {
   const { locale, dictionary } = useLanguage();
   const pathname = usePathname() ?? "/";
   const [scrolled, setScrolled] = useState(false);
@@ -93,8 +102,11 @@ export function Navbar() {
             onDark && "text-[#f2ece0]"
           )}
         >
-          Sami da Silva
-          <span className={onDark ? "text-[#f2ece0]/55" : "text-muted-foreground"}> Studio</span>
+          <SiteBrand
+            name={siteName?.trim() || DEFAULT_SITE_NAME}
+            logo={logo}
+            dimClassName={onDark ? "text-[#f2ece0]/55" : "text-muted-foreground"}
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">

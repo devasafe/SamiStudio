@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { SatrizSeal } from "@/components/layout/satriz-seal";
+import { SiteBrand } from "@/components/layout/site-brand";
 import { localePath, locales, type Locale } from "@/i18n/config";
+import { DEFAULT_SITE_NAME } from "@/lib/site-name";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { phoneDigits, whatsappUrl } from "@/lib/phone";
 import type { SiteSettingsDoc } from "@/models/site-settings";
@@ -83,7 +85,11 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <p className="font-heading text-body-lg tracking-tight">
-              Sami da Silva <span className="text-[#f2ece0]/60">Studio</span>
+              <SiteBrand
+                name={settings?.siteName?.trim() || DEFAULT_SITE_NAME}
+                logo={settings?.logo}
+                dimClassName="text-[#f2ece0]/60"
+              />
             </p>
             <p
               className="text-small mt-4 max-w-sm text-[#f2ece0]/60"
@@ -179,7 +185,7 @@ export function Footer({ locale, dictionary, settings }: FooterProps) {
 
         <div className="mt-16 flex flex-col gap-6 border-t border-[#f2ece0]/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-caption text-[#f2ece0]/50">
-            © {year} <span data-cms="text:meta.siteName">{dictionary.meta.siteName}</span>.{" "}
+            © {year} {settings?.siteName?.trim() || DEFAULT_SITE_NAME}.{" "}
             <span data-cms="text:footer.rights">{dictionary.footer.rights}</span>
           </p>
           {/* Assinatura da Satriz Club — marca registrada que assina o projeto. */}

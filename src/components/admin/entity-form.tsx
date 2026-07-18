@@ -21,6 +21,8 @@ export interface FieldConfig {
   required?: boolean;
   /** Proporção do recorte para type "image" (ex.: 4/3). */
   aspect?: number;
+  /** Dimensão recomendada, mostrada sob o campo de imagem. */
+  hint?: string;
 }
 
 export type EntityValues = Record<string, unknown>;
@@ -82,6 +84,7 @@ export function EntityForm({
               label={field.label}
               value={String(value ?? "")}
               aspect={field.aspect ?? 4 / 3}
+              hint={field.hint}
               onChange={(url) => setValue(field.name, url)}
             />
           );
