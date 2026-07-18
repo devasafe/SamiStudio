@@ -249,6 +249,32 @@
 }
 
 /*
+ * Feedback de clique: todo botão e link "afunda" de leve enquanto está
+ * pressionado, dando o retorno tátil de que o toque foi registrado. Fica fora
+ * de @layer de propósito — assim a transição inclui `transform` sem apagar as
+ * transições de cor das classes utilitárias (que vivem em @layer). Só vale para
+ * quem não pediu menos movimento. As imagens com zoom no hover não entram: o
+ * efeito é do elemento clicável, não da mídia dentro dele.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  button:not(:disabled),
+  a[href],
+  [role="button"] {
+    transition:
+      transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.3s ease,
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      opacity 0.3s ease;
+  }
+  button:not(:disabled):active,
+  a[href]:active,
+  [role="button"]:active {
+    transform: scale(0.96);
+  }
+}
+
+/*
  * Campo de telefone com seletor de país (react-phone-number-input) no visual
  * do formulário escuro. A lib expõe estas variáveis — encaixar por elas evita
  * brigar com o CSS dela a cada atualização.
