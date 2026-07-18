@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "@/components/icons";
 import { Container } from "@/components/layout/container";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -26,6 +27,7 @@ const GRID_ANCHOR = "grade";
 export function PortfolioHero({ items }: PortfolioHeroProps) {
   const { locale, dictionary } = useLanguage();
   const page = dictionary.portfolioPage;
+  const reduce = useReducedMotion();
   const [index, setIndex] = useState(0);
   const current = items[index];
 
@@ -69,63 +71,76 @@ export function PortfolioHero({ items }: PortfolioHeroProps) {
         </Container>
 
         <div className="relative h-[24rem] lg:h-[36rem]">
-          {current ? (
-            <>
-              {current.coverImage ? (
-                <Image
-                  src={current.coverImage}
-                  alt={current.title}
-                  fill
-                  sizes="(min-width: 1024px) 56vw, 100vw"
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div className={cn("absolute inset-0", current.coverClass ?? "bg-[#221a13]")} />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0f0c09]/80 via-[#0f0c09]/10 to-transparent" />
-
-              <div className="absolute right-6 bottom-6 max-w-xs border border-[#f2ece0]/15 bg-[#0f0c09]/85 p-5 backdrop-blur-sm lg:right-10 lg:bottom-10">
-                <p className="text-caption tracking-[0.18em] text-[#cf5a18] uppercase">
-                  {page.featuredBadge}
-                </p>
-                <h2 className="font-heading mt-2 text-xl leading-tight">{current.title}</h2>
-                <p className="text-caption mt-2 text-[#d8cdba]/70">
-                  {[current.categoryLabel, current.city, current.year].filter(Boolean).join(" · ")}
-                </p>
-                <Link
-                  href={localePath(locale, `/portfolio/${current.slug}`)}
-                  className="text-caption group mt-4 inline-flex items-center gap-2 tracking-[0.16em] text-[#cf5a18] uppercase"
-                >
-                  {page.featuredCta}
-                  <ArrowUpRight
-                    className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    aria-hidden
+          {/* Crossfade entre os destaques: a foto e o cartão do projeto trocam
+              com fade; as setas ficam fixas por cima. */}
+          <AnimatePresence initial={false}>
+            {current ? (
+              <motion.div
+                key={index}
+                className="absolute inset-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduce ? 0 : 0.55, ease: "easeInOut" }}
+              >
+                {current.coverImage ? (
+                  <Image
+                    src={current.coverImage}
+                    alt={current.title}
+                    fill
+                    sizes="(min-width: 1024px) 56vw, 100vw"
+                    className="object-cover"
+                    priority
                   />
-                </Link>
-              </div>
+                ) : (
+                  <div className={cn("absolute inset-0", current.coverClass ?? "bg-[#221a13]")} />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0f0c09]/80 via-[#0f0c09]/10 to-transparent" />
 
-              {items.length > 1 ? (
-                <div className="absolute bottom-6 left-6 flex gap-2 lg:bottom-10 lg:left-10">
-                  <button
-                    type="button"
-                    onClick={() => go(-1)}
-                    aria-label={page.heroPrev}
-                    className="flex size-11 items-center justify-center rounded-full border border-[#f2ece0]/30 text-[#f2ece0] transition-colors duration-300 hover:bg-[#f2ece0] hover:text-[#141009]"
+                <div className="absolute right-6 bottom-6 max-w-xs border border-[#f2ece0]/15 bg-[#0f0c09]/85 p-5 backdrop-blur-sm lg:right-10 lg:bottom-10">
+                  <p className="text-caption tracking-[0.18em] text-[#cf5a18] uppercase">
+                    {page.featuredBadge}
+                  </p>
+                  <h2 className="font-heading mt-2 text-xl leading-tight">{current.title}</h2>
+                  <p className="text-caption mt-2 text-[#d8cdba]/70">
+                    {[current.categoryLabel, current.city, current.year]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                  <Link
+                    href={localePath(locale, `/portfolio/${current.slug}`)}
+                    className="text-caption group mt-4 inline-flex items-center gap-2 tracking-[0.16em] text-[#cf5a18] uppercase"
                   >
-                    <ChevronLeft className="size-4" aria-hidden />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => go(1)}
-                    aria-label={page.heroNext}
-                    className="flex size-11 items-center justify-center rounded-full border border-[#f2ece0]/30 text-[#f2ece0] transition-colors duration-300 hover:bg-[#f2ece0] hover:text-[#141009]"
-                  >
-                    <ChevronRight className="size-4" aria-hidden />
-                  </button>
+                    {page.featuredCta}
+                    <ArrowUpRight
+                      className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      aria-hidden
+                    />
+                  </Link>
                 </div>
-              ) : null}
-            </>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+
+          {items.length > 1 ? (
+            <div className="absolute bottom-6 left-6 z-10 flex gap-2 lg:bottom-10 lg:left-10">
+              <button
+                type="button"
+                onClick={() => go(-1)}
+                aria-label={page.heroPrev}
+                className="flex size-11 items-center justify-center rounded-full border border-[#f2ece0]/30 bg-[#0f0c09]/40 text-[#f2ece0] backdrop-blur-sm transition-colors duration-300 hover:bg-[#f2ece0] hover:text-[#141009]"
+              >
+                <ChevronLeft className="size-4" aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={() => go(1)}
+                aria-label={page.heroNext}
+                className="flex size-11 items-center justify-center rounded-full border border-[#f2ece0]/30 bg-[#0f0c09]/40 text-[#f2ece0] backdrop-blur-sm transition-colors duration-300 hover:bg-[#f2ece0] hover:text-[#141009]"
+              >
+                <ChevronRight className="size-4" aria-hidden />
+              </button>
+            </div>
           ) : null}
         </div>
       </div>
