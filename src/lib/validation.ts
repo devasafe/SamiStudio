@@ -183,7 +183,6 @@ export const settingsUpdateSchema = z.object({
   stat3Value: z.string().max(20).optional(),
   stat3Label: z.string().max(60).optional(),
   seo: seoSchema,
-  analytics: z.object({ gaMeasurementId: z.string().max(40).optional() }).optional(),
   heroProject: z.string().max(120).optional(),
   defaultLanguage: z.enum(["pt-BR", "en", "es"]).optional(),
   availableLanguages: z.array(z.enum(["pt-BR", "en", "es"])).optional(),

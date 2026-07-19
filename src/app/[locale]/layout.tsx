@@ -8,7 +8,6 @@ import { PageTransition } from "@/components/providers/page-transition";
 import { Providers } from "@/components/providers/providers";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { AmbientBackground } from "@/components/shared/ambient-background";
-import { Analytics } from "@/components/shared/analytics";
 import { FloatingWhatsApp } from "@/components/shared/floating-whatsapp";
 import { StructuredData } from "@/components/shared/structured-data";
 import { isLocale, localePath, locales, type Locale } from "@/i18n/config";
@@ -107,8 +106,6 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
   ]);
 
   const whatsappNumber = settings?.whatsapp ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
-  const gaMeasurementId =
-    settings?.analytics?.gaMeasurementId ?? process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
 
   return (
     <html
@@ -134,7 +131,6 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
           {whatsappNumber ? <FloatingWhatsApp number={whatsappNumber} /> : null}
         </Providers>
         <StructuredData locale={locale} dictionary={dictionary} settings={settings} />
-        <Analytics measurementId={gaMeasurementId} />
       </body>
     </html>
   );

@@ -33,7 +33,6 @@ export interface SiteSettingsDoc {
   stat3Value?: string;
   stat3Label?: string;
   seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: string };
-  analytics?: { gaMeasurementId?: string };
   heroProject?: string;
   defaultLanguage?: string;
   availableLanguages?: string[];
@@ -70,7 +69,6 @@ const siteSettingsSchema = new Schema<SiteSettingsDoc>(
     stat3Value: String,
     stat3Label: String,
     seo: { title: String, description: String, keywords: [String], ogImage: String },
-    analytics: { gaMeasurementId: String },
     heroProject: String,
     defaultLanguage: { type: String, default: "pt-BR" },
     availableLanguages: { type: [String], default: ["pt-BR", "en", "es"] },

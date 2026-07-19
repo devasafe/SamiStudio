@@ -4,24 +4,25 @@ const isDev = process.env.NODE_ENV !== "production";
 
 /**
  * Content-Security-Policy do site. Precisa liberar, de propósito:
- *  - Cloudinary (imagens do CMS) em img-src;
- *  - Google Tag Manager (script do GA) em script-src, e os beacons do GA em
- *    connect-src — o GA4 manda o beacon `/g/collect` para um endpoint
- *    regional (`region1..region9.google-analytics.com`) escolhido pelo
- *    Google conforme a região de quem visita, por isso o wildcard;
+ *  - Cloudinary (imagens do CMS) e o CDN de bandeiras do seletor de telefone
+ *    (react-phone-number-input) em img-src;
  *  - o próprio site em frame-src/frame-ancestors, porque o editor visual
  *    (/admin/editor) mostra a prévia num iframe same-origin.
- * `unsafe-inline` em script/style é exigido pelo Next (styled-jsx, o snippet
- * inline do gtag e os estilos do Tailwind injetados). Em dev, o Turbopack usa
- * eval e o HMR abre um websocket — por isso `unsafe-eval` e `ws:` só em dev.
+ * Nenhum host do Google aqui: o site não usa Analytics (decisão do projeto).
+ * Se um dia entrar, o Tag Manager volta a script-src e os beacons do GA4 a
+ * connect-src — estes últimos com wildcard, porque o GA escolhe um endpoint
+ * regional por visitante.
+ * `unsafe-inline` em script/style é exigido pelo Next (styled-jsx e os estilos
+ * do Tailwind injetados). Em dev, o Turbopack usa eval e o HMR abre um
+ * websocket — por isso `unsafe-eval` e `ws:` só em dev.
  */
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://res.cloudinary.com https://purecatamphetamine.github.io",
   "font-src 'self' data:",
-  `connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com${isDev ? " ws:" : ""}`,
+  `connect-src 'self'${isDev ? " ws:" : ""}`,
   "frame-src 'self'",
   "frame-ancestors 'self'",
   "object-src 'none'",
