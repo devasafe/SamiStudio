@@ -108,7 +108,7 @@ export default async function ServicesPage({ params }: PageProps) {
 
         {/* Fio com a numeração de abertura */}
         <div className="flex items-center gap-4 px-6 pb-2">
-          <span className="text-caption text-[#f2ece0]/35">01</span>
+          <span className="text-caption text-[#f2ece0]/50">01</span>
           <span className="h-px flex-1 bg-[#f2ece0]/10" aria-hidden />
         </div>
       </section>

@@ -12,7 +12,7 @@ import { FloatingWhatsApp } from "@/components/shared/floating-whatsapp";
 import { StructuredData } from "@/components/shared/structured-data";
 import { isLocale, localePath, locales, type Locale } from "@/i18n/config";
 import { getMergedDictionary } from "@/lib/dictionary";
-import { safeImageUrl } from "@/lib/images";
+import { imageMimeType, safeImageUrl } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
 import "../globals.css";
 
@@ -63,7 +63,17 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
   ]);
   // Nome do site vem das Configurações (aba Site); vazio cai no do dicionário.
   const siteName = settings?.siteName?.trim() || dictionary.meta.siteName;
+  // O ícone do CMS precisa ser o ÚNICO `<link rel="icon">` da página. Enquanto
+  // existia um `src/app/favicon.ico`, o Next emitia o link dele por convenção
+  // de arquivo — antes deste, e com `sizes`/`type` declarados — e o navegador
+  // ficava com o .ico estático: subir um favicon novo pelo painel salvava no
+  // banco e não mudava nada na aba. O arquivo agora mora em `public/`, que não
+  // gera link nenhum, e serve só de fallback para quem pedir /favicon.ico
+  // direto (as telas do /admin, que não passam por aqui).
   const favicon = safeImageUrl(settings?.favicon);
+  const icons = favicon
+    ? { icon: [{ url: favicon, type: imageMimeType(favicon) }] }
+    : { icon: "/favicon.ico" };
 
   return {
     metadataBase: new URL(siteUrl),
@@ -72,8 +82,7 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
       template: `%s | ${siteName}`,
     },
     description: dictionary.meta.home.description,
-    // Favicon enviado no painel sobrepõe o ícone padrão (app/favicon.ico).
-    ...(favicon ? { icons: { icon: favicon } } : {}),
+    icons,
     alternates: {
       canonical: localePath(locale, "/"),
       languages: Object.fromEntries(locales.map((l) => [l, localePath(l, "/")])),

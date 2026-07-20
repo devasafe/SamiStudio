@@ -34,7 +34,11 @@ export function HomeExperience({ children }: HomeExperienceProps) {
           fill
           priority
           sizes="100vw"
-          quality={92}
+          // Este é o elemento de LCP do site. q92 custava 185 KB em AVIF na
+          // largura que o mobile baixa (1080w); q85 faz 124 KB — 61 KB a menos
+          // numa imagem que ainda leva quatro camadas de gradiente escuro por
+          // cima, onde a diferença não aparece.
+          quality={85}
           className="object-cover"
         />
         {/* Mood dark quente: base densa para a legenda, topo para a navbar */}

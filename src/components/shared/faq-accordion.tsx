@@ -37,7 +37,7 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
               >
                 <span
                   className={`text-caption w-8 shrink-0 transition-colors ${
-                    isOpen ? "text-[#cf5a18]" : "text-[#f2ece0]/35"
+                    isOpen ? "text-[#cf5a18]" : "text-[#f2ece0]/50"
                   }`}
                 >
                   {String(index + 1).padStart(2, "0")}

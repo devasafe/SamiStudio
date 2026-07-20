@@ -92,7 +92,7 @@ export function ProcessSection({ dictionary }: ProcessSectionProps) {
         {/* Fecho */}
         <div className="mt-20 flex items-center gap-6 border-t border-[#f2ece0]/10 pt-8">
           <span className="h-px flex-1 bg-[#f2ece0]/10" aria-hidden />
-          <p className="text-caption text-center tracking-[0.2em] text-[#f2ece0]/45 uppercase">
+          <p className="text-caption text-center tracking-[0.2em] text-[#f2ece0]/50 uppercase">
             <span data-cms="text:sections.process.footerLead">{process.footerLead}</span>{" "}
             <span className="text-[#cf5a18]" data-cms="text:sections.process.footerEmphasis">
               {process.footerEmphasis}

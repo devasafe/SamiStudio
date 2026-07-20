@@ -171,7 +171,7 @@ export function TestimonialList() {
                   </div>
 
                   {row.rating ? (
-                    <p className="mt-3 flex gap-0.5" aria-label={`${row.rating} de 5`}>
+                    <p className="mt-3 flex gap-0.5" role="img" aria-label={`${row.rating} de 5`}>
                       {Array.from({ length: 5 }, (_, star) => (
                         <Star
                           key={star}

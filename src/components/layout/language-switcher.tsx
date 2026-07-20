@@ -35,6 +35,18 @@ interface LanguageSwitcherProps {
   onDark?: boolean;
 }
 
+/** Clique simples — o que o roteador do Next interceptaria. */
+function isPlainClick(event: React.MouseEvent<HTMLAnchorElement>): boolean {
+  return (
+    !event.defaultPrevented &&
+    event.button === 0 &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey
+  );
+}
+
 /**
  * Troca de idioma como controle segmentado: os três ficam à vista numa cápsula
  * e o atual aparece preenchido.
@@ -55,11 +67,28 @@ export function LanguageSwitcher({ className, onDark = false }: LanguageSwitcher
     >
       {locales.map((locale) => {
         const active = locale === currentLocale;
+        const href = localePath(locale, basePath);
         return (
           <Link
             key={locale}
-            href={localePath(locale, basePath)}
-            onClick={() => rememberLocale(locale)}
+            href={href}
+            // O idioma padrão mora na URL sem prefixo, onde o proxy negocia pelo
+            // cookie — que só existe DEPOIS do clique. Prefetch aqui buscaria
+            // essa URL antes disso, receberia o 307 para o idioma do navegador
+            // e guardaria esse destino no cache do roteador: clicar em "ES" num
+            // navegador em português caía no português, e continuava caindo.
+            prefetch={false}
+            onClick={(event) => {
+              rememberLocale(locale);
+              if (!isPlainClick(event)) {
+                return; // nova aba: o cookie já foi gravado, o href resolve sozinho
+              }
+              // Navegação de documento em vez de client-side: garante uma
+              // requisição nova, com o cookie recém-gravado, sem passar por
+              // nenhuma entrada de cache montada com o idioma anterior.
+              event.preventDefault();
+              window.location.assign(href);
+            }}
             aria-current={active ? "true" : undefined}
             className={cn(
               "text-caption rounded-full px-2.5 py-1 font-medium tracking-widest uppercase transition-colors",

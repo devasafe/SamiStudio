@@ -69,7 +69,7 @@ export function TestimonialsSection({ dictionary, items }: TestimonialsSectionPr
                 <div className="min-w-0">
                   <p className="text-caption truncate tracking-[0.14em] uppercase">{item.name}</p>
                   {item.role || item.company ? (
-                    <p className="text-caption mt-1 truncate text-[#d8cdba]/55">
+                    <p className="text-caption mt-1 truncate text-[#d8cdba]/60">
                       {[item.role, item.company].filter(Boolean).join(" · ")}
                     </p>
                   ) : null}
@@ -85,8 +85,11 @@ export function TestimonialsSection({ dictionary, items }: TestimonialsSectionPr
 
 /** Nota em estrelas (as vazias ficam para dar a referência de 5). */
 function Rating({ value }: { value: number }) {
+  // `role=paragraph` proíbe nome acessível, então um `aria-label` num <p> é
+  // simplesmente ignorado (e o Lighthouse acusa). Com `role="img"` o grupo de
+  // estrelas passa a ser um elemento nomeável, e a nota volta a ser anunciada.
   return (
-    <p className="mt-5 flex gap-1" aria-label={`${value} de 5`}>
+    <p className="mt-5 flex gap-1" role="img" aria-label={`${value} de 5`}>
       {Array.from({ length: 5 }, (_, index) => (
         <Star
           key={index}
